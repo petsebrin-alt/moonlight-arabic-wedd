@@ -8,11 +8,17 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Aref+Ruqaa:wght@400;700&family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500&family=IBM+Plex+Sans+Arabic:wght@400;500&family=Jost:wght@400;500&family=Pinyon+Script&display=swap">
+<script>
+/* On a computer the invitation is shown inside an iPhone 17 Pro Max frame; ?full=1 shows the plain page. */
+(function(){var q=location.search, h=document.documentElement;
+  if(/[?&]inframe=1/.test(q)) h.classList.add("inframe");
+  else if(window.top===window.self && !/[?&]full=1/.test(q) && window.matchMedia("(min-width:760px) and (min-height:560px)").matches) h.classList.add("mock");})();
+</script>
 <style>
-/* Layout: a moonlit night page; navy sections alternate with ivory "card" sections, every frame is an arch. Single dark-committed look. */
+/* Layout: a moonlit night page in blues only; navy sections alternate with pale moonlight-blue "card" sections, every frame is an arch. */
 :root{
   --navy:#101A33; --navy-2:#1A2547; --navy-3:#2A3763; --night:#0A1124;
-  --ivory:#F8F3E8; --ivory-2:#EFE6D4; --env-in:#E6DAC1; --env-front:#F4EDDF;
+  --ivory:#E8EFFA; --ivory-2:#D3DEF0; --env-in:#C9D6EC; --env-front:#E3EBF8;
   --gold:#C8A96B; --gold-deep:#7A5C24; --gold-dark:#8F7440;
   --silver:#DCE4F0; --silver-mute:#A9B4C6;
   --ink:#1E2438; --ink-mute:#5A6275;
@@ -97,11 +103,10 @@ html[lang="ar"] .cover-title{font-family:var(--f-ar-display);font-weight:700;lin
 .cover-hint{position:absolute;z-index:6;inset-inline:0;top:calc(var(--envTop) + var(--envH) + 3cqh);margin:0;text-align:center;font-family:var(--f-body);font-size:3.6cqw;letter-spacing:.18em;text-transform:uppercase;color:rgba(233,214,168,.85);transition:opacity .4s ease}
 html[lang="ar"] .cover-hint{font-family:var(--f-ar-body);letter-spacing:0;text-transform:none;font-size:4.2cqw}
 .cover.opening .cover-hint,.cover.opening .cover-title{opacity:0}
-.flowers{position:absolute;z-index:7;left:-2cqw;right:-2cqw;bottom:0;pointer-events:none}
+.flowers{position:absolute;z-index:7;left:-9cqw;right:-9cqw;bottom:-10cqw;pointer-events:none;filter:drop-shadow(0 -1cqw 3cqw rgba(5,10,24,.45))}
 .flowers img{display:block;width:100%;height:auto;transform-origin:50% 100%}
-.run .flowers img{animation:breeze 7s ease-in-out infinite}
-@keyframes breeze{0%,100%{transform:skewX(0deg)}50%{transform:skewX(-1.2deg)}}
-.flowers::before{content:"";position:absolute;inset:auto 0 0;height:35%;background:linear-gradient(180deg,transparent,rgba(11,20,48,.55))}
+.run .flowers img{animation:breeze 9s ease-in-out infinite}
+@keyframes breeze{0%,100%{transform:rotate(0deg)}50%{transform:rotate(-.6deg)}}
 
 /* envelope: interior < card < front pocket < flap (3D) < seal */
 .stage{--envW:86cqw;--envH:calc(86cqw * 617 / 900);--envTop:calc(50cqh - var(--envH) / 2 + 2cqh)}
@@ -110,7 +115,7 @@ html[lang="ar"] .cover-hint{font-family:var(--f-ar-body);letter-spacing:0;text-t
 .env-in{position:absolute;z-index:0;inset:.6% .6% 0;clip-path:polygon(0 0,100% 0,49.9% 72%);background:linear-gradient(180deg,#060C1E,#0D1838 70%);border-radius:.6cqw;box-shadow:inset 0 2cqw 4cqw rgba(0,0,0,.5)}
 .env-glow{position:absolute;z-index:0;left:8%;right:8%;top:-28%;height:60%;pointer-events:none;opacity:0;transition:opacity 1.2s ease;background:radial-gradient(ellipse 50% 55% at 50% 70%,rgba(255,236,190,.55),rgba(233,199,126,.18) 50%,transparent 75%);filter:blur(2px)}
 .cover.opening .env-glow{opacity:1}
-.env-card{position:absolute;z-index:1;left:5%;right:5%;top:5%;height:88%;border-radius:.8cqw;background:linear-gradient(90deg,#EFE6D2,#FFFDF8 12%,#FFFDF8 88%,#EFE6D2);box-shadow:0 1cqw 3cqw rgba(0,0,0,.35);display:flex;flex-direction:column;align-items:center;justify-content:flex-start;padding-top:6%;text-align:center;color:var(--ink);will-change:transform}
+.env-card{position:absolute;z-index:1;left:5%;right:5%;top:5%;height:88%;border-radius:.8cqw;background:linear-gradient(90deg,#D6E1F2,#F4F8FE 12%,#F4F8FE 88%,#D6E1F2);box-shadow:0 1cqw 3cqw rgba(0,0,0,.35);display:flex;flex-direction:column;align-items:center;justify-content:flex-start;padding-top:6%;text-align:center;color:var(--ink);will-change:transform}
 .env-card::before{content:"";position:absolute;inset:3.2%;border:1px solid rgba(122,92,36,.45);border-radius:.4cqw;pointer-events:none}
 .env-card .c-eyebrow{font-family:var(--f-body);font-size:2.5cqw;letter-spacing:.24em;text-transform:uppercase;color:var(--gold-deep)}
 .env-card .c-names{margin:1.4cqw 0;font-family:var(--f-display);font-weight:600;font-size:7.4cqw;line-height:1.05;color:var(--gold-deep)}
@@ -310,14 +315,14 @@ legend{padding:0;margin-bottom:8px}
 /* wishes */
 #wishes form label,#wishes .legend{color:var(--ink)}
 #wishes .hint{color:var(--ink-mute)}
-#wishes input,#wishes textarea{border-color:var(--ink-mute);background:#FFFDF8}
+#wishes input,#wishes textarea{border-color:var(--ink-mute);background:#F6F9FE}
 #wishes [aria-invalid="true"]{border-color:var(--err-on-light)!important}
 #wishes .err{color:var(--err-on-light)}
 #wishes .err::before{background:var(--err-on-light);color:var(--ivory)}
 #wishes .form-error{color:var(--err-on-light);border-color:var(--err-on-light)}
 #wishes .req{color:var(--gold-deep)}
 .wish-list{display:grid;gap:12px;width:100%}
-.wish{background:#FFFDF8;border:1px solid rgba(122,92,36,.35);border-radius:6px;padding:18px 18px 14px;display:grid;gap:8px;color:var(--ink);text-align:start}
+.wish{background:#F6F9FE;border:1px solid rgba(42,55,99,.28);border-radius:6px;padding:18px 18px 14px;display:grid;gap:8px;color:var(--ink);text-align:start}
 .wish q{font-family:var(--f-display);font-size:20px;line-height:1.4;quotes:"\201C" "\201D"}
 .wish q[dir="rtl"]{font-family:var(--f-ar-head);font-size:19px}
 .wish q::before,.wish q::after{color:var(--gold-deep)}
@@ -363,6 +368,30 @@ footer button{background:none;border:1px solid var(--navy-3);border-radius:999px
 html.rm *{animation:none!important}
 html.rm .env-card,html.rm .env-flap,html.rm .butterfly{transition:none!important}
 html.rm .cover{transition:opacity .2s ease}
+
+/* ---------- iPhone 17 Pro Max mockup (desktop only) ---------- */
+html.mock,html.mock body{height:100%;overflow:hidden}
+html.mock body{background:radial-gradient(ellipse 55% 60% at 50% 42%,#1C3263 0%,#0E1A38 55%,#060B1A 100%)}
+html.mock body>*:not(#mockup){display:none!important}
+html.inframe{scrollbar-width:none}
+html.inframe::-webkit-scrollbar{display:none}
+.mockup{position:fixed;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px;overflow:hidden}
+.mk-glow{position:absolute;width:760px;height:760px;border-radius:50%;background:radial-gradient(circle,rgba(120,160,230,.22),transparent 65%);filter:blur(10px);pointer-events:none}
+.mk-wrap{position:relative;width:472px;height:988px;zoom:var(--mk,1)}
+.iphone{position:absolute;inset:0;border-radius:82px;padding:16px;
+  background:linear-gradient(145deg,#3C5A8A 0%,#1E3558 22%,#2B4673 48%,#152844 74%,#33507E 100%);
+  box-shadow:inset 0 0 0 1.5px rgba(200,220,255,.35),inset 0 0 0 5px #0F1D33,0 40px 90px rgba(0,0,0,.55),0 0 0 1px rgba(0,0,0,.6)}
+.iphone::before{content:"";position:absolute;inset:7px;border-radius:76px;background:#03060D}
+.btn-side{position:absolute;width:5px;border-radius:3px;background:linear-gradient(90deg,#16263F,#3E5C8C,#1A2C49)}
+.btn-side.l{left:-4px}.btn-side.r{right:-4px}
+.screen{position:absolute;inset:16px;border-radius:66px;overflow:hidden;background:#0A1226;isolation:isolate}
+.sbar{position:absolute;top:0;left:0;right:0;height:54px;background:#0A1226;color:#fff;display:flex;align-items:center;justify-content:space-between;padding:6px 34px 0 46px;font:600 17px/1 -apple-system,"SF Pro Text","Helvetica Neue",Arial,sans-serif;z-index:2}
+.sbar .ic{display:flex;gap:7px;align-items:center}
+.island{position:absolute;top:11px;left:50%;width:126px;height:37px;margin-left:-63px;border-radius:20px;background:#000;z-index:3}
+.screen iframe{position:absolute;top:54px;left:0;width:440px;height:902px;border:0;display:block;background:#0A1226}
+.home{position:absolute;bottom:8px;left:50%;width:150px;height:5px;margin-left:-75px;border-radius:3px;background:rgba(255,255,255,.7);z-index:3;pointer-events:none}
+.mk-cap{position:relative;text-align:center;margin:0;font:500 13px/1.4 var(--f-body);letter-spacing:.16em;text-transform:uppercase;color:rgba(220,228,240,.7)}
+.mk-cap a{color:#C9D7F0}
 </style>
 </head>
 <body>
@@ -456,7 +485,7 @@ html.rm .cover{transition:opacity .2s ease}
     </div>
     <p class="cover-hint" aria-hidden="true" data-i18n="tap_seal">Tap the seal to open</p>
 
-    <div class="flowers" aria-hidden="true"><img src="assets/opening/flowers.webp" alt="" width="1000" height="415"></div>
+    <div class="flowers" aria-hidden="true"><img src="assets/opening/bouquet.webp" alt="" width="1090" height="616"></div>
     <div class="cover-lang"><div class="lang" role="group" aria-label="Language"><button type="button" data-setlang="en" lang="en" aria-pressed="true">EN</button><button type="button" data-setlang="ar" lang="ar" aria-pressed="false">ع</button></div></div>
   </div>
 </div>
@@ -726,6 +755,25 @@ html.rm .cover{transition:opacity .2s ease}
 <script>
 (function(){
 "use strict";
+
+/* ---------- desktop: iPhone 17 Pro Max mockup ---------- */
+if(document.documentElement.classList.contains("mock")){
+  var mk=document.createElement("div"); mk.id="mockup"; mk.className="mockup";
+  var src=location.pathname+"?inframe=1"+location.hash;
+  mk.innerHTML='<div class="mk-glow"></div><div class="mk-wrap"><div class="iphone">'+
+    '<span class="btn-side l" style="top:178px;height:38px"></span><span class="btn-side l" style="top:246px;height:72px"></span><span class="btn-side l" style="top:334px;height:72px"></span>'+
+    '<span class="btn-side r" style="top:270px;height:110px"></span><span class="btn-side r" style="top:600px;height:64px;border-radius:2px"></span>'+
+    '<div class="screen"><div class="sbar"><span>9:41</span><span class="ic">'+
+    '<svg width="19" height="12" viewBox="0 0 19 12" fill="#fff"><rect x="0" y="8" width="3.2" height="4" rx=".8"/><rect x="5" y="5.5" width="3.2" height="6.5" rx=".8"/><rect x="10" y="3" width="3.2" height="9" rx=".8"/><rect x="15" y="0" width="3.2" height="12" rx=".8"/></svg>'+
+    '<svg width="17" height="12" viewBox="0 0 17 12" fill="#fff"><path d="M8.5 2.4c2.4 0 4.6.9 6.3 2.5l1.3-1.3A10.7 10.7 0 008.5.6 10.7 10.7 0 00.9 3.6l1.3 1.3a8.9 8.9 0 016.3-2.5zm0 3.6c1.4 0 2.7.5 3.7 1.4l1.3-1.3a7.2 7.2 0 00-10 0l1.3 1.3c1-.9 2.3-1.4 3.7-1.4zm0 3.5c.5 0 1 .2 1.3.5L8.5 11.3 7.2 10c.3-.3.8-.5 1.3-.5z"/></svg>'+
+    '<svg width="27" height="13" viewBox="0 0 27 13"><rect x=".5" y=".5" width="23" height="12" rx="3.6" fill="none" stroke="rgba(255,255,255,.45)"/><rect x="2" y="2" width="20" height="9" rx="2.2" fill="#fff"/><path d="M25 4.5v4c.8-.3 1.3-1.1 1.3-2s-.5-1.7-1.3-2z" fill="rgba(255,255,255,.45)"/></svg>'+
+    '</span></div><div class="island"></div><iframe title="Ayisha &amp; Omar wedding invitation" src="'+src+'"></iframe><div class="home"></div></div></div></div>'+
+    '<p class="mk-cap">iPhone 17 Pro Max preview · <a href="?full=1">open full page</a></p>';
+  document.body.appendChild(mk);
+  var fit=function(){ var k=Math.min(1,(innerHeight-72)/988,(innerWidth-40)/472); mk.querySelector(".mk-wrap").style.setProperty("--mk",k.toFixed(3)); };
+  fit(); addEventListener("resize", fit);
+  return;
+}
 /* ---------- confirmed details (single source of truth) ---------- */
 var EVENT_START = Date.parse("2026-11-15T18:30:00+04:00");
 var RSVP_DEADLINE = Date.parse("2026-11-01T23:59:59+04:00");
