@@ -97,6 +97,28 @@ html[lang="ar"] .skip{font-family:var(--f-ar-body)}
 .cover-ui .date{font-family:var(--f-display);font-size:4.4cqw;letter-spacing:.3em;color:var(--silver);text-shadow:0 1px 8px rgba(5,10,24,.8)}
 .cover-ui .btn{box-shadow:0 0 0 1px rgba(255,241,201,.25),0 6px 24px rgba(5,10,24,.55)}
 
+/* ---------- real butterflies (photo sprites, wings flap in 3D) ---------- */
+.rbf{position:absolute;left:0;top:0;width:var(--w,64px);aspect-ratio:var(--ar,1.45);pointer-events:none;will-change:transform}
+.rbf-b{position:absolute;inset:0;perspective:220px;transform-style:preserve-3d;filter:drop-shadow(0 6px 10px rgba(5,10,24,.35))}
+.rbf .w,.rbf .bd{position:absolute;top:0;bottom:0;background-image:var(--img);background-repeat:no-repeat;backface-visibility:visible}
+.rbf .w{width:50%;background-size:200% 100%}
+.rbf .w.l{left:0;background-position:0 0;transform-origin:100% 50%}
+.rbf .w.r{right:0;background-position:100% 0;transform-origin:0 50%}
+.rbf .bd{left:46%;width:8%;background-size:1250% 100%;background-position:50% 0;z-index:1}
+.rbf.fly .w.l{animation:rbfL var(--fp,.15s) cubic-bezier(.5,0,.5,1) infinite alternate}
+.rbf.fly .w.r{animation:rbfR var(--fp,.15s) cubic-bezier(.5,0,.5,1) infinite alternate}
+@keyframes rbfL{from{transform:rotateY(-8deg);filter:brightness(1.05)}to{transform:rotateY(-74deg);filter:brightness(.78)}}
+@keyframes rbfR{from{transform:rotateY(8deg);filter:brightness(1.05)}to{transform:rotateY(74deg);filter:brightness(.78)}}
+.rbf.rest{opacity:0;transition:opacity .25s ease}
+.rbf.rest.on{opacity:1}
+.rbf.rest .rbf-b{filter:drop-shadow(1px 3px 3px rgba(60,40,10,.35))}
+.run .rbf.rest .w.l{animation:rbfRestL var(--rd,4.6s) ease-in-out var(--rdl,0s) infinite}
+.run .rbf.rest .w.r{animation:rbfRestR var(--rd,4.6s) ease-in-out var(--rdl,0s) infinite}
+@keyframes rbfRestL{0%,52%,100%{transform:rotateY(-6deg)}60%,68%{transform:rotateY(-62deg)}76%{transform:rotateY(-14deg)}82%{transform:rotateY(-48deg)}90%{transform:rotateY(-6deg)}}
+@keyframes rbfRestR{0%,52%,100%{transform:rotateY(6deg)}60%,68%{transform:rotateY(62deg)}76%{transform:rotateY(14deg)}82%{transform:rotateY(48deg)}90%{transform:rotateY(6deg)}}
+.bf-sky{position:fixed;inset:0;z-index:950;pointer-events:none;overflow:hidden}
+.bf-wel{position:absolute;inset:0;z-index:3;pointer-events:none}
+
 /* language switch */
 .lang{display:inline-flex;border:1px solid var(--gold);border-radius:999px;overflow:hidden;background:rgba(16,26,51,.6)}
 .lang button{min-width:44px;min-height:40px;padding:0 12px;border:0;background:transparent;color:var(--gold);cursor:pointer;font-size:15px;font-family:var(--f-body)}
@@ -771,6 +793,9 @@ stars("#welcomeSky", 14, 30); stars("#thanksSky", 18, 60);
 var loopIO = "IntersectionObserver" in window ? new IntersectionObserver(function(es){es.forEach(function(e){e.target.classList.toggle("run", e.isIntersecting && !document.hidden);});}) : null;
 if(loopIO){["#welcome","#thanks"].forEach(function(s){loopIO.observe($(s));});}
 document.addEventListener("visibilitychange", function(){ $$(".run, .paused").forEach(function(el){ if(document.hidden){el.classList.remove("run"); el.classList.add("paused");} else {el.classList.add("run"); el.classList.remove("paused");} }); });
+/* re-check on-screen loops when the page becomes visible again (the observer may have fired while hidden) */
+function recheckLoops(){ if(document.hidden) return; ["#welcome","#thanks"].forEach(function(sel){ var el=$(sel), r=el.getBoundingClientRect(); el.classList.toggle("run", r.bottom>0 && r.top<innerHeight); el.classList.remove("paused"); }); }
+document.addEventListener("visibilitychange", recheckLoops);
 
 /* ---------- cover: opening video ----------
    The guest taps "Open Invitation", the film plays while the envelope opens and the butterflies rise,
@@ -796,7 +821,7 @@ function openInvite(){
 function leave(){
   if(phase==="done") return; clearTimeout(holdTimer); phase="done";
   $("#skipBtn").hidden=true;
-  cover.classList.add("leaving"); revealMain();
+  cover.classList.add("leaving"); revealMain(); butterfliesOut();
   setTimeout(function(){ if(phase==="done"){ cover.hidden=true; vid.pause(); updateBars(); } }, reduced()?250:FADE_MS);
 }
 $("#openBtn").addEventListener("click", openInvite);
@@ -805,11 +830,11 @@ function revealMain(){
   root.classList.remove("locked");
   main.inert = false; main.removeAttribute("inert"); main.removeAttribute("aria-hidden");
   window.scrollTo(0,0);
-  startReveal(); updateBars();
+  startReveal(); updateBars(); recheckLoops();
   $("#welcomeTitle").focus({preventScroll:true});
 }
 function resetCover(){
-  clearTimeout(holdTimer); phase="idle";
+  clearTimeout(holdTimer); clearTimeout(wanderTimer); phase="idle"; showPerched(false); if(sky){sky.remove(); sky=null;}
   vid.pause(); try{ vid.currentTime=0.001; }catch(e){}
   $("#coverUi").classList.remove("gone"); $("#skipBtn").hidden=true;
   cover.classList.remove("leaving"); cover.hidden=false; root.classList.add("locked");
@@ -817,6 +842,78 @@ function resetCover(){
   $("#openBtn").focus();
 }
 $("#replay").addEventListener("click", resetCover);
+
+/* ---------- real butterflies ----------
+   Sprites cut from Agrim's reference images (assets/butterflies). Each sprite is split down the body
+   into two wings that rotate in 3D, so they flap like the real thing. As the opening film fades,
+   butterflies fly out of the envelope; two land on the welcome card, rest there, and now and then
+   one takes off, circles and lands again. */
+var BFS=[["bf1",1.457],["bf2",1.452],["bf3",1.481],["bf4",1.488],["bf5",1.343]];
+function makeRbf(k, w, cls){
+  var b=BFS[k%BFS.length], el=document.createElement("span");
+  el.className="rbf "+(cls||""); el.setAttribute("aria-hidden","true");
+  el.style.setProperty("--img",'url("assets/butterflies/'+b[0]+'.webp")'); el.style.setProperty("--ar",b[1]); el.style.setProperty("--w",w);
+  el.innerHTML='<span class="rbf-b"><i class="w l"></i><i class="bd"></i><i class="w r"></i></span>';
+  return el;
+}
+function crPt(p0,p1,p2,p3,u){var u2=u*u,u3=u2*u; return {x:.5*(2*p1.x+(-p0.x+p2.x)*u+(2*p0.x-5*p1.x+4*p2.x-p3.x)*u2+(-p0.x+3*p1.x-3*p2.x+p3.x)*u3), y:.5*(2*p1.y+(-p0.y+p2.y)*u+(2*p0.y-5*p1.y+4*p2.y-p3.y)*u2+(-p0.y+3*p1.y-3*p2.y+p3.y)*u3)};}
+/* fly el through pts [{x,y}] (container px), scaling s0 -> s1, ending at heading endRot (deg) */
+function flyPath(el, pts, dur, o){
+  o=o||{}; var P=[pts[0]].concat(pts,[pts[pts.length-1]]), N=48, frames=[], prev=null, rot=0, s0=o.s0==null?1:o.s0, s1=o.s1==null?1:o.s1;
+  for(var i=0;i<=N;i++){
+    var g=i/N*(pts.length-1), seg=Math.min(pts.length-2,Math.floor(g)), u=g-seg;
+    var q=crPt(P[seg],P[seg+1],P[seg+2],P[seg+3],u), bob=Math.sin(i/N*Math.PI*2*(o.bobs||5))*(o.bob||5);
+    if(prev){var dx=q.x-prev.x, dy=q.y-prev.y; if(dx*dx+dy*dy>.5){var a=Math.atan2(dy,dx)*180/Math.PI+90; while(a-rot>180)a-=360; while(a-rot<-180)a+=360; rot=rot*.6+a*.4;}} else rot=o.r0||0;
+    var k=i/N, sc=s0+(s1-s0)*k, r=rot;
+    if(o.endRot!=null && k>.82){var m=(k-.82)/.18; r=rot+(o.endRot-rot)*m*m;}
+    frames.push({transform:"translate("+q.x.toFixed(1)+"px,"+(q.y+bob*(1-k*k)).toFixed(1)+"px) translate(-50%,-50%) rotate("+r.toFixed(1)+"deg) scale("+sc.toFixed(3)+")", opacity:o.fadeOut&&k>.8?(1-(k-.8)/.2):1});
+    prev=q;
+  }
+  return el.animate(frames,{duration:dur,easing:o.easing||"cubic-bezier(.35,.15,.45,1)",fill:"both",delay:o.delay||0});
+}
+var invite=$("#welcome .invite"), welcomeSec=$("#welcome");
+var PERCH=[{x:.16,y:.07,r:-24,w:"64px",k:0,d:"4.8s",dl:"-1.2s"},{x:.9,y:.6,r:18,w:"52px",k:2,d:"5.6s",dl:"-3.4s"}];
+var perched=PERCH.map(function(p){var el=makeRbf(p.k,p.w,"rest"); el.style.left=(p.x*100)+"%"; el.style.top=(p.y*100)+"%"; el.style.transform="translate(-50%,-50%) rotate("+p.r+"deg)"; el.style.setProperty("--rd",p.d); el.style.setProperty("--rdl",p.dl); el.style.zIndex=2; invite.appendChild(el); return el;});
+var welLayer=document.createElement("div"); welLayer.className="bf-wel"; welLayer.setAttribute("aria-hidden","true"); welcomeSec.appendChild(welLayer);
+var wanderTimer=null, sky=null;
+function perchPoint(i, box){var r=invite.getBoundingClientRect(), b=box.getBoundingClientRect(); return {x:r.left-b.left+PERCH[i].x*r.width, y:r.top-b.top+PERCH[i].y*r.height};}
+function showPerched(on){perched.forEach(function(el){el.classList.toggle("on",on);});}
+function butterfliesOut(){
+  if(reduced()){ showPerched(true); return; }
+  showPerched(false);
+  if(sky) sky.remove(); sky=document.createElement("div"); sky.className="bf-sky"; sky.setAttribute("aria-hidden","true"); document.body.appendChild(sky);
+  var st=$("#stage").getBoundingClientRect(), W=innerWidth, H=innerHeight, ox=st.left+st.width*.5, oy=st.top+st.height*.5, unit=Math.min(st.width,W);
+  /* free flyers leave the screen; flyers 0 and 1 land on the welcome card */
+  var OUT=[[-.25,.18],[1.25,.12],[.2,-.2],[.85,-.22],[-.2,.62],[1.2,.55],[.55,-.25]];
+  var all=[{perch:0},{perch:1}].concat(OUT.map(function(t){return {to:t};}));
+  all.forEach(function(f,i){
+    var w=Math.round(unit*(f.perch!=null?(i?.15:.19):(.16+((i*37)%9)/100)))+"px";
+    var el=makeRbf(i+1, f.perch!=null?PERCH[f.perch].w:w, "fly"); el.style.setProperty("--fp",(.12+((i*13)%5)/100).toFixed(2)+"s"); sky.appendChild(el);
+    var start={x:ox+(i%3-1)*unit*.06, y:oy+unit*.02}, side=(i%2?1:-1), pts, a, dur=2600+((i*290)%900);
+    if(f.perch!=null){
+      var r=invite.getBoundingClientRect(), end={x:r.left+PERCH[f.perch].x*r.width, y:r.top+PERCH[f.perch].y*r.height};
+      pts=[start,{x:start.x+side*unit*.22,y:start.y-unit*.32},{x:end.x-side*unit*.18,y:end.y-unit*.12},end];
+      a=flyPath(el,pts,dur+900,{s0:.45,s1:1,endRot:PERCH[f.perch].r,delay:i*90,bob:6,bobs:6});
+      a.onfinish=(function(el,k){return function(){perched[k].classList.add("on"); setTimeout(function(){el.remove();},260);};})(el,f.perch);
+    } else {
+      var end2={x:W*f.to[0], y:H*f.to[1]};
+      pts=[start,{x:start.x+(end2.x-start.x)*.35+side*unit*.12,y:start.y-unit*.28},{x:start.x+(end2.x-start.x)*.7,y:(start.y+end2.y)/2-unit*.1},end2];
+      a=flyPath(el,pts,dur,{s0:.4,s1:1.25,delay:120+i*110,bob:7,bobs:5,easing:"cubic-bezier(.4,.1,.6,1)"});
+      a.onfinish=(function(el){return function(){el.remove();};})(el);
+    }
+  });
+  setTimeout(function(){ if(sky){sky.remove(); sky=null;} showPerched(true); }, 5200);
+  scheduleWander();
+}
+function scheduleWander(){ clearTimeout(wanderTimer); wanderTimer=setTimeout(wander, 9000+Math.random()*6000); }
+function wander(){
+  if(!cover.hidden || reduced() || !welcomeSec.classList.contains("run")){ scheduleWander(); return; }
+  var k=Math.random()<.5?0:1, rest=perched[k], home=perchPoint(k, welcomeSec), Wd=welcomeSec.clientWidth, side=PERCH[k].x<.5?1:-1;
+  var el=makeRbf(PERCH[k].k, PERCH[k].w, "fly"); welLayer.appendChild(el); rest.classList.remove("on");
+  var pts=[home,{x:home.x+side*Wd*.18,y:home.y-60},{x:Wd*(side>0?.62:.38),y:Math.max(40,home.y-120)},{x:Wd*(side>0?.3:.7),y:Math.max(30,home.y-90)},{x:home.x-side*12,y:home.y-26},home];
+  var a=flyPath(el,pts,5200,{r0:PERCH[k].r,endRot:PERCH[k].r,bob:5,bobs:9,easing:"ease-in-out"});
+  a.onfinish=function(){ rest.classList.add("on"); setTimeout(function(){el.remove();},260); scheduleWander(); };
+}
 
 /* ---------- scroll entrances ---------- */
 function startReveal(){
