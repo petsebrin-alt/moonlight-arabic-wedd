@@ -290,7 +290,7 @@ html[lang="hi"] .fam-names{font-family:var(--f-hi-head);font-size:20px}
 
 /* ---------- events: Agrim's template. Photo and gold board side by side, alternating sides, on moonlit navy
    with hanging lanterns and gold dividers. Each celebration starts behind two clouds that part as you scroll. ---------- */
-#events.ev-sec{color:#F3EEE2;overflow:hidden;padding-top:150px;padding-bottom:110px;
+#events.ev-sec{color:#F3EEE2;overflow:hidden;padding-top:150px;padding-bottom:calc(min(100vw,560px) * .17 + 60px);
   background:radial-gradient(70% 40% at 50% 0%,rgba(120,150,230,.16),transparent 70%),linear-gradient(180deg,var(--navy) 0%,#0F1D45 45%,#0C1838 100%)}
 .ev-sec h2{color:var(--gold)}
 .ev-sec .eyebrow{color:var(--gold)}
@@ -377,21 +377,20 @@ html[lang="hi"] .ev-map{font-family:var(--f-hi-body);letter-spacing:0;font-size:
 /* gallery */
 
 @media (min-width:700px){.gallery{grid-template-columns:repeat(3,minmax(0,1fr))}}
-/* ---------- flower border: the client's white roses and peonies sit on the wave between Dress Code and RSVP.
-   Scrolling to it, the leaves rise first, then each flower opens from a small bud to full bloom, one after another;
-   scrolling back closes them again. At full bloom the pieces fit back together into the photograph. ---------- */
-#dress-code{padding-bottom:calc(min(100vw,560px) * .38)}
-#rsvp{padding-top:calc(min(100vw,560px) * .6)}
-.bloom{position:absolute;left:50%;top:calc(min(100vw,560px) * -.36);width:min(100vw,560px);aspect-ratio:675/562;transform:translateX(-50%);z-index:3;pointer-events:none}
-@media (min-width:600px){.bloom{-webkit-mask:linear-gradient(90deg,#0000,#000 12%,#000 88%,#0000);mask:linear-gradient(90deg,#0000,#000 12%,#000 88%,#0000)}}
-.bl-leaves{position:absolute;inset:0;width:100%;height:100%;transform-origin:50% 100%;will-change:transform,opacity}
-.bl-f{position:absolute;display:block;will-change:transform,opacity}
-html.rm .bl-leaves,html.rm .bl-f{transform:none!important;opacity:1!important;clip-path:none!important}
-
+/* ---------- flower bush: a low, dense bush of the client's white roses and peonies (cut along their real petal
+   edges) over fresh leaves, on the wave between Dress Code and RSVP. As it scrolls into view the leaves rise, then
+   the flowers open like a time-lapse, bud -> half-open rose -> full bloom, rippling through the rows. ---------- */
+#dress-code{padding-bottom:calc(min(100vw,560px) * .17 + 34px)}
+#rsvp{padding-top:calc(min(100vw,560px) * .17 + 56px)}
+.bloom{--bw:min(100vw,560px);position:absolute;left:50%;top:calc(var(--bw) * -.165 - 14px);width:var(--bw);height:calc(var(--bw) * .32);transform:translateX(-50%);z-index:3;pointer-events:none}
+.bl-fol{position:absolute;left:0;top:0;width:100%;height:100%;transform-origin:50% 70%;will-change:transform,opacity}
+.bl-i{position:absolute;display:block;transform-origin:50% 60%;will-change:transform}
+.bl-i img{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;will-change:transform,opacity}
+.bl-i.r1,.bl-i.r2{filter:drop-shadow(0 3px 5px rgba(10,16,40,.22))}
 /* ---------- gallery: the couple's photos on a scroll-driven orbit (after the Framer reference) ----------
    A tall track scrolls past a pinned stage; the scroll progress turns the orbit, so each photo comes to the
    front in turn. Photos stay upright (depth = scale, height, opacity and stacking only). */
-#gallery{padding-block:36px 40px}
+#gallery{padding-block:calc(min(100vw,560px) * .17 + 30px) 40px}
 .orbit{--pin:calc(100vh - var(--orbit-top,64px));position:relative;height:calc(var(--pin) + var(--steps,6) * 46vh)}
 @supports (height:100svh){.orbit{--pin:calc(100svh - var(--orbit-top,64px));height:calc(var(--pin) + var(--steps,6) * 46svh)}}
 .orbit-pin{position:sticky;top:var(--orbit-top,64px);height:var(--pin);display:flex;flex-direction:column}
@@ -1021,6 +1020,7 @@ html[lang="hi"] .eyebrow,html[lang="hi"] .btn,html[lang="hi"] .badge,html[lang="
   <!-- 6 Gallery -->
   <section id="gallery" class="light" aria-labelledby="galTitle">
     <div class="edge top"><svg><use href="#i-edge"/></svg></div>
+    <div class="bloom" data-mirror="1" aria-hidden="true"></div>
     <div class="orbit" id="orbit">
       <div class="orbit-pin">
         <div class="wrap center">
@@ -1085,23 +1085,7 @@ html[lang="hi"] .eyebrow,html[lang="hi"] .btn,html[lang="hi"] .badge,html[lang="
   <!-- 10 RSVP -->
   <section id="rsvp" class="dark" aria-labelledby="rsvpTitle">
     <div class="edge top navy"><svg><use href="#i-edge"/></svg></div>
-    <div class="bloom" id="bloom" aria-hidden="true">
-      <img class="bl-leaves" src="assets/flowers/leaves.webp" alt="" loading="lazy" decoding="async">
-      <img class="bl-f" src="assets/flowers/f-bud-1.webp" alt="" loading="lazy" decoding="async" data-o="0" style="left:50.37%;top:56.05%;width:14.81%;height:18.68%;transform-origin:50.0% 49.5%">
-      <img class="bl-f" src="assets/flowers/f-bud-3.webp" alt="" loading="lazy" decoding="async" data-o="0" style="left:10.22%;top:64.06%;width:11.70%;height:14.95%;transform-origin:49.4% 50.0%">
-      <img class="bl-f" src="assets/flowers/f-bud-2.webp" alt="" loading="lazy" decoding="async" data-o="1" style="left:65.04%;top:63.52%;width:11.70%;height:16.01%;transform-origin:49.4% 50.0%">
-      <img class="bl-f" src="assets/flowers/f-rose-closed.webp" alt="" loading="lazy" decoding="async" data-o="1" style="left:38.81%;top:16.73%;width:18.67%;height:21.35%;transform-origin:50.0% 50.0%">
-      <img class="bl-f" src="assets/flowers/f-rose-small.webp" alt="" loading="lazy" decoding="async" data-o="2" style="left:18.67%;top:74.91%;width:17.48%;height:21.00%;transform-origin:50.0% 50.0%">
-      <img class="bl-f" src="assets/flowers/f-rose-cream.webp" alt="" loading="lazy" decoding="async" data-o="2" style="left:50.52%;top:32.92%;width:21.04%;height:22.42%;transform-origin:50.0% 50.0%">
-      <img class="bl-f" src="assets/flowers/f-rose-bottom.webp" alt="" loading="lazy" decoding="async" data-o="3" style="left:50.22%;top:78.47%;width:22.52%;height:21.53%;transform-origin:50.0% 53.7%">
-      <img class="bl-f" src="assets/flowers/f-rose-edge.webp" alt="" loading="lazy" decoding="async" data-o="3" style="left:0.00%;top:41.46%;width:18.96%;height:44.48%;transform-origin:34.4% 50.0%">
-      <img class="bl-f" src="assets/flowers/f-rose-under.webp" alt="" loading="lazy" decoding="async" data-o="4" style="left:20.44%;top:60.50%;width:37.93%;height:27.05%;transform-origin:50.0% 50.0%">
-      <img class="bl-f" src="assets/flowers/f-rose-low.webp" alt="" loading="lazy" decoding="async" data-o="4" style="left:73.48%;top:49.11%;width:26.52%;height:48.40%;transform-origin:58.1% 50.0%">
-      <img class="bl-f" src="assets/flowers/f-peony-back.webp" alt="" loading="lazy" decoding="async" data-o="5" style="left:5.93%;top:0.00%;width:40.30%;height:22.60%;transform-origin:50.0% 42.5%">
-      <img class="bl-f" src="assets/flowers/f-rose-gold.webp" alt="" loading="lazy" decoding="async" data-o="5" style="left:17.19%;top:32.38%;width:40.30%;height:39.86%;transform-origin:50.0% 50.0%">
-      <img class="bl-f" src="assets/flowers/f-rose-pink.webp" alt="" loading="lazy" decoding="async" data-o="6" style="left:0.00%;top:10.32%;width:46.81%;height:53.02%;transform-origin:48.1% 50.0%">
-      <img class="bl-f" src="assets/flowers/f-peony-big.webp" alt="" loading="lazy" decoding="async" data-o="6" style="left:53.78%;top:0.00%;width:46.22%;height:51.07%;transform-origin:56.7% 47.4%">
-    </div>
+    <div class="bloom" aria-hidden="true"></div>
     <div class="wrap">
       <div class="wrap center" style="gap:10px">
         <p class="eyebrow" data-i18n="rsvp_eyebrow">RSVP</p>
@@ -1814,37 +1798,63 @@ root.classList.add("gated");
   addEventListener("resize", function(){ if(raf) size(); });
 })();
 
-/* ---------- flower border: bloom follows the scroll ----------
-   p runs 0 -> 1 from the band peeking in at the bottom of the screen to its middle reaching 45% of the screen.
-   Leaves rise over the first third; each flower (order 0 = buds .. 6 = the big peonies) opens in its own window. */
-(function(){
-  var band = $("#bloom"); if(!band) return;
-  var leaves = $(".bl-leaves", band), fl = $$(".bl-f", band), raf = 0, lastP = -1;
+/* ---------- flower bushes (Dress Code -> RSVP, and mirrored on Events -> Gallery): the bloom follows the scroll ----------
+   p runs 0 -> 1 from the bush entering at the bottom of the screen to its middle reaching 55% of the screen.
+   The leaves rise first; then each flower opens in its own unhurried window (order 0 = buds .. 4 = the big blooms):
+   a bud swells and turns, becomes a half-open rose, then the full bloom spreads open from the centre.
+   Scrolling back closes them into buds again; nothing moves while the page is still. */
+$$(".bloom").forEach(function(band){
+  var LAY = {"ar":{"peony":1.0732,"pink":1.0233,"gold":0.9864,"low":0.8,"under":1.2658,"ptop":1.2155,"cream":1.1043,"bottom":1.1351,"tight":1.0526,"budA":0.9677,"bud2":0.9114,"bud3":0.9296,"lone":1.0945},"items":[["ptop",0.06,0.3,0.15,0,2.1,2,"bud2","bottom",0],["lone",0.21,0.26,0.12,1,-13.1,2,"budA","bottom",0],["under",0.36,0.3,0.15,1,12.2,3,"budA","tight",0],["ptop",0.53,0.25,0.14,1,10.9,3,"bud2","tight",0],["lone",0.69,0.27,0.12,1,-8.6,2,"budA","tight",0],["under",0.84,0.3,0.15,0,10.3,3,"budA","cream",0],["ptop",0.97,0.28,0.13,1,-6.2,2,"bud2","cream",0],["pink",0.1,0.5,0.17,1,-0.5,3,"bud2","tight",1],["gold",0.26,0.52,0.15,1,-12.4,3,"bud3","tight",1],["peony",0.43,0.46,0.19,1,12.5,3,"bud3","tight",1],["low",0.58,0.5,0.13,1,4.9,3,"budA","bottom",1],["pink",0.73,0.48,0.16,0,2.1,3,"bud3","tight",1],["gold",0.9,0.52,0.15,0,5.8,4,"budA","tight",1],["bottom",0.03,0.72,0.1,1,-12.1,2,"budA",null,2],["tight",0.18,0.74,0.08,0,-9.1,1,"budA",null,2],["bud2",0.31,0.78,0.055,0,-1.9,1,null,null,2],["cream",0.37,0.72,0.09,1,-12.3,2,"budA",null,2],["bottom",0.52,0.74,0.1,1,1.4,2,"budA",null,2],["bud3",0.64,0.78,0.055,0,-7.4,1,null,null,2],["tight",0.68,0.72,0.08,1,-0.8,1,"bud3",null,2],["cream",0.81,0.74,0.09,1,-2.9,1,"budA",null,2],["bud2",0.92,0.78,0.055,1,-2.6,1,null,null,2],["bottom",0.99,0.72,0.09,0,10.5,1,"budA",null,2]],"h":0.32}, SRC = "assets/flowers/";
+  function img(name){ var i = document.createElement("img"); i.src = SRC + name + ".webp"; i.alt = ""; i.decoding = "async"; i.loading = "lazy"; return i; }
+  var mirror = band.getAttribute("data-mirror") === "1";
+  var fol = img("foliage"); fol.className = "bl-fol"; if(mirror) fol.style.scale = "-1 1"; band.appendChild(fol);
+  var flowers = LAY.items.map(function(F){
+    if(mirror) F = [F[0], 1 - F[1], F[2], F[3], F[4] ? 0 : 1, -F[5]].concat(F.slice(6));
+    var k = F[0], w = F[3], ar = LAY.ar[k] || 1, d = document.createElement("span");
+    d.className = "bl-i r" + F[9];
+    d.style.left = ((F[1] - w/2)*100) + "%"; d.style.width = (w*100) + "%";
+    d.style.height = "calc(var(--bw) * " + (w/ar).toFixed(4) + ")"; d.style.top = "calc(" + (F[2]*100).toFixed(2) + "% - var(--bw) * " + (w/ar/2).toFixed(4) + ")";
+    var f = {el:d, rot:F[5], flip:F[4], o:F[6], dir:(F[5] < 0 ? -1 : 1), bud:null, half:null, full:img(k)};
+    if(F[7]){ f.bud = img(F[7]); d.appendChild(f.bud); }
+    if(F[8]){ f.half = img(F[8]); d.appendChild(f.half); }
+    d.appendChild(f.full); band.appendChild(d); return f;
+  });
   function ease(x){ x = Math.min(1, Math.max(0, x)); return x*x*(3 - 2*x); }
+  function ramp(x, a, b){ return ease((x - a)/(b - a)); }
+  function petals(R, ph){
+    var pts = [];
+    for(var i = 0; i < 36; i++){ var t = i/36*6.2832, r = R*(1 + .11*Math.sin(t*6 + ph)); pts.push((50 + r*Math.cos(t)).toFixed(1) + "% " + (50 + r*Math.sin(t)).toFixed(1) + "%"); }
+    return "polygon(" + pts.join(",") + ")";
+  }
+  function setFlower(f, e){
+    var grow = .3 + .7*ease(e), tw = f.dir*(1 - ease(e))*30;
+    f.el.style.transform = "rotate(" + (f.rot + tw).toFixed(2) + "deg)" + (f.flip ? " scaleX(-1)" : "");
+    if(!f.bud){                                  /* buds: they swell and turn */
+      f.full.style.opacity = ramp(e, 0, .15).toFixed(3); f.full.style.transform = "scale(" + (.35 + .65*ease(e)).toFixed(4) + ")"; return;
+    }
+    f.bud.style.opacity = (ramp(e, 0, .1) * (1 - ramp(e, .34, .52))).toFixed(3); f.bud.style.transform = "scale(" + (grow*.5).toFixed(4) + ")";
+    if(f.half){ f.half.style.opacity = (ramp(e, .3, .46) * (1 - ramp(e, .66, .84))).toFixed(3); f.half.style.transform = "scale(" + (grow*.78).toFixed(4) + ")"; }
+    var o = ramp(e, f.half ? .58 : .36, f.half ? .7 : .5), open = ramp(e, f.half ? .58 : .36, 1);
+    f.full.style.opacity = o.toFixed(3); f.full.style.transform = "scale(" + (grow*(.86 + .14*open)).toFixed(4) + ")";
+    f.full.style.clipPath = open >= .999 ? "none" : petals(26 + 52*open, f.o*1.7 + f.rot);
+  }
+  var raf = 0, lastP = -1;
   function draw(){
     raf = 0;
-    if(reduced()){ lastP = -1; return; }
     var r = band.getBoundingClientRect(), vh = innerHeight;
     if(r.bottom < -vh*.3 || r.top > vh*1.3) return;
-    var p = Math.min(1, Math.max(0, (vh - r.top) / (vh*.55 + r.height*.5)));
+    var p = reduced() ? 1 : Math.min(1, Math.max(0, (vh - r.top) / (vh*.45 + r.height*.5)));
     if(Math.abs(p - lastP) < .0005) return; lastP = p;
-    var lv = ease(p / .3);
-    leaves.style.opacity = lv.toFixed(3);
-    leaves.style.transform = "translateY(" + ((1 - lv) * 14).toFixed(2) + "%) scaleY(" + (.86 + .14*lv).toFixed(3) + ")";
-    fl.forEach(function(el, i){
-      var o = +el.getAttribute("data-o"), e = ease((p - .14 - o*.085) / .3);
-      var tw = (i % 2 ? 1 : -1) * (1 - e) * 34;             /* the petals unfurl with a slight twist */
-      el.style.opacity = Math.min(1, e * 3).toFixed(3);
-      el.style.transform = "scale(" + (.22 + .78*e).toFixed(4) + ") rotate(" + tw.toFixed(2) + "deg)";
-      el.style.clipPath = e >= 1 ? "none" : "circle(" + (24 + 52*e).toFixed(2) + "% at 50% 50%)";
-    });
+    var lv = ramp(p, 0, .3);
+    fol.style.opacity = lv.toFixed(3); fol.style.transform = "translateY(" + ((1 - lv)*12).toFixed(2) + "%) scale(" + (.9 + .1*lv).toFixed(4) + "," + (.55 + .45*lv).toFixed(4) + ")";
+    flowers.forEach(function(f, i){ var j = (i*37 % 11)/11*.04; setFlower(f, ramp(p, .14 + f.o*.08 + j, .6 + f.o*.08 + j)); });
   }
   function kick(){ if(!raf) raf = requestAnimationFrame(draw); }
   addEventListener("scroll", kick, {passive:true});
   addEventListener("resize", function(){ lastP = -1; kick(); });
   $("#rmToggle").addEventListener("change", function(){ lastP = -1; setTimeout(kick, 0); });
   kick();
-})();
+});
 
 /* ---------- families: light each card's gold arch as it comes into view ---------- */
 (function(){
