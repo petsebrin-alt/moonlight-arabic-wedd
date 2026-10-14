@@ -8,7 +8,7 @@ Mobile-first wedding invitation website for Ayisha & Omar Sheikh, 15 November 20
 ## Views
 
 - On a phone the invitation fills the screen.
-- On a computer (760 px wide or more) it is shown inside an iPhone 17 Pro Max frame (440 x 956 screen, Deep Blue). Add `?full=1` to the address to see the plain page.
+- On a computer (760 px wide or more) it is shown inside an iPhone 17 Pro Max frame (440 x 956 screen, Deep Blue), sized to fit the whole window, on a moonlit royal-blue sky with twinkling stars, a crescent moon, shooting stars, falling gold sparkles and a mosque skyline. Add `?full=1` to the address to see the plain page.
 - The whole site uses blues only: navy sections and pale moonlight-blue card sections, with gold accents.
 
 ## Run locally

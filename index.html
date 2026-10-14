@@ -371,16 +371,26 @@ html.rm .cover{transition:opacity .2s ease}
 
 /* ---------- iPhone 17 Pro Max mockup (desktop only) ---------- */
 html.mock,html.mock body{height:100%;overflow:hidden}
-html.mock body{background:radial-gradient(ellipse 55% 60% at 50% 42%,#1C3263 0%,#0E1A38 55%,#060B1A 100%)}
+html.mock body{background:radial-gradient(ellipse 70% 55% at 50% 38%,#1F3F95 0%,#142C6E 38%,#0B1A45 70%,#050C24 100%)}
+/* moonlit royal-blue backdrop: twinkling stars, crescent moon, shooting stars, gold sparkles, mosque skyline */
+.mk-sky{position:absolute;inset:0;width:100%;height:100%;pointer-events:none}
+.mk-pattern{position:absolute;inset:0;pointer-events:none;opacity:.06;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='80' height='80' viewBox='0 0 80 80'%3E%3Cg fill='none' stroke='%23C9D7F0' stroke-width='1'%3E%3Cpath d='M40 8l9 23 23 9-23 9-9 23-9-23-23-9 23-9z'/%3E%3Crect x='26' y='26' width='28' height='28' transform='rotate(45 40 40)'/%3E%3C/g%3E%3C/svg%3E");background-size:80px 80px;-webkit-mask-image:radial-gradient(ellipse 60% 60% at 50% 45%,transparent 30%,#000 75%);mask-image:radial-gradient(ellipse 60% 60% at 50% 45%,transparent 30%,#000 75%)}
+.mk-moon{position:absolute;left:11vw;top:9vh;width:clamp(90px,11vw,170px);aspect-ratio:1;border-radius:50%;pointer-events:none;
+  background:radial-gradient(circle at 34% 32%,#FFFDF2 0%,#F4EBCB 38%,#DCCB98 70%,#BFA977 100%);
+  -webkit-mask-image:radial-gradient(circle at 74% 34%,transparent 47%,#000 48.5%);mask-image:radial-gradient(circle at 74% 34%,transparent 47%,#000 48.5%);
+  filter:drop-shadow(0 0 18px rgba(255,236,190,.55)) drop-shadow(0 0 60px rgba(255,226,160,.35))}
+.mk-moonglow{position:absolute;left:calc(11vw - 8vw);top:calc(9vh - 8vw);width:clamp(260px,27vw,420px);aspect-ratio:1;border-radius:50%;pointer-events:none;background:radial-gradient(circle,rgba(255,236,190,.16),transparent 62%)}
+.mk-city{position:absolute;left:0;right:0;bottom:0;width:100%;height:24vh;pointer-events:none}
+html.rm .mk-moon{filter:drop-shadow(0 0 18px rgba(255,236,190,.5))}
 html.mock body>*:not(#mockup){display:none!important}
 html.inframe{scrollbar-width:none}
 html.inframe::-webkit-scrollbar{display:none}
 .mockup{position:fixed;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px;overflow:hidden}
-.mk-glow{position:absolute;width:760px;height:760px;border-radius:50%;background:radial-gradient(circle,rgba(120,160,230,.22),transparent 65%);filter:blur(10px);pointer-events:none}
+.mk-glow{position:absolute;width:900px;height:900px;border-radius:50%;background:radial-gradient(circle,rgba(140,180,255,.24),transparent 62%);filter:blur(10px);pointer-events:none}
 .mk-wrap{position:relative;width:472px;height:988px;zoom:var(--mk,1)}
 .iphone{position:absolute;inset:0;border-radius:82px;padding:16px;
-  background:linear-gradient(145deg,#3C5A8A 0%,#1E3558 22%,#2B4673 48%,#152844 74%,#33507E 100%);
-  box-shadow:inset 0 0 0 1.5px rgba(200,220,255,.35),inset 0 0 0 5px #0F1D33,0 40px 90px rgba(0,0,0,.55),0 0 0 1px rgba(0,0,0,.6)}
+  background:linear-gradient(145deg,#5A7DB8 0%,#223E6E 20%,#35558C 46%,#1A3058 72%,#4A6BA3 100%);
+  box-shadow:inset 0 0 0 1.5px rgba(214,228,255,.6),inset 0 0 0 5px #0F1D33,0 0 0 1px rgba(5,10,30,.7),0 0 60px rgba(120,160,255,.25),0 50px 100px rgba(0,0,0,.55)}
 .iphone::before{content:"";position:absolute;inset:7px;border-radius:76px;background:#03060D}
 .btn-side{position:absolute;width:5px;border-radius:3px;background:linear-gradient(90deg,#16263F,#3E5C8C,#1A2C49)}
 .btn-side.l{left:-4px}.btn-side.r{right:-4px}
@@ -760,7 +770,10 @@ html.inframe::-webkit-scrollbar{display:none}
 if(document.documentElement.classList.contains("mock")){
   var mk=document.createElement("div"); mk.id="mockup"; mk.className="mockup";
   var src=location.pathname+"?inframe=1"+location.hash;
-  mk.innerHTML='<div class="mk-glow"></div><div class="mk-wrap"><div class="iphone">'+
+  mk.innerHTML='<canvas class="mk-sky" aria-hidden="true"></canvas><div class="mk-pattern" aria-hidden="true"></div><div class="mk-moonglow" aria-hidden="true"></div><div class="mk-moon" aria-hidden="true"></div>'+
+    '<svg class="mk-city" viewBox="0 0 1600 240" preserveAspectRatio="xMidYMax slice" aria-hidden="true"><defs><linearGradient id="mkCity" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#0C1B4A"/><stop offset="1" stop-color="#040A1E"/></linearGradient></defs>'+
+    '<path fill="url(#mkCity)" d="M0 240V176h60v-22h18v22h40v-40c0-26 30-44 30-44s30 18 30 44v40h34V120h6l4-30 4 30h6v56h44v-28c0-18 22-32 22-32s22 14 22 32v28h70v-36h20v36h30v-60c0-44 54-74 54-74s54 30 54 74v60h28V108h6l4-34 4 34h6v68h60v-30c0-20 26-36 26-36s26 16 26 36v30h96v-22h22v22h40v-46c0-30 36-52 36-52s36 22 36 52v46h40V112h6l4-32 4 32h6v64h50v-26c0-16 20-28 20-28s20 12 20 28v26h80v-50c0-36 44-60 44-60s44 24 44 60v50h30V116h6l4-30 4 30h6v60h62v-24h20v24h50v-34c0-22 28-40 28-40s28 18 28 40v34h90V240z"/></svg>'+
+    '<div class="mk-glow"></div><div class="mk-wrap"><div class="iphone">'+
     '<span class="btn-side l" style="top:178px;height:38px"></span><span class="btn-side l" style="top:246px;height:72px"></span><span class="btn-side l" style="top:334px;height:72px"></span>'+
     '<span class="btn-side r" style="top:270px;height:110px"></span><span class="btn-side r" style="top:600px;height:64px;border-radius:2px"></span>'+
     '<div class="screen"><div class="sbar"><span>9:41</span><span class="ic">'+
@@ -768,10 +781,35 @@ if(document.documentElement.classList.contains("mock")){
     '<svg width="17" height="12" viewBox="0 0 17 12" fill="#fff"><path d="M8.5 2.4c2.4 0 4.6.9 6.3 2.5l1.3-1.3A10.7 10.7 0 008.5.6 10.7 10.7 0 00.9 3.6l1.3 1.3a8.9 8.9 0 016.3-2.5zm0 3.6c1.4 0 2.7.5 3.7 1.4l1.3-1.3a7.2 7.2 0 00-10 0l1.3 1.3c1-.9 2.3-1.4 3.7-1.4zm0 3.5c.5 0 1 .2 1.3.5L8.5 11.3 7.2 10c.3-.3.8-.5 1.3-.5z"/></svg>'+
     '<svg width="27" height="13" viewBox="0 0 27 13"><rect x=".5" y=".5" width="23" height="12" rx="3.6" fill="none" stroke="rgba(255,255,255,.45)"/><rect x="2" y="2" width="20" height="9" rx="2.2" fill="#fff"/><path d="M25 4.5v4c.8-.3 1.3-1.1 1.3-2s-.5-1.7-1.3-2z" fill="rgba(255,255,255,.45)"/></svg>'+
     '</span></div><div class="island"></div><iframe title="Ayisha &amp; Omar wedding invitation" src="'+src+'"></iframe><div class="home"></div></div></div></div>'+
-    '<p class="mk-cap">iPhone 17 Pro Max preview · <a href="?full=1">open full page</a></p>';
+    '';
   document.body.appendChild(mk);
-  var fit=function(){ var k=Math.min(1,(innerHeight-72)/988,(innerWidth-40)/472); mk.querySelector(".mk-wrap").style.setProperty("--mk",k.toFixed(3)); };
-  fit(); addEventListener("resize", fit);
+  /* as large as the window allows, always showing the whole phone */
+  var fit=function(){ var k=Math.min(1.25,(innerHeight-36)/988,(innerWidth-36)/472); mk.querySelector(".mk-wrap").style.setProperty("--mk",k.toFixed(3)); };
+  fit(); addEventListener("resize", function(){ fit(); sizeSky(); });
+  /* sky: twinkling stars, shooting stars and slow gold sparkles */
+  var cv=mk.querySelector(".mk-sky"), cx=cv.getContext("2d"), SW=0, SH=0, stars=[], meteors=[], sparks=[], still=window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  function sizeSky(){ var d=Math.min(2,devicePixelRatio||1); SW=innerWidth; SH=innerHeight; cv.width=SW*d; cv.height=SH*d; cx.setTransform(d,0,0,d,0,0);
+    stars=[]; var n=Math.round(SW*SH/5200); for(var i=0;i<n;i++) stars.push({x:Math.random()*SW, y:Math.random()*SH*.82, r:Math.random()<.08?1.6+Math.random()*1.2:.4+Math.random()*1, p:Math.random()*6.28, sp:.6+Math.random()*1.8, gold:Math.random()<.18}); }
+  sizeSky();
+  function meteor(){ var a=(200+Math.random()*25)*Math.PI/180; meteors.push({x:SW*(.35+Math.random()*.65), y:SH*Math.random()*.35, vx:Math.cos(a)*9, vy:-Math.sin(a)*9*-1, life:0, max:55+Math.random()*30}); }
+  var nextM=performance.now()+1500, last=0;
+  function frame(ts){
+    var t=ts/1000; cx.clearRect(0,0,SW,SH);
+    for(var i=0;i<stars.length;i++){ var st=stars[i], k=still?.8:.55+.45*Math.sin(t*st.sp+st.p);
+      cx.globalAlpha=k; cx.fillStyle=st.gold?"#FFE7AE":"#EAF1FF"; cx.beginPath(); cx.arc(st.x,st.y,st.r,0,6.283); cx.fill();
+      if(st.r>1.5){ cx.globalAlpha=k*.5; cx.fillRect(st.x-st.r*3.2,st.y-.35,st.r*6.4,.7); cx.fillRect(st.x-.35,st.y-st.r*3.2,.7,st.r*6.4); } }
+    if(!still){
+      if(ts>nextM){ meteor(); if(Math.random()<.3){ setTimeout(meteor,250); setTimeout(meteor,520); } nextM=ts+2600+Math.random()*4200; }
+      for(var j=meteors.length-1;j>=0;j--){ var m=meteors[j]; m.life++; m.x+=m.vx; m.y+=m.vy; var f=1-m.life/m.max; if(f<=0){meteors.splice(j,1); continue;}
+        var g=cx.createLinearGradient(m.x,m.y,m.x-m.vx*14,m.y-m.vy*14); g.addColorStop(0,"rgba(255,248,225,"+f+")"); g.addColorStop(1,"rgba(255,248,225,0)");
+        cx.globalAlpha=1; cx.strokeStyle=g; cx.lineWidth=1.6; cx.beginPath(); cx.moveTo(m.x,m.y); cx.lineTo(m.x-m.vx*14,m.y-m.vy*14); cx.stroke(); }
+      if(sparks.length<70 && Math.random()<.5) sparks.push({x:Math.random()*SW, y:-10, vy:.35+Math.random()*.7, vx:(Math.random()-.5)*.25, r:.6+Math.random()*1.4, p:Math.random()*6.28});
+      for(var q=sparks.length-1;q>=0;q--){ var sp=sparks[q]; sp.y+=sp.vy; sp.x+=sp.vx+Math.sin(t+sp.p)*.15; if(sp.y>SH+10){sparks.splice(q,1); continue;}
+        cx.globalAlpha=.45+.45*Math.sin(t*3+sp.p); cx.fillStyle="#F3D58E"; cx.beginPath(); cx.arc(sp.x,sp.y,sp.r,0,6.283); cx.fill(); }
+    }
+    cx.globalAlpha=1; requestAnimationFrame(frame);
+  }
+  requestAnimationFrame(frame);
   return;
 }
 /* ---------- confirmed details (single source of truth) ---------- */
