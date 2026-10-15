@@ -1107,6 +1107,8 @@ html.rm .g-tap,html.rm .g-tap::after{animation:none}
 /* writing animation: the Bismillah writes right to left, then each line appears in turn */
 @property --p{syntax:"<percentage>";inherits:false;initial-value:120%}
 .g-scene .g-w{--dir:90deg;-webkit-mask-image:linear-gradient(var(--dir),#000 calc(var(--p) - 18%),transparent var(--p));mask-image:linear-gradient(var(--dir),#000 calc(var(--p) - 18%),transparent var(--p))}
+/* the writing mask only paints inside the box, so give each line room above and below (net layout unchanged) for the tails of g, y and tall letters */
+.g-scene .g-w{padding-block:.42em;margin-block:-.42em}
 html[dir="rtl"] .g-scene .g-w,.g-scene .g-bism.g-w{--dir:270deg}
 .g-scene.g-hold .g-w{--p:0%}
 .g-scene.g-play .g-w{animation:gWrite var(--wd,1.2s) cubic-bezier(.4,.1,.4,1) var(--wl,0s) both}
@@ -1121,12 +1123,12 @@ html.rm .g-scene .g-love{animation:none;opacity:1}
 html[lang="ur"] .g-tr{display:none}
 html[lang="ur"] .g-mean{font-family:var(--f-ur-head);font-style:normal;font-weight:400;font-size:calc(15 * var(--u));line-height:calc(32 * var(--u));top:calc(170 * var(--u))}
 html[lang="ur"] .g-dear,html[lang="ur"] .g-n1,html[lang="ur"] .g-n2{font-family:var(--f-ur-display);font-weight:400;letter-spacing:0;padding-left:0}
-html[lang="ur"] .g-dear{font-size:calc(34 * var(--u));top:calc(252 * var(--u) + var(--ty))}
+html[lang="ur"] .g-dear{font-size:calc(34 * var(--u));top:calc(244 * var(--u) + var(--ty))}
 html[lang="ur"] .g-n1,html[lang="ur"] .g-n2{font-size:calc(42 * var(--u))}
 html[lang="ur"] .g-cap,html[lang="ur"] .g-count .u{text-transform:none}
 html[lang="ur"] .g-tog,html[lang="ur"] .g-cord,html[lang="ur"] .g-tap,html[lang="ur"] .g-cap,html[lang="ur"] .g-reveal,html[lang="ur"] .g-count .u,html[lang="ur"] .g-ht{font-family:var(--f-ur-head);font-style:normal;letter-spacing:0}
-html[lang="ur"] .g-tog{font-size:calc(15.5 * var(--u));top:calc(306 * var(--u) + var(--ty))}
-html[lang="ur"] .g-n1{top:calc(330 * var(--u) + var(--ty))} html[lang="ur"] .g-love{top:calc(380 * var(--u) + var(--ty))} html[lang="ur"] .g-n2{top:calc(406 * var(--u) + var(--ty))} html[lang="ur"] .g-cord{top:calc(450 * var(--u) + var(--ty))}
+html[lang="ur"] .g-tog{font-size:calc(15.5 * var(--u));top:calc(297 * var(--u) + var(--ty))}
+html[lang="ur"] .g-n1{top:calc(344 * var(--u) + var(--ty))} html[lang="ur"] .g-love{top:calc(392 * var(--u) + var(--ty))} html[lang="ur"] .g-n2{top:calc(444 * var(--u) + var(--ty))} html[lang="ur"] .g-cord{top:calc(492 * var(--u) + var(--ty))}
 html[lang="ur"] .g-cord{font-size:calc(15 * var(--u));line-height:calc(28 * var(--u));white-space:normal;width:calc(320 * var(--u))}
 /* Hindi: Devanagari faces, no letter-spacing (it breaks the headline), same layout as English */
 html[lang="hi"] .g-tr,html[lang="hi"] .g-mean{font-family:var(--f-hi-body);font-style:normal;font-weight:600}
