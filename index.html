@@ -12,6 +12,7 @@
 /* On a computer the invitation is shown inside an iPhone 17 Pro Max frame; ?full=1 shows the plain page. */
 (function(){var q=location.search, h=document.documentElement;
   if(/[?&]inframe=1/.test(q)) h.classList.add("inframe");
+  if(/[?&]test=1/.test(q)) h.classList.add("testmode");
   else if(window.top===window.self && !/[?&]full=1/.test(q) && window.matchMedia("(min-width:760px) and (min-height:560px)").matches) h.classList.add("mock");})();
 </script>
 <style>
@@ -596,6 +597,258 @@ html.rm .orb-cap small{display:block;font:500 11px/1.3 var(--f-body);letter-spac
 .addr{font-size:18px;color:var(--ivory)}
 .copied{font-size:14px;color:var(--ok-on-dark);min-height:1.4em}
 
+/* ---------- Travel & Stay: an accordion after Agrim's "features tab accordion" (hover or tap a row; the photo follows) ---------- */
+.tr{position:relative;width:100%;display:grid;margin-top:6px;text-align:start}
+/* the photo stays pinned under the top bar; rows scrolling up pass under a soft fade */
+.tr-pin{position:sticky;top:var(--tb,64px);z-index:2;margin-top:-10px;padding:10px 0 26px;background:linear-gradient(180deg,var(--ivory) calc(100% - 12px),transparent)}
+.tr-stage{position:relative;aspect-ratio:4/3;border-radius:22px;overflow:hidden;background:var(--navy);
+  box-shadow:0 18px 40px rgba(16,26,51,.24),0 0 0 1px rgba(122,92,36,.28)}
+.tr-fig{position:absolute;inset:0;margin:0;opacity:0;transition:opacity .7s ease}
+.tr-fig.on{opacity:1}
+.tr-fig img{display:block;width:100%;height:100%;object-fit:cover;transform:scale(1.08);transition:transform 1.6s cubic-bezier(.2,.7,.2,1)}
+.tr-fig.on img{transform:scale(1)}
+.tr-fig figcaption{position:absolute;inset:auto 0 0;display:flex;align-items:flex-end;justify-content:space-between;gap:12px;padding:56px 18px 16px;
+  background:linear-gradient(180deg,transparent,rgba(8,12,30,.78));color:#fff}
+.tr-cap{font:600 clamp(25px,6.8vw,32px)/1.1 var(--f-display);text-shadow:0 2px 10px rgba(0,0,0,.35);opacity:0;transform:translateY(10px);transition:opacity .6s ease .2s,transform .6s ease .2s}
+.tr-fig.on .tr-cap{opacity:1;transform:none}
+.tr-n{flex:none;font:500 12px/1 var(--f-body);letter-spacing:.14em;opacity:.85}
+.tr-g{position:absolute;top:14px;inset-inline-start:14px;padding:7px 12px;border-radius:999px;border:1px solid rgba(255,255,255,.5);
+  background:rgba(255,255,255,.16);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);font:500 11px/1 var(--f-body);letter-spacing:.16em;text-transform:uppercase;color:#fff}
+.tr-list{list-style:none;margin:0;padding:0;display:grid;gap:4px}
+.tr-item{border-radius:18px;transition:background .35s ease,box-shadow .35s ease}
+.tr-item.on{background:#fff;box-shadow:0 12px 28px rgba(16,26,51,.10),inset 0 0 0 1px rgba(122,92,36,.24)}
+.tr-head{width:100%;display:grid;grid-template-columns:24px 1fr auto;align-items:center;gap:12px;padding-block:12px;padding-inline:14px 12px;border:0;background:none;cursor:pointer;text-align:start;color:var(--ink);font:inherit}
+.tr-head:focus-visible{outline:2px solid var(--gold-deep);outline-offset:2px;border-radius:18px}
+.tr-num{font:500 12px/1 var(--f-body);letter-spacing:.08em;color:var(--ink-mute);opacity:.75}
+.tr-t{font:600 clamp(21px,5.6vw,25px)/1.2 var(--f-display);color:rgba(16,26,51,.42);transition:color .3s ease}
+.tr-item.on .tr-t{color:var(--navy)}
+.tr-ic{width:36px;height:36px;border-radius:50%;display:grid;place-items:center;color:rgba(16,26,51,.42);transition:background .3s ease,color .3s ease}
+.tr-ic svg{width:17px;height:17px;transform:rotate(-45deg);transition:transform .4s ease}
+.tr-item.on .tr-ic{background:var(--navy);color:#F1D592}
+.tr-item.on .tr-ic svg{transform:none}
+html[dir="rtl"] .tr-ic svg{transform:scaleX(-1) rotate(-45deg)}
+html[dir="rtl"] .tr-item.on .tr-ic svg{transform:scaleX(-1)}
+@media (hover:hover){.tr-head:hover .tr-t{color:var(--navy)}.tr-head:hover .tr-ic{color:var(--navy)}}
+.tr-panel{display:grid;grid-template-rows:0fr;transition:grid-template-rows .45s cubic-bezier(.2,.7,.2,1)}
+.tr-item.on .tr-panel{grid-template-rows:1fr}
+.tr-in{min-height:0;overflow:hidden;visibility:hidden;transition:visibility 0s linear .45s}
+.tr-item.on .tr-in{visibility:visible;transition-delay:0s}
+.tr-body{display:grid;gap:12px;padding-block:0 18px;padding-inline:50px 16px}
+.tr-d{margin:0;font-size:15.5px;line-height:1.6;color:var(--ink-mute)}
+.tr-chips{margin:0;display:flex;flex-wrap:wrap;gap:8px}
+.tr-chips span{padding:7px 11px;border-radius:999px;border:1px solid rgba(122,92,36,.25);background:rgba(214,176,98,.12);font:500 12.5px/1.1 var(--f-body);color:var(--gold-deep)}
+.tr-loc{justify-self:start;display:inline-flex;align-items:center;gap:9px;min-height:46px;padding:0 20px 0 15px;border-radius:999px;background:var(--navy);color:#F6EEDC;
+  font:500 14px/1 var(--f-body);letter-spacing:.06em;text-decoration:none;box-shadow:0 8px 18px rgba(16,26,51,.22);transition:transform .2s ease,box-shadow .3s ease}
+.tr-loc svg{width:19px;height:19px;color:#F1D592}
+.tr-loc:active{transform:scale(.97)}
+.tr-loc:focus-visible{outline:2px solid var(--gold-deep);outline-offset:3px}
+@media (hover:hover){.tr-loc:hover{box-shadow:0 0 0 4px rgba(214,176,98,.28),0 10px 22px rgba(16,26,51,.28)}}
+.tr-item.on .tr-body > *{animation:trIn .5s cubic-bezier(.2,.7,.2,1) both}
+.tr-item.on .tr-body > :nth-child(2){animation-delay:.08s}.tr-item.on .tr-body > :nth-child(3){animation-delay:.16s}
+@keyframes trIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+html.rm .tr-fig,html.rm .tr-fig img,html.rm .tr-cap,html.rm .tr-panel,html.rm .tr-in{transition:none}
+html.rm .tr-fig img{transform:none}
+html[lang="ur"] .tr-t,html[lang="ur"] .tr-cap{font-family:var(--f-ur-head);font-weight:700;line-height:1.7}
+html[lang="hi"] .tr-t,html[lang="hi"] .tr-cap{font-family:var(--f-hi-head);font-weight:400;line-height:1.35}
+html[lang="ur"] .tr-d{font-size:16px;line-height:2}
+html[lang="ur"] .tr-g,html[lang="ur"] .tr-chips span,html[lang="ur"] .tr-loc{font-family:var(--f-ur-body);letter-spacing:0;text-transform:none}
+html[lang="hi"] .tr-g,html[lang="hi"] .tr-chips span,html[lang="hi"] .tr-loc{font-family:var(--f-hi-body);letter-spacing:0;text-transform:none}
+html[lang="ur"] .tr-g,html[lang="hi"] .tr-g{font-size:13px}
+@media (min-width:900px){
+  .tr{grid-template-columns:1fr 1.15fr;gap:28px;align-items:start}
+  .tr-pin{order:2;background:none;padding-bottom:0}
+  .tr-stage{aspect-ratio:4/5}
+  .tr-list{order:1}
+}
+
+/* ---------- Need help? -> glowing "Contact Us" illustration and a heart timeline (after Agrim's references) ---------- */
+.ct-top{position:relative;display:grid;justify-items:center;width:100%;max-width:420px;margin:6px auto 0}
+.ct-top::before{content:"";position:absolute;left:50%;top:44%;width:86%;aspect-ratio:1.6;transform:translate(-50%,-50%);border-radius:50%;
+  background:radial-gradient(closest-side,rgba(87,180,255,.22),rgba(241,213,146,.08) 60%,transparent);pointer-events:none}
+.ct-hero{position:relative;display:block;width:100%;height:auto;overflow:visible}
+.ct-dots path{stroke:rgba(255,236,200,.6);stroke-width:1.7;stroke-linecap:round;stroke-dasharray:.1 7;animation:ctDots 1.6s linear infinite}
+@keyframes ctDots{to{stroke-dashoffset:-7.1}}
+.ct-halo,.ct-bh{animation:ctHalo 2.8s ease-in-out infinite}
+@keyframes ctHalo{0%,100%{opacity:.35}50%{opacity:.95}}
+.ct-bub{transform-box:fill-box;animation:ctFloat 4.2s ease-in-out infinite}
+.ct-bub:nth-of-type(2){animation-delay:-1s}.ct-bub:nth-of-type(3){animation-delay:-2s}.ct-bub:nth-of-type(4){animation-delay:-3s}
+.ct-bub:nth-of-type(2) .ct-bh{animation-delay:-.7s}.ct-bub:nth-of-type(3) .ct-bh{animation-delay:-1.4s}.ct-bub:nth-of-type(4) .ct-bh{animation-delay:-2.1s}
+@keyframes ctFloat{0%,100%{transform:translateY(0)}50%{transform:translateY(-4px)}}
+.ct-spark path{transform-box:fill-box;transform-origin:center;animation:ctTw 2.4s ease-in-out infinite}
+.ct-spark path:nth-child(2){animation-delay:-.6s}.ct-spark path:nth-child(3){animation-delay:-1.2s}.ct-spark path:nth-child(4){animation-delay:-1.8s}
+@keyframes ctTw{0%,100%{opacity:.25;transform:scale(.6)}50%{opacity:1;transform:scale(1.15)}}
+/* the plate: dark glass, gold rim, silver "Contact" and gold "Us", a light sweep now and then */
+.ct-plate{position:relative;z-index:1;display:inline-flex;align-items:baseline;gap:.26em;margin:-30px 0 0;padding:10px 30px 14px;border-radius:16px;overflow:hidden;
+  background:linear-gradient(180deg,#262E44,#0A0E1B 55%,#161C2E);border:1.5px solid #D9B262;
+  box-shadow:0 0 0 4px rgba(8,12,28,.92),0 0 0 5.5px rgba(217,178,98,.55),0 0 26px rgba(241,213,146,.5),0 12px 30px rgba(0,0,0,.5);
+  font:600 clamp(36px,10.5vw,48px)/1.05 var(--f-display);letter-spacing:.02em;animation:ctPlate 3.2s ease-in-out infinite}
+.ct-plate::after{content:"";position:absolute;top:0;bottom:0;left:-50%;width:34%;background:linear-gradient(100deg,transparent,rgba(255,244,214,.38),transparent);transform:skewX(-18deg);animation:ctSweep 4.5s ease-in-out 1s infinite}
+@keyframes ctSweep{0%{left:-50%}45%,100%{left:130%}}
+@keyframes ctPlate{0%,100%{box-shadow:0 0 0 4px rgba(8,12,28,.92),0 0 0 5.5px rgba(217,178,98,.5),0 0 20px rgba(241,213,146,.38),0 12px 30px rgba(0,0,0,.5)}50%{box-shadow:0 0 0 4px rgba(8,12,28,.92),0 0 0 5.5px rgba(217,178,98,.8),0 0 36px rgba(241,213,146,.7),0 12px 30px rgba(0,0,0,.5)}}
+.ct-a,.ct-b{-webkit-background-clip:text;background-clip:text;color:transparent}
+.ct-a{background-image:linear-gradient(180deg,#FFFFFF 0%,#E9EDF4 44%,#9AA6BA 56%,#F4F6FA 100%);filter:drop-shadow(0 0 6px rgba(255,255,255,.35))}
+.ct-b{background-image:linear-gradient(180deg,#FFF3C9 0%,#F1C761 44%,#B07A1E 58%,#FFE39A 100%);filter:drop-shadow(0 0 8px rgba(241,199,97,.55))}
+html[lang="ur"] .ct-plate{font-family:var(--f-ur-display);font-weight:400;line-height:1.55;padding:2px 28px 10px}
+/* tall Nastaliq / Devanagari strokes reach outside the line box: pad the gradient so they are not clipped */
+html[lang="ur"] .ct-a,html[lang="ur"] .ct-b,html[lang="hi"] .ct-a,html[lang="hi"] .ct-b{padding:.45em .12em .2em;margin:-.45em -.12em -.2em}
+html[lang="hi"] .ct-plate{font-family:var(--f-hi-display);font-weight:400;line-height:1.3}
+/* the timeline: a gold line, a heart that travels down it as you scroll, and the three contacts in turn */
+.ct-tl{position:relative;width:100%;max-width:460px;margin:30px auto 0;padding:52px 0 58px}
+.ct-line{position:absolute;left:50%;top:26px;bottom:30px;width:2px;transform:translateX(-50%);background:rgba(217,178,98,.25);border-radius:2px}
+.ct-fill{position:absolute;left:0;top:0;width:100%;height:var(--ctp,0%);border-radius:2px;background:linear-gradient(180deg,#FFF1C2,#D9B262);box-shadow:0 0 10px rgba(241,213,146,.85)}
+.ct-cap,.ct-mover{position:absolute;left:50%;display:block;transform:translate(-50%,-50%)}
+.ct-cap{width:30px}.ct-cap.top{top:26px}.ct-cap.bottom{bottom:30px;transform:translate(-50%,50%)}
+.ct-cap svg{display:block;width:100%;fill:none;stroke:#D9B262;stroke-width:2.2;filter:drop-shadow(0 0 6px rgba(241,213,146,.6))}
+.ct-cap.bottom svg{transition:fill .5s ease}
+.ct-tl.end .ct-cap.bottom svg{fill:#D9B262}
+.ct-mover{z-index:2;top:calc(26px + var(--cty,0px));width:34px;transition:top .12s linear}
+.ct-mover svg{display:block;width:100%;fill:#FF6F91;filter:drop-shadow(0 0 6px rgba(255,111,145,.95)) drop-shadow(0 0 16px rgba(255,111,145,.55));animation:ctBeat 1.3s ease-in-out infinite}
+@keyframes ctBeat{0%,100%{transform:scale(1)}15%{transform:scale(1.18)}30%{transform:scale(1)}45%{transform:scale(1.12)}}
+.ct-list{position:relative;list-style:none;margin:0;padding:0;display:grid;gap:30px}
+.ct-row{display:grid;grid-template-columns:1fr 46px 1fr;align-items:center}
+.ct-card{grid-column:1;grid-row:1;display:grid;justify-items:center;gap:6px;text-align:center;opacity:.3;transform:translateY(18px) scale(.96);transition:opacity .7s ease,transform .7s cubic-bezier(.2,.8,.3,1)}
+.ct-row.r .ct-card{grid-column:3}
+.ct-mini{grid-column:3;grid-row:1;justify-self:center;width:16px;opacity:.35;transition:opacity .6s ease}
+.ct-row.r .ct-mini{grid-column:1}
+.ct-mini svg{display:block;width:100%;fill:#D9B262;filter:drop-shadow(0 0 5px rgba(241,213,146,.8))}
+.ct-row.lit .ct-card{opacity:1;transform:none}
+.ct-row.lit .ct-mini{opacity:1}
+.ct-row.lit .ct-mini svg{animation:ctBeat 1.6s ease-in-out infinite}
+.ct-ph{display:block;width:100px;height:100px;border-radius:50%;padding:3px;background:conic-gradient(#F1D592,#B07A1E,#FFF1C2,#D9B262,#8A5A12,#F1D592);
+  box-shadow:0 0 0 2px rgba(8,12,28,.9),0 0 14px rgba(241,213,146,.3)}
+.ct-row.lit .ct-ph{animation:ctPh 2.6s ease-in-out infinite}
+@keyframes ctPh{0%,100%{box-shadow:0 0 0 2px rgba(8,12,28,.9),0 0 16px rgba(241,213,146,.45)}50%{box-shadow:0 0 0 2px rgba(8,12,28,.9),0 0 32px rgba(241,213,146,.9)}}
+.ct-ph img{display:block;width:100%;height:100%;border-radius:50%;object-fit:cover}
+.ct-name{margin:6px 0 0;font:600 clamp(19px,5.2vw,22px)/1.15 var(--f-display);color:var(--gold);text-shadow:0 0 12px rgba(241,213,146,.35)}
+.ct-who{margin:0;font-size:13px;line-height:1.35;color:var(--silver)}
+.ct-tap{position:relative;overflow:hidden;margin-top:6px;min-height:42px;padding:0 20px;border-radius:999px;cursor:pointer;border:1px solid rgba(255,255,255,.6);
+  background:linear-gradient(180deg,rgba(255,255,255,.24),rgba(255,255,255,.06));-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px);color:#FFF8EA;
+  font:500 13px/1 var(--f-body);letter-spacing:.12em;text-transform:uppercase;
+  box-shadow:inset 0 1px 1px rgba(255,255,255,.6),0 0 0 3px rgba(214,176,98,.14),0 0 16px rgba(120,170,255,.35);transition:transform .2s ease,box-shadow .3s ease}
+.ct-tap:active{transform:scale(.96)}
+.ct-tap:focus-visible{outline:2px solid #F1D592;outline-offset:3px}
+.ct-tap[aria-expanded="true"]{border-color:#D9B262;box-shadow:inset 0 1px 1px rgba(255,255,255,.6),0 0 0 3px rgba(214,176,98,.3),0 0 20px rgba(241,213,146,.5)}
+@media (hover:hover){.ct-tap:hover{box-shadow:inset 0 1px 1px rgba(255,255,255,.7),0 0 0 4px rgba(214,176,98,.26),0 0 24px rgba(241,213,146,.5)}}
+.ct-det{display:grid;gap:8px;width:100%;margin-top:6px}
+.ct-det:not([hidden]){animation:ctDet .45s cubic-bezier(.2,.8,.3,1) both}
+@keyframes ctDet{from{opacity:0;transform:translateY(-6px)}to{opacity:1;transform:none}}
+.ct-link{display:flex;align-items:center;gap:8px;padding:7px 8px;border-radius:14px;border:1px solid rgba(255,255,255,.14);background:rgba(255,255,255,.06);
+  color:var(--ivory);text-decoration:none;text-align:start;transition:border-color .3s ease,background .3s ease}
+.ct-link.call{--c:87,180,255}.ct-link.wa{--c:52,224,138}
+.ct-ic{flex:none;display:grid;place-items:center;width:30px;height:30px;border-radius:50%;color:rgb(var(--c));border:1.5px solid rgb(var(--c));
+  background:rgba(var(--c),.12);box-shadow:0 0 12px rgba(var(--c),.6),inset 0 0 8px rgba(var(--c),.3)}
+.ct-ic svg{width:16px;height:16px}
+.ct-link small{display:block;font-size:11px;line-height:1.2;color:var(--silver)}
+.ct-link b{display:block;font:500 13px/1.25 var(--f-body);white-space:nowrap}
+.ct-link:focus-visible{outline:2px solid #F1D592;outline-offset:2px}
+@media (hover:hover){.ct-link:hover{border-color:rgba(var(--c),.7);background:rgba(var(--c),.1)}}
+html[lang="ur"] .ct-name{font-family:var(--f-ur-head);font-weight:700;line-height:1.7}
+html[lang="hi"] .ct-name{font-family:var(--f-hi-head);font-weight:400;line-height:1.35}
+html[lang="ur"] .ct-tap,html[lang="hi"] .ct-tap{letter-spacing:0;text-transform:none;font-size:14px}
+html[lang="ur"] .ct-tap{font-family:var(--f-ur-body)}html[lang="hi"] .ct-tap{font-family:var(--f-hi-body)}
+html.rm .ct-mover{transition:none}
+html.rm .ct-card{transition:none}
+
+/* ---------- a small gold vine closes each section (Agrim's border) ---------- */
+.sec-orn{position:relative;z-index:2;display:block;width:min(210px,54vw);aspect-ratio:760/141;margin:34px auto 0;pointer-events:none;
+  background:url("assets/ornament/vine.webp") center/contain no-repeat}
+.dark .sec-orn,.g240 .sec-orn{filter:drop-shadow(0 0 7px rgba(241,213,146,.35))}
+.reveal-ready .sec-orn.rv{transform:none;clip-path:inset(0 50% 0 50%);transition:opacity .8s ease,clip-path 1.4s cubic-bezier(.2,.7,.2,1)}
+.reveal-ready .sec-orn.rv.in{clip-path:inset(0 0 0 0)}
+html.rm .reveal-ready .sec-orn.rv{clip-path:none}
+html:not(.testmode) footer{display:none}
+
+/* ---------- Thank you: blush "infinite grid" (after Agrim's Framer video), handwriting, locket, couple ---------- */
+#thanks.ty-sec{--ty:#FBF5F1;position:relative;overflow:hidden;text-align:center;color:var(--ink);background:var(--ty);
+  padding:84px var(--gutter) calc(env(safe-area-inset-bottom,0px) + 120px)}
+.ty-edge{color:#FBF5F1;z-index:2}
+.ty-bg{position:absolute;inset:0;z-index:0;pointer-events:none;overflow:hidden;--mx:50%;--my:30%}
+.ty-blob{position:absolute;border-radius:50%;filter:blur(46px);opacity:.7;will-change:transform}
+.ty-blob.b1{width:78%;aspect-ratio:1;left:-30%;bottom:6%;background:radial-gradient(circle,#5F9BF6 0,rgba(95,155,246,.35) 45%,transparent 70%);animation:tyB1 16s ease-in-out infinite alternate}
+.ty-blob.b2{width:70%;aspect-ratio:1;right:-28%;top:4%;background:radial-gradient(circle,#F59BC1 0,rgba(245,155,193,.35) 45%,transparent 70%);animation:tyB2 18s ease-in-out infinite alternate}
+.ty-blob.b3{width:56%;aspect-ratio:1;right:-18%;top:44%;background:radial-gradient(circle,#FFB892 0,rgba(255,184,146,.3) 45%,transparent 70%);animation:tyB3 20s ease-in-out infinite alternate}
+.ty-blob.b4{width:60%;aspect-ratio:1;left:-20%;top:-6%;background:radial-gradient(circle,#BFD7FF 0,rgba(191,215,255,.35) 45%,transparent 70%);animation:tyB2 22s ease-in-out infinite alternate-reverse}
+@keyframes tyB1{to{transform:translate(34%,-26%) scale(1.15)}}
+@keyframes tyB2{to{transform:translate(-30%,22%) scale(1.1)}}
+@keyframes tyB3{to{transform:translate(-40%,-30%) scale(.9)}}
+.ty-grid{position:absolute;inset:-40px;background-image:linear-gradient(rgba(44,54,96,.045) 1px,transparent 1px),linear-gradient(90deg,rgba(44,54,96,.045) 1px,transparent 1px);
+  background-size:32px 32px;animation:tyGrid 14s linear infinite}
+.ty-grid.hot{background-image:linear-gradient(rgba(44,54,96,.3) 1px,transparent 1px),linear-gradient(90deg,rgba(44,54,96,.3) 1px,transparent 1px);
+  -webkit-mask:radial-gradient(170px circle at calc(var(--mx) + 40px) calc(var(--my) + 40px),#000 0,rgba(0,0,0,.5) 45%,transparent 100%);
+  mask:radial-gradient(170px circle at calc(var(--mx) + 40px) calc(var(--my) + 40px),#000 0,rgba(0,0,0,.5) 45%,transparent 100%)}
+@keyframes tyGrid{to{transform:translate(32px,32px)}}
+.ty-spot{position:absolute;left:var(--mx);top:var(--my);width:340px;aspect-ratio:1;transform:translate(-50%,-50%);border-radius:50%;
+  background:radial-gradient(circle,rgba(255,255,255,.75),rgba(255,214,232,.35) 40%,transparent 70%);transition:opacity .4s ease}
+#thanks:not(.run) .ty-blob,#thanks:not(.run) .ty-grid{animation-play-state:paused}
+html.rm .ty-blob,html.rm .ty-grid{animation:none}
+.ty-wrap{position:relative;z-index:1;max-width:460px;gap:22px}
+/* handwriting: English draws the pen strokes; Urdu and Hindi write the word in from the reading side */
+.ty-title{margin:0;width:100%;font:inherit}
+.ty-script{display:block;width:min(100%,420px);height:auto;margin:0 auto;overflow:visible;filter:drop-shadow(0 2px 0 rgba(122,92,36,.18)) drop-shadow(0 0 12px rgba(241,199,97,.35))}
+.ty-pen{opacity:0;transition:opacity .3s ease}
+.ty-sec.writing .ty-pen{opacity:1}
+html[lang="en"] .ty-word{position:absolute!important;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+html:not([lang="en"]) .ty-script{display:none}
+.ty-word{display:inline-block;padding:.1em .2em;font-size:clamp(56px,16vw,76px);line-height:1.5;
+  background:linear-gradient(180deg,#E8BE62,#9C6B1C 60%,#C99434);-webkit-background-clip:text;background-clip:text;color:transparent;filter:drop-shadow(0 0 10px rgba(241,199,97,.35))}
+html[lang="ur"] .ty-word{font-family:var(--f-ur-display);font-weight:400;line-height:1.9}
+html[lang="hi"] .ty-word{font-family:var(--f-hi-display);font-weight:400}
+.ty-sec.armed .ty-word{clip-path:inset(-30% 100% -30% 0)}
+html[dir="rtl"] .ty-sec.armed .ty-word{clip-path:inset(-30% 0 -30% 100%)}
+html[dir] .ty-sec.armed.go .ty-word{clip-path:inset(-30% 0 -30% 0);transition:clip-path 1.7s cubic-bezier(.4,.1,.3,1)}
+/* then everything else, one by one */
+.ty-sec.armed .ty-step{opacity:0;transform:translateY(18px)}
+.ty-sec.armed.done .ty-step{opacity:1;transform:none;transition:opacity .9s ease,transform .9s cubic-bezier(.2,.8,.3,1)}
+.ty-sec.armed.done .ty-q{transition-delay:.1s}
+.ty-sec.armed.done .ty-hearts{transition-delay:.6s}
+.ty-sec.armed.done .ty-date{transition-delay:1.5s}
+.ty-sec.armed.done .ty-couple{transition-delay:2.1s}
+.ty-sec.armed.done .ty-top{transition-delay:2.8s}
+.ty-sec.armed .ty-hearts{transform:scale(.7)}
+.ty-sec.armed.done .ty-hearts{transition:opacity .8s ease .6s,transform 1s cubic-bezier(.3,1.5,.5,1) .6s}
+.ty-sec.armed .ty-nm{opacity:0}
+.ty-sec.armed.done .ty-nm{opacity:1;transition:opacity 1s ease 1.2s}
+.ty-q{max-width:25em;margin:0;font:italic 500 clamp(18px,4.8vw,21px)/1.5 var(--f-display);color:#4A4F66}
+html[lang="ur"] .ty-q{font:400 17px/2.1 var(--f-ur-head)}
+html[lang="hi"] .ty-q{font:400 17px/1.75 var(--f-hi-body)}
+.ty-hearts{position:relative;width:min(100%,380px);margin-top:4px}
+.ty-hearts-svg{display:block;width:100%;height:auto;overflow:visible}
+.ty-sec.done .th-h.l{animation:tyBeat 2.6s ease-in-out 1.8s infinite}
+.ty-sec.done .th-h.r{animation:tyBeat 2.6s ease-in-out 2s infinite}
+.th-h{transform-box:fill-box;transform-origin:50% 60%}
+@keyframes tyBeat{0%,100%{transform:scale(1)}12%{transform:scale(1.05)}24%{transform:scale(1)}36%{transform:scale(1.035)}}
+.ty-nm{position:absolute;top:56%;width:34%;transform:translate(-50%,-50%) rotate(var(--r));font:400 clamp(25px,7vw,32px)/1.2 "Pinyon Script",cursive;color:#FFF3D6;
+  text-shadow:0 1px 0 rgba(94,8,18,.6),0 0 10px rgba(255,214,140,.65)}
+.ty-nm.l{left:26.8%;--r:-7deg}.ty-nm.r{left:73.2%;--r:7deg}
+html[lang="ur"] .ty-nm{font:400 23px/1.7 var(--f-ur-display)}
+html[lang="hi"] .ty-nm{font:400 22px/1.4 var(--f-hi-display)}
+.ty-date{display:grid;justify-items:center;gap:6px}
+.ty-save{margin:0;font:500 13px/1 var(--f-body);letter-spacing:.42em;text-transform:uppercase;color:#7A5C24;padding-inline-start:.42em}
+html[lang="ur"] .ty-save,html[lang="hi"] .ty-save{letter-spacing:0;font-size:16px;padding:0}
+html[lang="ur"] .ty-save{font-family:var(--f-ur-body)}html[lang="hi"] .ty-save{font-family:var(--f-hi-body)}
+.ty-d{margin:0;font:500 clamp(40px,11vw,52px)/1.05 var(--f-display);letter-spacing:.06em;color:var(--navy);text-shadow:0 0 18px rgba(255,255,255,.8)}
+.ty-div{margin:2px 0 0;display:flex;align-items:center;gap:8px}
+.ty-div span{width:64px;height:1px;background:linear-gradient(90deg,transparent,#C99A3E)}
+.ty-div span:last-child{transform:scaleX(-1)}
+.ty-div svg{width:15px;fill:#C8202F;filter:drop-shadow(0 0 5px rgba(200,32,47,.45))}
+.ty-couple{position:relative;width:min(72%,290px);margin-top:4px}
+.ty-couple::before{content:"";position:absolute;left:50%;top:52%;width:130%;aspect-ratio:1;transform:translate(-50%,-50%);border-radius:50%;
+  background:radial-gradient(circle,rgba(255,255,255,.9),rgba(196,218,255,.5) 40%,rgba(255,200,222,.25) 58%,transparent 70%)}
+.ty-couple img{position:relative;display:block;width:100%;height:auto;filter:drop-shadow(0 10px 18px rgba(60,40,30,.22));
+  -webkit-mask:linear-gradient(180deg,#000 80%,transparent);mask:linear-gradient(180deg,#000 80%,transparent)}
+.ty-top{display:inline-flex;align-items:center;gap:10px;min-height:56px;padding:0 30px;margin-top:6px;border-radius:999px;cursor:pointer;
+  border:1px solid rgba(255,255,255,.9);background:linear-gradient(180deg,rgba(255,255,255,.92),rgba(255,255,255,.66));color:var(--navy);
+  -webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);font:500 14px/1 var(--f-body);letter-spacing:.2em;text-transform:uppercase;
+  box-shadow:0 0 0 4px rgba(255,255,255,.35),0 12px 26px rgba(40,50,90,.18);transition:transform .2s ease,box-shadow .3s ease}
+.ty-top svg{width:18px;height:18px}
+.ty-top:active{transform:scale(.97)}
+.ty-top:focus-visible{outline:2px solid var(--gold-deep);outline-offset:3px}
+@media (hover:hover){.ty-top:hover{box-shadow:0 0 0 5px rgba(245,155,193,.35),0 0 26px rgba(95,155,246,.35),0 12px 26px rgba(40,50,90,.2)}}
+html[lang="ur"] .ty-top,html[lang="hi"] .ty-top{letter-spacing:0;text-transform:none;font-size:16px}
+html[lang="ur"] .ty-top{font-family:var(--f-ur-body)}html[lang="hi"] .ty-top{font-family:var(--f-hi-body)}
+html.rm .ty-sec .ty-step,html.rm .ty-sec .ty-nm,html.rm .ty-sec .ty-word{transition:none!important}
+html.rm .th-h{animation:none!important}
+
 /* info cards (travel / dress / contact) */
 .cards{display:grid;gap:14px;width:100%}
 @media (min-width:700px){.cards{grid-template-columns:1fr 1fr}}
@@ -746,8 +999,6 @@ html[lang="hi"] .menu-list a{font-family:var(--f-hi-head);font-size:26px}
 .lb-count{min-width:70px;text-align:center;font-variant-numeric:tabular-nums;color:var(--silver)}
 
 /* thanks */
-#thanks{text-align:center;overflow:hidden;background:linear-gradient(180deg,var(--navy),var(--night));padding-bottom:110px}
-#thanks .moon{position:relative;inset:auto;margin:0 auto}
 footer{background:var(--night);color:var(--silver-mute);font-size:13px;padding:24px var(--gutter) calc(env(safe-area-inset-bottom,0px) + 90px);text-align:center;display:grid;gap:10px;justify-items:center}
 footer button{background:none;border:1px solid var(--navy-3);border-radius:999px;color:var(--silver);min-height:44px;padding:0 16px;cursor:pointer;font-size:13px}
 .tools{display:flex;flex-wrap:wrap;gap:10px;justify-content:center}
@@ -1137,6 +1388,7 @@ html[lang="hi"] .eyebrow,html[lang="hi"] .btn,html[lang="hi"] .badge,html[lang="
       <p class="vh" aria-live="polite" id="cdSr"></p>
       <p class="g-tz vh" id="cdTz" data-i18n="tz">Dubai time (GST, UTC+4)</p>
     </div>
+    <div class="sec-orn rv" aria-hidden="true"></div>
   </section>
 
   <!-- 4 Families (Agrim's "Meet Our Families" reference) -->
@@ -1168,6 +1420,7 @@ html[lang="hi"] .eyebrow,html[lang="hi"] .btn,html[lang="hi"] .badge,html[lang="
         </article>
       </div>
     </div>
+    <div class="sec-orn rv" aria-hidden="true"></div>
   </section>
 
   <!-- 5 Events: Agrim's template (photo + gold board, alternating, on moonlit navy); clouds part to reveal each one -->
@@ -1186,6 +1439,7 @@ html[lang="hi"] .eyebrow,html[lang="hi"] .btn,html[lang="hi"] .badge,html[lang="
       <p class="ev-note rv" data-i18n="events_note">Sample schedule · Please confirm details</p>
     </div>
     <div class="ev-list" id="eventList"></div>
+    <div class="sec-orn rv" aria-hidden="true"></div>
   </section>
 
   <!-- 6 Gallery -->
@@ -1205,6 +1459,7 @@ html[lang="hi"] .eyebrow,html[lang="hi"] .btn,html[lang="hi"] .badge,html[lang="
         <div class="orbit-dots" id="orbitDots" aria-hidden="true"></div>
       </div>
     </div>
+    <div class="sec-orn rv" aria-hidden="true"></div>
   </section>
 
   <!-- 7 Venue -->
@@ -1226,6 +1481,7 @@ html[lang="hi"] .eyebrow,html[lang="hi"] .btn,html[lang="hi"] .badge,html[lang="
         </div>
       </div>
     </div>
+    <div class="sec-orn rv" aria-hidden="true"></div>
   </section>
 
   <!-- 9 Dress code (after Agrim's reference): suggested shades, then gold frames for gentlemen, ladies and little ones -->
@@ -1327,6 +1583,7 @@ html[lang="hi"] .eyebrow,html[lang="hi"] .btn,html[lang="hi"] .badge,html[lang="
           <div class="dc-txt"><h3 data-i18n="dc_kids">For Little Ones</h3><p data-i18n="dc_kids_txt">Mini sherwani or kurta pajama for boys; lehenga choli, sharara or a festive frock for girls.</p></div>
         </div>
     </div>
+    <div class="sec-orn rv" aria-hidden="true"></div>
   </section>
 
   <!-- 10 RSVP -->
@@ -1375,6 +1632,7 @@ html[lang="hi"] .eyebrow,html[lang="hi"] .btn,html[lang="hi"] .badge,html[lang="
       </div>
       <p class="preview-note rv-note" data-i18n="rsvp_preview">Preview: replies are saved on this device only. They will go to your Google Sheet once it is connected.</p>
     </div>
+    <div class="sec-orn rv" aria-hidden="true"></div>
   </section>
 
   <!-- 11 Wishes -->
@@ -1401,45 +1659,251 @@ html[lang="hi"] .eyebrow,html[lang="hi"] .btn,html[lang="hi"] .badge,html[lang="
       </form>
       <p class="preview-note" data-i18n="wish_preview">Preview: the three wishes marked "Sample" are examples so you can see the layout. New wishes wait for your approval before anyone else sees them.</p>
     </div>
+    <div class="sec-orn rv" aria-hidden="true"></div>
   </section>
 
   <!-- 11b Travel & Stay (follows the Wishes on the same light ground, so no wave) -->
-  <section id="travel" class="light" aria-labelledby="travelTitle" style="padding-top:28px">
+  <section id="travel" class="light tr-sec" aria-labelledby="travelTitle" style="padding-top:28px">
     <div class="wrap center wide">
       <p class="eyebrow rv" data-i18n="travel_eyebrow">For our guests</p>
       <h2 id="travelTitle" class="rv" data-i18n="travel_title">Travel &amp; Stay</h2>
-      <div class="cards">
-        <div class="card rv"><h3 data-i18n="t_arrive">Arriving in Dubai</h3><p><span class="ph" data-tag="Placeholder" data-i18n="ph_arrive">Airport and transfer advice</span></p></div>
-        <div class="card rv" style="--st:.08s"><h3 data-i18n="t_stay">Where to stay</h3><p><span class="ph" data-tag="Placeholder" data-i18n="ph_stay">Recommended hotels and any group rate</span></p></div>
-        <div class="card rv"><h3 data-i18n="t_visa">Visas</h3><p data-i18n="t_visa_body">Please check the visa requirements for your nationality before you travel.</p></div>
-        <div class="card rv" style="--st:.08s"><h3 data-i18n="t_getting">Getting to the venue</h3><p><span class="ph" data-tag="Placeholder" data-i18n="ph_getting">Taxi, ride-hailing and valet details</span></p></div>
+      <p class="lede rv" data-i18n="tr_lede">Everything you need to reach the palace, and a little of Dubai to enjoy between the celebrations.</p>
+      <div class="tr rv" id="trAcc">
+        <div class="tr-pin"><div class="tr-stage">
+        <figure class="tr-fig on" aria-hidden="false"><img src="assets/travel/airport.webp" alt="An Emirates plane at Dubai International Airport" data-i18n-alt="tr_air_alt" loading="lazy" decoding="async" width="1000" height="750">
+          <figcaption><span class="tr-g" data-i18n="tr_g_arrive">Arrive</span><span class="tr-cap" data-i18n="tr_air_t">Arriving by air</span><span class="tr-n" dir="ltr">01 / 07</span></figcaption></figure>
+        <figure class="tr-fig" aria-hidden="true"><img src="assets/travel/metro.webp" alt="A Dubai Metro train on the elevated line" data-i18n-alt="tr_metro_alt" loading="lazy" decoding="async" width="1000" height="750">
+          <figcaption><span class="tr-g" data-i18n="tr_g_arrive">Arrive</span><span class="tr-cap" data-i18n="tr_metro_t">Metro &amp; bus</span><span class="tr-n" dir="ltr">02 / 07</span></figcaption></figure>
+        <figure class="tr-fig" aria-hidden="true"><img src="assets/travel/taxi.webp" alt="An official Dubai taxi waiting at a hotel entrance" data-i18n-alt="tr_taxi_alt" loading="lazy" decoding="async" width="1000" height="750">
+          <figcaption><span class="tr-g" data-i18n="tr_g_arrive">Arrive</span><span class="tr-cap" data-i18n="tr_taxi_t">Taxis &amp; rides</span><span class="tr-n" dir="ltr">03 / 07</span></figcaption></figure>
+        <figure class="tr-fig" aria-hidden="true"><img src="assets/travel/hotel.webp" alt="Jumeirah Beach Hotel and its beach" data-i18n-alt="tr_stay_alt" loading="lazy" decoding="async" width="1000" height="750">
+          <figcaption><span class="tr-g" data-i18n="tr_g_stay">Stay</span><span class="tr-cap" data-i18n="tr_stay_t">Where to stay</span><span class="tr-n" dir="ltr">04 / 07</span></figcaption></figure>
+        <figure class="tr-fig" aria-hidden="true"><img src="assets/venue/venue.webp" alt="The palace venue at night, with a floral mandap and fountain" data-i18n-alt="venue_alt" loading="lazy" decoding="async" width="1000" height="750">
+          <figcaption><span class="tr-g" data-i18n="tr_g_venue">Celebrate</span><span class="tr-cap" data-i18n="tr_venue_t">The palace venue</span><span class="tr-n" dir="ltr">05 / 07</span></figcaption></figure>
+        <figure class="tr-fig" aria-hidden="true"><img src="assets/travel/desert.webp" alt="A camel caravan crossing golden dunes" data-i18n-alt="tr_desert_alt" loading="lazy" decoding="async" width="1000" height="750">
+          <figcaption><span class="tr-g" data-i18n="tr_g_explore">Explore Dubai</span><span class="tr-cap" data-i18n="tr_desert_t">Desert safari</span><span class="tr-n" dir="ltr">06 / 07</span></figcaption></figure>
+        <figure class="tr-fig" aria-hidden="true"><img src="assets/travel/village.webp" alt="A lit pavilion at Global Village at night" data-i18n-alt="tr_village_alt" loading="lazy" decoding="async" width="1000" height="750">
+          <figcaption><span class="tr-g" data-i18n="tr_g_explore">Explore Dubai</span><span class="tr-cap" data-i18n="tr_village_t">Global Village</span><span class="tr-n" dir="ltr">07 / 07</span></figcaption></figure>
+        </div></div>
+        <ul class="tr-list">
+        <li class="tr-item on">
+          <button class="tr-head" type="button" id="trH0" aria-expanded="true" aria-controls="trP0"><span class="tr-num" dir="ltr">01</span><span class="tr-t" data-i18n="tr_air_t">Arriving by air</span><span class="tr-ic" aria-hidden="true"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h13M13 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"/></svg></span></button>
+          <div class="tr-panel" id="trP0" role="region" aria-labelledby="trH0"><div class="tr-in"><div class="tr-body">
+            <p class="tr-d" data-i18n="tr_air_d">Most flights land at Dubai International Airport (DXB), about 27 km from the palace, or 30 to 35 minutes by taxi. Some flights use Al Maktoum International (DWC), about 45 minutes away. Please check the visa rules for your passport before you travel.</p>
+            <p class="tr-chips"><span data-i18n="tr_air_c1">27 km to the palace</span><span data-i18n="tr_air_c2">30–35 min by taxi</span></p>
+            <a class="tr-loc" href="https://www.google.com/maps/search/?api=1&amp;query=Dubai%20International%20Airport%20DXB" target="_blank" rel="noopener"><svg><use href="#i-pin"/></svg><span data-i18n="tr_loc">View location</span></a>
+          </div></div></div>
+        </li>
+        <li class="tr-item">
+          <button class="tr-head" type="button" id="trH1" aria-expanded="false" aria-controls="trP1"><span class="tr-num" dir="ltr">02</span><span class="tr-t" data-i18n="tr_metro_t">Metro &amp; bus</span><span class="tr-ic" aria-hidden="true"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h13M13 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"/></svg></span></button>
+          <div class="tr-panel" id="trP1" role="region" aria-labelledby="trH1"><div class="tr-in"><div class="tr-body">
+            <p class="tr-d" data-i18n="tr_metro_d">The nearest Metro station is Mall of the Emirates on the Red Line, about 3 km from the palace; taxis wait outside for the 5 to 10 minute ride. Bus 81 runs from the bus station beside the Metro to the Burj Al Arab stop, a 12-minute walk away. Pay with a Nol card and plan trips in the RTA S'hail app.</p>
+            <p class="tr-chips"><span data-i18n="tr_metro_c1">Red Line · Mall of the Emirates</span><span data-i18n="tr_metro_c2">Bus 81</span></p>
+            <a class="tr-loc" href="https://www.google.com/maps/search/?api=1&amp;query=Mall%20of%20the%20Emirates%20Metro%20Station%20Dubai" target="_blank" rel="noopener"><svg><use href="#i-pin"/></svg><span data-i18n="tr_loc">View location</span></a>
+          </div></div></div>
+        </li>
+        <li class="tr-item">
+          <button class="tr-head" type="button" id="trH2" aria-expanded="false" aria-controls="trP2"><span class="tr-num" dir="ltr">03</span><span class="tr-t" data-i18n="tr_taxi_t">Taxis &amp; rides</span><span class="tr-ic" aria-hidden="true"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h13M13 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"/></svg></span></button>
+          <div class="tr-panel" id="trP2" role="region" aria-labelledby="trH2"><div class="tr-in"><div class="tr-body">
+            <p class="tr-d" data-i18n="tr_taxi_d">Official cream RTA taxis queue outside every arrivals hall, at the Metro station and at the palace entrance, day and night. Careem and Uber work across Dubai. Ask for “Jumeirah Al Qasr, Madinat Jumeirah”, or open the route below for your driver.</p>
+            <p class="tr-chips"><span data-i18n="tr_taxi_c1">Day &amp; night</span><span data-i18n="tr_taxi_c2">Careem · Uber</span></p>
+            <a class="tr-loc" href="https://www.google.com/maps/dir/?api=1&amp;destination=Jumeirah%20Al%20Qasr%2C%20Madinat%20Jumeirah%2C%20Dubai&amp;travelmode=driving" target="_blank" rel="noopener"><svg><use href="#i-pin"/></svg><span data-i18n="tr_route">Route to the palace</span></a>
+          </div></div></div>
+        </li>
+        <li class="tr-item">
+          <button class="tr-head" type="button" id="trH3" aria-expanded="false" aria-controls="trP3"><span class="tr-num" dir="ltr">04</span><span class="tr-t" data-i18n="tr_stay_t">Where to stay</span><span class="tr-ic" aria-hidden="true"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h13M13 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"/></svg></span></button>
+          <div class="tr-panel" id="trP3" role="region" aria-labelledby="trH3"><div class="tr-in"><div class="tr-body">
+            <p class="tr-d" data-i18n="tr_stay_d">We suggest Jumeirah Beach Hotel, the wave-shaped hotel on the same beach, about five minutes from the palace. Mina A'Salam and Dar Al Masyaf at Madinat Jumeirah are even closer.</p>
+            <p class="tr-chips"><span data-i18n="tr_stay_c1">5 min to the palace</span><span data-i18n="tr_stay_c2">Beachfront</span></p>
+            <a class="tr-loc" href="https://www.google.com/maps/search/?api=1&amp;query=Jumeirah%20Beach%20Hotel%20Dubai" target="_blank" rel="noopener"><svg><use href="#i-pin"/></svg><span data-i18n="tr_loc">View location</span></a>
+          </div></div></div>
+        </li>
+        <li class="tr-item">
+          <button class="tr-head" type="button" id="trH4" aria-expanded="false" aria-controls="trP4"><span class="tr-num" dir="ltr">05</span><span class="tr-t" data-i18n="tr_venue_t">The palace venue</span><span class="tr-ic" aria-hidden="true"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h13M13 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"/></svg></span></button>
+          <div class="tr-panel" id="trP4" role="region" aria-labelledby="trH4"><div class="tr-in"><div class="tr-body">
+            <p class="tr-d" data-i18n="tr_venue_d">Our celebrations are at the palace, Jumeirah Al Qasr at Madinat Jumeirah, beside the Burj Al Arab. Taxis drop guests at the main palace entrance, and valet parking is available.</p>
+            <p class="tr-chips"><span data-i18n="tr_venue_c1">Madinat Jumeirah</span><span data-i18n="tr_venue_c2">Valet parking</span></p>
+            <a class="tr-loc" href="https://www.google.com/maps/search/?api=1&amp;query=Jumeirah%20Al%20Qasr%2C%20Madinat%20Jumeirah%2C%20Dubai" target="_blank" rel="noopener"><svg><use href="#i-pin"/></svg><span data-i18n="tr_loc">View location</span></a>
+          </div></div></div>
+        </li>
+        <li class="tr-item">
+          <button class="tr-head" type="button" id="trH5" aria-expanded="false" aria-controls="trP5"><span class="tr-num" dir="ltr">06</span><span class="tr-t" data-i18n="tr_desert_t">Desert safari</span><span class="tr-ic" aria-hidden="true"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h13M13 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"/></svg></span></button>
+          <div class="tr-panel" id="trP5" role="region" aria-labelledby="trH5"><div class="tr-in"><div class="tr-body">
+            <p class="tr-d" data-i18n="tr_desert_d">An evening in the red dunes: a dune drive, camel rides, sandboarding and dinner under the stars. Most tours collect you from your hotel in the afternoon and bring you back after dinner.</p>
+            <p class="tr-chips"><span data-i18n="tr_desert_c1">Afternoon to night</span><span data-i18n="tr_desert_c2">Hotel pickup</span></p>
+            <a class="tr-loc" href="https://www.google.com/maps/search/?api=1&amp;query=Dubai%20Desert%20Conservation%20Reserve" target="_blank" rel="noopener"><svg><use href="#i-pin"/></svg><span data-i18n="tr_loc">View location</span></a>
+          </div></div></div>
+        </li>
+        <li class="tr-item">
+          <button class="tr-head" type="button" id="trH6" aria-expanded="false" aria-controls="trP6"><span class="tr-num" dir="ltr">07</span><span class="tr-t" data-i18n="tr_village_t">Global Village</span><span class="tr-ic" aria-hidden="true"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h13M13 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"/></svg></span></button>
+          <div class="tr-panel" id="trP6" role="region" aria-labelledby="trH6"><div class="tr-in"><div class="tr-body">
+            <p class="tr-d" data-i18n="tr_village_d">Pavilions from around the world, street food, shopping and shows. Open for the season from October to May, 4 pm to midnight (1 am at weekends), about 30 minutes from the palace.</p>
+            <p class="tr-chips"><span data-i18n="tr_village_c1">4 pm – midnight</span><span data-i18n="tr_village_c2">October – May</span></p>
+            <a class="tr-loc" href="https://www.google.com/maps/search/?api=1&amp;query=Global%20Village%20Dubai" target="_blank" rel="noopener"><svg><use href="#i-pin"/></svg><span data-i18n="tr_loc">View location</span></a>
+          </div></div></div>
+        </li>
+        </ul>
       </div>
     </div>
+    <div class="sec-orn rv" aria-hidden="true"></div>
   </section>
 
   <!-- 12 Contact -->
-  <section id="contact" class="dark" aria-labelledby="contactTitle">
+  <section id="contact" class="dark ct-sec" aria-labelledby="contactTitle">
     <div class="edge top navy"><svg><use href="#i-edge"/></svg></div>
     <div class="wrap center wide">
-      <p class="eyebrow rv" data-i18n="contact_eyebrow">Guest assistance</p>
-      <h2 id="contactTitle" class="rv" data-i18n="contact_title">Need help?</h2>
+      <p class="eyebrow rv" data-i18n="contact_title">Need help?</p>
+      <div class="ct-top rv">
+      <svg class="ct-hero" viewBox="0 0 360 232" aria-hidden="true">
+        <defs>
+          <radialGradient id="ctRing" cx="50%" cy="40%" r="62%"><stop offset="0" stop-color="#22397A"/><stop offset="1" stop-color="#0A1230"/></radialGradient>
+          <radialGradient id="ctBub" cx="40%" cy="35%" r="70%"><stop offset="0" stop-color="#1C2A57"/><stop offset="1" stop-color="#070C22"/></radialGradient>
+          <linearGradient id="ctGold" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#FFF1C2"/><stop offset=".5" stop-color="#E2B455"/><stop offset="1" stop-color="#A9741E"/></linearGradient>
+          <linearGradient id="ctSkin" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#F6D7B8"/><stop offset="1" stop-color="#DDAE86"/></linearGradient>
+          <linearGradient id="ctSuit" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#323847"/><stop offset="1" stop-color="#0E1117"/></linearGradient>
+          <filter id="ctGlow" x="-60%" y="-60%" width="220%" height="220%"><feGaussianBlur stdDeviation="3.2" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+          <filter id="ctHalo" x="-60%" y="-60%" width="220%" height="220%"><feGaussianBlur stdDeviation="7"/></filter>
+        </defs>
+        <g class="ct-dots" fill="none">
+          <path d="M84 30 Q180 -14 276 30"/><path d="M86 54 Q118 44 146 58"/><path d="M274 54 Q242 44 214 58"/>
+          <path d="M70 132 Q92 128 112 120"/><path d="M290 132 Q268 128 248 120"/>
+        </g>
+        <circle class="ct-halo" cx="180" cy="104" r="72" fill="none" stroke="#57B4FF" stroke-width="8" filter="url(#ctHalo)"/>
+        <circle cx="180" cy="104" r="70" fill="url(#ctRing)" stroke="#6CC0FF" stroke-width="2.6" filter="url(#ctGlow)"/>
+        <g class="ct-agent">
+          <path d="M94 232C96 198 120 174 160 161L180 192L200 161C240 174 264 198 266 232Z" fill="url(#ctSuit)" stroke="rgba(255,255,255,.12)"/>
+          <path d="M160 162L175 202L167 232M200 162L185 202L193 232" fill="none" stroke="rgba(255,255,255,.2)" stroke-width="1.6"/>
+          <path d="M166 133H194L195 157L180 170L165 157Z" fill="#D2A27B"/>
+          <path d="M163 156L180 188L197 156L191 150L180 170L169 150Z" fill="#F5F6F8"/>
+          <path d="M176 172H184L187 180L183 218L180 224L177 218L173 180Z" fill="#14151A" stroke="rgba(255,255,255,.12)" stroke-width=".8"/>
+          <path d="M175 166H185L183 174H177Z" fill="#23252C"/>
+          <ellipse cx="180" cy="104" rx="26" ry="31" fill="url(#ctSkin)"/>
+          <path d="M153 102C149 76 163 64 181 64C201 64 213 78 208 100C203 89 195 83 185 85C176 79 162 83 156 98Z" fill="#1D1E25"/>
+          <path d="M151 106C149 70 211 70 209 106" fill="none" stroke="url(#ctGold)" stroke-width="6" stroke-linecap="round" filter="url(#ctGlow)"/>
+          <rect x="140" y="95" width="19" height="29" rx="8" fill="url(#ctGold)"/><rect x="144" y="100" width="11" height="19" rx="5" fill="#2A2620"/>
+          <rect x="201" y="95" width="19" height="29" rx="8" fill="url(#ctGold)"/><rect x="205" y="100" width="11" height="19" rx="5" fill="#2A2620"/>
+          <path d="M150 122C152 135 161 141 172 139" fill="none" stroke="url(#ctGold)" stroke-width="3" stroke-linecap="round"/>
+          <circle cx="174" cy="138.5" r="4" fill="#1B1B1F" stroke="#E2B455" stroke-width="1.4"/>
+        </g>
+        <g class="ct-bub" style="--c:#F5C451"><circle class="ct-bh" cx="62" cy="46" r="27" fill="none" stroke="#F5C451" stroke-width="7" filter="url(#ctHalo)"/>
+          <circle cx="62" cy="46" r="26" fill="url(#ctBub)" stroke="#F5C451" stroke-width="2.4" filter="url(#ctGlow)"/>
+          <rect x="48" y="36" width="28" height="20" rx="3" fill="#F5C451"/><path d="M49 38L62 48L75 38" fill="none" stroke="#8A5A12" stroke-width="2" stroke-linejoin="round"/></g>
+        <g class="ct-bub" style="--c:#34E08A"><circle class="ct-bh" cx="298" cy="46" r="27" fill="none" stroke="#34E08A" stroke-width="7" filter="url(#ctHalo)"/>
+          <circle cx="298" cy="46" r="26" fill="url(#ctBub)" stroke="#34E08A" stroke-width="2.4" filter="url(#ctGlow)"/>
+          <rect x="284" y="34" width="28" height="20" rx="9" fill="#34E08A"/><path d="M289 51L287 61L298 53Z" fill="#34E08A"/>
+          <circle cx="291" cy="44" r="2.3" fill="#0B2A1A"/><circle cx="298" cy="44" r="2.3" fill="#0B2A1A"/><circle cx="305" cy="44" r="2.3" fill="#0B2A1A"/></g>
+        <g class="ct-bub" style="--c:#57B4FF"><circle class="ct-bh" cx="44" cy="132" r="27" fill="none" stroke="#57B4FF" stroke-width="7" filter="url(#ctHalo)"/>
+          <circle cx="44" cy="132" r="26" fill="url(#ctBub)" stroke="#57B4FF" stroke-width="2.4" filter="url(#ctGlow)"/>
+          <g transform="translate(31 119) scale(1.08)" fill="#D8EAFF"><path d="M6.6 10.8a15.1 15.1 0 0 0 6.6 6.6l2.2-2.2c.3-.3.7-.4 1-.25 1.1.37 2.3.57 3.6.57.55 0 1 .45 1 1V20c0 .55-.45 1-1 1C10.6 21 3 13.4 3 4c0-.55.45-1 1-1h3.5c.55 0 1 .45 1 1 0 1.25.2 2.45.57 3.57.1.35 0 .74-.25 1z"/></g></g>
+        <g class="ct-bub" style="--c:#FF5C7A"><circle class="ct-bh" cx="316" cy="132" r="27" fill="none" stroke="#FF5C7A" stroke-width="7" filter="url(#ctHalo)"/>
+          <circle cx="316" cy="132" r="26" fill="url(#ctBub)" stroke="#FF5C7A" stroke-width="2.4" filter="url(#ctGlow)"/>
+          <g transform="translate(303 118) scale(1.08)" fill="#FF8AA0"><path d="M12 2C8.1 2 5 5.1 5 9c0 5.2 7 13 7 13s7-7.8 7-13c0-3.9-3.1-7-7-7zm0 9.5a2.5 2.5 0 1 1 0-5 2.5 2.5 0 0 1 0 5z"/></g></g>
+        <g class="ct-spark" fill="#FFF1C2"><path d="M120 12l1.4 4 4 1.4-4 1.4-1.4 4-1.4-4-4-1.4 4-1.4z"/><path d="M252 10l1 3 3 1-3 1-1 3-1-3-3-1 3-1z"/><path d="M18 84l1 3 3 1-3 1-1 3-1-3-3-1 3-1z"/><path d="M340 86l1.2 3.4 3.4 1.2-3.4 1.2-1.2 3.4-1.2-3.4-3.4-1.2 3.4-1.2z"/></g>
+      </svg>
+        <h2 id="contactTitle" class="ct-plate"><span class="ct-a" data-i18n="ct_title_a">Contact</span> <span class="ct-b" data-i18n="ct_title_b">Us</span></h2>
+      </div>
       <p class="lede rv" data-i18n="contact_lede">For anything about the day, travel or your reply, please get in touch.</p>
-      <div class="cards">
-        <div class="card rv"><h3><span class="ph" data-tag="Placeholder" data-i18n="ph_contact1">Contact name</span></h3><p class="note-sm"><span class="ph" data-tag="Placeholder" data-i18n="ph_role1">Role, e.g. Bride's family</span></p><p><span class="ph" data-tag="Placeholder">+971 ·· ··· ····</span></p></div>
-        <div class="card rv" style="--st:.08s"><h3><span class="ph" data-tag="Placeholder" data-i18n="ph_contact2">Contact name</span></h3><p class="note-sm"><span class="ph" data-tag="Placeholder" data-i18n="ph_role2">Role, e.g. Groom's family</span></p><p><span class="ph" data-tag="Placeholder">+971 ·· ··· ····</span></p></div>
+      <div class="ct-tl" id="ctTl">
+        <span class="ct-line" aria-hidden="true"><span class="ct-fill"></span></span>
+        <span class="ct-cap top" aria-hidden="true"><svg viewBox="0 0 32 29" aria-hidden="true"><path d="M16 28.5C6.4 21.2 0 15.7 0 8.9 0 3.9 3.8 0 8.6 0c3 0 5.7 1.5 7.4 4 1.7-2.5 4.4-4 7.4-4C28.2 0 32 3.9 32 8.9c0 6.8-6.4 12.3-16 19.6z"/></svg></span>
+        <span class="ct-cap bottom" aria-hidden="true"><svg viewBox="0 0 32 29" aria-hidden="true"><path d="M16 28.5C6.4 21.2 0 15.7 0 8.9 0 3.9 3.8 0 8.6 0c3 0 5.7 1.5 7.4 4 1.7-2.5 4.4-4 7.4-4C28.2 0 32 3.9 32 8.9c0 6.8-6.4 12.3-16 19.6z"/></svg></span>
+        <span class="ct-mover" aria-hidden="true"><svg viewBox="0 0 32 29" aria-hidden="true"><path d="M16 28.5C6.4 21.2 0 15.7 0 8.9 0 3.9 3.8 0 8.6 0c3 0 5.7 1.5 7.4 4 1.7-2.5 4.4-4 7.4-4C28.2 0 32 3.9 32 8.9c0 6.8-6.4 12.3-16 19.6z"/></svg></span>
+        <ol class="ct-list">
+        <li class="ct-row">
+          <div class="ct-card">
+            <span class="ct-ph"><img src="assets/contact/bride-father.webp" alt="" width="320" height="320" loading="lazy" decoding="async"></span>
+            <h3 class="ct-name" data-i18n="ct_bf">Bride's Father</h3>
+            <p class="ct-who" data-i18n="ct_bf_name">Mr. Yusuf Al Hashimi</p>
+            <button class="ct-tap" type="button" aria-expanded="false" aria-controls="ctD0"><span data-i18n="ct_tap">Tap here</span></button>
+            <div class="ct-det" id="ctD0" hidden>
+              <a class="ct-link call" href="tel:+971500000001"><span class="ct-ic"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M6.6 10.8a15.1 15.1 0 0 0 6.6 6.6l2.2-2.2c.3-.3.7-.4 1-.25 1.1.37 2.3.57 3.6.57.55 0 1 .45 1 1V20c0 .55-.45 1-1 1C10.6 21 3 13.4 3 4c0-.55.45-1 1-1h3.5c.55 0 1 .45 1 1 0 1.25.2 2.45.57 3.57.1.35 0 .74-.25 1z"/></svg></span><span><small data-i18n="ct_mobile">Mobile</small><b dir="ltr">+971 50 000 0001</b></span></a>
+              <a class="ct-link wa" href="https://wa.me/971500000001" target="_blank" rel="noopener"><span class="ct-ic"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M12 2a9.9 9.9 0 0 0-8.5 15l-1.4 5 5.2-1.4A9.9 9.9 0 1 0 12 2zm0 18.1c-1.5 0-3-.4-4.2-1.2l-.3-.2-3.1.8.8-3-.2-.3A8.2 8.2 0 1 1 12 20.1zm4.5-6.1c-.25-.12-1.47-.72-1.7-.8-.23-.08-.4-.12-.56.12-.17.25-.64.8-.79.97-.14.17-.29.19-.54.06-.25-.12-1.05-.39-2-1.23-.74-.66-1.24-1.47-1.38-1.72-.15-.25-.02-.38.11-.5.11-.11.25-.29.37-.43.13-.15.17-.25.25-.42.08-.17.04-.31-.02-.43-.06-.13-.56-1.35-.77-1.85-.2-.48-.41-.42-.56-.43h-.48c-.17 0-.43.06-.66.31-.23.25-.87.85-.87 2.07 0 1.22.89 2.4 1.01 2.57.12.17 1.75 2.67 4.24 3.74.59.26 1.05.41 1.41.52.59.19 1.13.16 1.56.1.48-.07 1.47-.6 1.67-1.18.21-.58.21-1.08.15-1.18-.06-.11-.23-.17-.48-.29z"/></svg></span><span><small data-i18n="ct_wa">WhatsApp</small><b dir="ltr">+971 50 000 0001</b></span></a>
+            </div>
+          </div>
+          <span class="ct-mini"><svg viewBox="0 0 32 29" aria-hidden="true"><path d="M16 28.5C6.4 21.2 0 15.7 0 8.9 0 3.9 3.8 0 8.6 0c3 0 5.7 1.5 7.4 4 1.7-2.5 4.4-4 7.4-4C28.2 0 32 3.9 32 8.9c0 6.8-6.4 12.3-16 19.6z"/></svg></span>
+        </li>
+        <li class="ct-row r">
+          <div class="ct-card">
+            <span class="ct-ph"><img src="assets/contact/groom-father.webp" alt="" width="320" height="320" loading="lazy" decoding="async"></span>
+            <h3 class="ct-name" data-i18n="ct_gf">Groom's Father</h3>
+            <p class="ct-who" data-i18n="ct_gf_name">Mr. Abdullah Sheikh</p>
+            <button class="ct-tap" type="button" aria-expanded="false" aria-controls="ctD1"><span data-i18n="ct_tap">Tap here</span></button>
+            <div class="ct-det" id="ctD1" hidden>
+              <a class="ct-link call" href="tel:+971500000002"><span class="ct-ic"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M6.6 10.8a15.1 15.1 0 0 0 6.6 6.6l2.2-2.2c.3-.3.7-.4 1-.25 1.1.37 2.3.57 3.6.57.55 0 1 .45 1 1V20c0 .55-.45 1-1 1C10.6 21 3 13.4 3 4c0-.55.45-1 1-1h3.5c.55 0 1 .45 1 1 0 1.25.2 2.45.57 3.57.1.35 0 .74-.25 1z"/></svg></span><span><small data-i18n="ct_mobile">Mobile</small><b dir="ltr">+971 50 000 0002</b></span></a>
+              <a class="ct-link wa" href="https://wa.me/971500000002" target="_blank" rel="noopener"><span class="ct-ic"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M12 2a9.9 9.9 0 0 0-8.5 15l-1.4 5 5.2-1.4A9.9 9.9 0 1 0 12 2zm0 18.1c-1.5 0-3-.4-4.2-1.2l-.3-.2-3.1.8.8-3-.2-.3A8.2 8.2 0 1 1 12 20.1zm4.5-6.1c-.25-.12-1.47-.72-1.7-.8-.23-.08-.4-.12-.56.12-.17.25-.64.8-.79.97-.14.17-.29.19-.54.06-.25-.12-1.05-.39-2-1.23-.74-.66-1.24-1.47-1.38-1.72-.15-.25-.02-.38.11-.5.11-.11.25-.29.37-.43.13-.15.17-.25.25-.42.08-.17.04-.31-.02-.43-.06-.13-.56-1.35-.77-1.85-.2-.48-.41-.42-.56-.43h-.48c-.17 0-.43.06-.66.31-.23.25-.87.85-.87 2.07 0 1.22.89 2.4 1.01 2.57.12.17 1.75 2.67 4.24 3.74.59.26 1.05.41 1.41.52.59.19 1.13.16 1.56.1.48-.07 1.47-.6 1.67-1.18.21-.58.21-1.08.15-1.18-.06-.11-.23-.17-.48-.29z"/></svg></span><span><small data-i18n="ct_wa">WhatsApp</small><b dir="ltr">+971 50 000 0002</b></span></a>
+            </div>
+          </div>
+          <span class="ct-mini"><svg viewBox="0 0 32 29" aria-hidden="true"><path d="M16 28.5C6.4 21.2 0 15.7 0 8.9 0 3.9 3.8 0 8.6 0c3 0 5.7 1.5 7.4 4 1.7-2.5 4.4-4 7.4-4C28.2 0 32 3.9 32 8.9c0 6.8-6.4 12.3-16 19.6z"/></svg></span>
+        </li>
+        <li class="ct-row">
+          <div class="ct-card">
+            <span class="ct-ph"><img src="assets/contact/coordinator.webp" alt="" width="320" height="320" loading="lazy" decoding="async"></span>
+            <h3 class="ct-name" data-i18n="ct_ec">Event Coordinator</h3>
+            <p class="ct-who" data-i18n="ct_ec_name">Planning &amp; on-the-day help</p>
+            <button class="ct-tap" type="button" aria-expanded="false" aria-controls="ctD2"><span data-i18n="ct_tap">Tap here</span></button>
+            <div class="ct-det" id="ctD2" hidden>
+              <a class="ct-link call" href="tel:+971500000003"><span class="ct-ic"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M6.6 10.8a15.1 15.1 0 0 0 6.6 6.6l2.2-2.2c.3-.3.7-.4 1-.25 1.1.37 2.3.57 3.6.57.55 0 1 .45 1 1V20c0 .55-.45 1-1 1C10.6 21 3 13.4 3 4c0-.55.45-1 1-1h3.5c.55 0 1 .45 1 1 0 1.25.2 2.45.57 3.57.1.35 0 .74-.25 1z"/></svg></span><span><small data-i18n="ct_mobile">Mobile</small><b dir="ltr">+971 50 000 0003</b></span></a>
+              <a class="ct-link wa" href="https://wa.me/971500000003" target="_blank" rel="noopener"><span class="ct-ic"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M12 2a9.9 9.9 0 0 0-8.5 15l-1.4 5 5.2-1.4A9.9 9.9 0 1 0 12 2zm0 18.1c-1.5 0-3-.4-4.2-1.2l-.3-.2-3.1.8.8-3-.2-.3A8.2 8.2 0 1 1 12 20.1zm4.5-6.1c-.25-.12-1.47-.72-1.7-.8-.23-.08-.4-.12-.56.12-.17.25-.64.8-.79.97-.14.17-.29.19-.54.06-.25-.12-1.05-.39-2-1.23-.74-.66-1.24-1.47-1.38-1.72-.15-.25-.02-.38.11-.5.11-.11.25-.29.37-.43.13-.15.17-.25.25-.42.08-.17.04-.31-.02-.43-.06-.13-.56-1.35-.77-1.85-.2-.48-.41-.42-.56-.43h-.48c-.17 0-.43.06-.66.31-.23.25-.87.85-.87 2.07 0 1.22.89 2.4 1.01 2.57.12.17 1.75 2.67 4.24 3.74.59.26 1.05.41 1.41.52.59.19 1.13.16 1.56.1.48-.07 1.47-.6 1.67-1.18.21-.58.21-1.08.15-1.18-.06-.11-.23-.17-.48-.29z"/></svg></span><span><small data-i18n="ct_wa">WhatsApp</small><b dir="ltr">+971 50 000 0003</b></span></a>
+            </div>
+          </div>
+          <span class="ct-mini"><svg viewBox="0 0 32 29" aria-hidden="true"><path d="M16 28.5C6.4 21.2 0 15.7 0 8.9 0 3.9 3.8 0 8.6 0c3 0 5.7 1.5 7.4 4 1.7-2.5 4.4-4 7.4-4C28.2 0 32 3.9 32 8.9c0 6.8-6.4 12.3-16 19.6z"/></svg></span>
+        </li>
+        </ol>
       </div>
     </div>
+    <div class="sec-orn rv" aria-hidden="true"></div>
   </section>
 
   <!-- 13 Thanks -->
-  <section id="thanks" class="dark run" aria-labelledby="thanksTitle">
-    <div class="sky" id="thanksSky"></div>
-    <div class="wrap center">
-      <svg class="moon rv" aria-hidden="true"><use href="#moon"/></svg>
-      <h2 id="thanksTitle" class="rv" data-i18n="thanks_title">Thank you</h2>
-      <p class="lede rv" data-i18n="thanks_body">We can't wait to celebrate with you.</p>
-      <p class="names rv" style="font-size:40px"><span data-i18n="bride">Ayisha</span><span class="amp" data-i18n="amp">&amp;</span><span data-i18n="groom_short">Omar</span></p>
-      <button class="btn ghost rv" type="button" id="toTop"><svg><use href="#i-up"/></svg><span data-i18n="back_top">Back to top</span></button>
+  <section id="thanks" class="ty-sec run" aria-labelledby="thanksTitle">
+    <div class="edge top ty-edge"><svg><use href="#i-edge"/></svg></div>
+    <div class="ty-bg" aria-hidden="true">
+      <span class="ty-blob b1"></span><span class="ty-blob b2"></span><span class="ty-blob b3"></span><span class="ty-blob b4"></span>
+      <span class="ty-grid"></span><span class="ty-grid hot"></span><span class="ty-spot"></span>
+    </div>
+    <div class="wrap center ty-wrap">
+      <h2 id="thanksTitle" class="ty-title"><span class="ty-word" data-i18n="thanks_title">Thank you</span>
+        <svg class="ty-script" viewBox="43 34 2023 499" aria-hidden="true"><defs><linearGradient id="tyInk" gradientUnits="userSpaceOnUse" x1="43" y1="0" x2="2066" y2="0"><stop offset="0" stop-color="#B98A2E"/><stop offset=".3" stop-color="#E2B455"/><stop offset=".55" stop-color="#9C6B1C"/><stop offset=".8" stop-color="#D9A441"/><stop offset="1" stop-color="#A9741E"/></linearGradient><radialGradient id="tyPen"><stop offset="0" stop-color="#FFFFFF"/><stop offset=".35" stop-color="#FFF1C2"/><stop offset="1" stop-color="#F1C761" stop-opacity="0"/></radialGradient></defs><g class="ty-ink" fill="none" stroke="url(#tyInk)" stroke-width="16" stroke-linecap="round" stroke-linejoin="round"><path class="ty-s" d="M201 139C200 140 199 144 197 147C195 150 193 152 191 155C189 157 188 159 186 161C184 163 182 166 180 168C178 170 176 172 174 174C171 176 169 178 167 180C164 182 162 184 160 185C157 187 154 188 152 189C149 191 146 192 143 192C141 193 138 194 135 195C132 195 129 196 126 196C123 196 120 196 117 196C114 196 111 195 108 195C106 194 103 194 100 193C97 192 95 190 92 189C90 187 87 186 85 184C82 182 80 180 78 178C76 176 73 174 72 172C70 170 68 168 66 165C64 163 63 160 62 158C60 155 60 152 59 149C58 147 58 144 57 141C57 138 57 135 57 132C57 129 57 126 57 123C57 120 58 117 58 114C59 111 60 108 61 106C62 103 63 100 64 97C65 95 67 92 69 90C70 87 72 85 74 83C76 80 78 78 80 76C82 74 84 72 87 70C89 68 91 67 94 65C96 63 99 62 102 60C104 59 107 58 110 57C112 55 115 54 118 53C121 53 124 52 127 51C130 51 132 50 135 50C138 49 141 49 144 49C147 49 150 48 153 48C156 48 159 48 162 49C165 49 168 49 171 49C174 50 177 50 180 50C183 51 186 51 189 52C192 52 195 53 198 54C201 54 204 55 207 56C209 56 212 57 215 58C218 59 221 59 224 60C227 61 230 62 233 63C236 63 238 64 241 65C244 66 247 67 250 68C253 69 256 69 259 70C261 71 264 72 267 73C270 74 273 75 276 76C279 77 281 78 284 78C287 79 290 80 293 81C296 82 299 83 302 83C304 84 307 85 310 86C313 87 316 87 319 88C322 89 325 90 328 90C331 91 333 92 336 93C339 93 342 94 345 95C348 96 351 96 354 97C357 98 359 98 362 99C365 99 368 100 371 100C374 101 377 101 379 101C382 102 385 102 388 102C391 103 394 103 397 103C400 103 403 104 406 104C409 104 412 104 415 104C418 104 421 104 424 103C427 103 430 103 433 103C436 102 439 102 442 102C445 101 448 101 451 100C454 100 457 99 459 99C462 98 465 97 468 96C470 95 473 94 475 93C478 91 480 90 482 88C484 87 486 86 488 84C491 82 494 80 496 79C499 77 501 74 502 73"/><path class="ty-s" d="M397 74C396 75 392 78 390 80C388 82 385 85 383 87C381 89 380 90 378 92C376 94 374 96 372 98C370 100 368 102 366 104C365 106 363 108 362 111C361 113 360 116 358 118C357 121 356 124 355 127C354 129 353 132 352 135C352 138 351 141 350 144C349 147 349 150 348 153C348 156 347 158 347 161C346 164 346 167 346 170C346 173 345 176 345 179C345 182 345 185 344 188C344 191 344 194 344 197C344 200 344 203 343 206C343 209 343 212 343 215C343 218 343 221 343 224C342 227 342 230 342 233C342 236 342 239 342 242C341 245 341 248 341 251C341 254 340 257 340 260C340 263 340 266 339 269C339 272 338 275 338 278C337 281 336 284 335 287C335 289 334 292 333 295C332 298 330 301 329 303C328 306 326 309 325 311C323 314 322 316 320 318C318 321 316 323 314 325C312 327 310 330 308 332C306 334 303 336 301 337C299 339 296 341 294 342C291 344 288 345 286 346C283 347 280 348 277 349C274 350 272 350 269 351C266 351 263 352 260 352C257 352 254 352 251 352C248 352 245 352 242 352C239 352 236 352 233 351C230 351 227 350 224 350C221 349 218 348 215 347C213 346 210 345 207 344C204 343 202 341 199 340C197 339 194 337 192 335C189 334 187 332 185 330C182 328 180 326 178 324C176 322 174 321 172 318C170 316 167 313 165 311C163 309 162 307 161 306"/><path class="ty-s" d="M427 267C427 266 425 262 425 259C424 256 425 252 425 249C425 246 425 244 425 241C425 238 425 235 425 232C425 229 425 226 425 223C425 220 425 217 425 214C425 211 425 208 425 205C425 202 425 199 425 196C425 193 425 190 425 187C425 184 426 181 426 178C426 175 426 172 426 169C426 166 426 163 426 160C426 157 426 154 427 151C427 148 427 145 427 142C427 139 427 136 428 133C428 130 428 127 428 124C429 121 429 118 429 115C430 112 430 109 431 106C431 103 432 100 433 98C434 95 434 92 435 89C436 86 437 83 438 81C439 78 440 75 442 73C443 71 445 69 447 67C449 66 451 64 454 64C456 64 458 64 460 65C463 65 465 67 467 69C468 70 470 72 471 74C473 77 475 81 476 83C477 85 478 87 478 88"/><path class="ty-s" d="M477 96C477 97 478 102 478 105C479 108 478 112 478 115C478 118 478 120 478 123C478 126 477 129 477 132C477 135 476 138 476 141C476 144 475 147 475 150C474 153 474 156 473 158C473 161 472 164 471 167C471 170 470 173 469 176C469 179 468 182 467 185C466 188 466 191 465 193C464 196 463 199 462 202C461 205 460 208 459 211C458 213 457 216 456 219C455 222 454 225 453 227C452 230 451 233 450 236C449 239 447 241 446 244C445 247 443 249 442 252C440 254 438 256 437 259C435 261 433 263 432 266C430 268 429 271 428 273C427 276 426 278 426 281C425 284 425 287 425 290C424 293 424 296 424 299C424 302 424 305 425 308C425 311 425 314 425 317C425 319 426 322 426 325C427 327 428 330 429 331C430 333 431 334 433 334C434 334 436 334 438 333C439 331 441 329 443 327C445 325 446 323 448 320C449 318 451 315 452 313C454 310 455 308 457 305C459 303 460 300 462 298C464 295 466 293 467 290C469 288 471 286 473 283C475 281 477 279 479 277C481 275 483 273 486 272C488 270 490 269 492 269C494 269 497 269 499 270C500 271 502 273 503 275C504 277 505 279 506 282C507 285 507 288 507 290C507 293 507 296 507 299C507 302 507 305 507 308C507 311 507 314 507 317C508 320 508 323 509 326C510 328 511 331 512 333C514 335 516 337 518 339C520 340 522 341 525 342C527 343 530 343 533 342C535 342 538 341 541 340C543 339 546 337 548 335C550 334 553 332 555 330C557 328 559 326 561 324C564 322 566 320 568 317C569 315 571 313 573 311C575 308 576 306 578 303C579 301 580 298 582 295C583 293 584 290 586 287C587 285 589 282 591 280C592 278 594 275 596 273C598 271 601 269 603 268C605 266 608 265 611 264C613 263 616 262 619 261C622 261 625 261 627 260C630 260 632 261 635 261C638 261 643 262 645 263C647 263 648 264 648 264"/><path class="ty-s" d="M576 314C577 315 578 319 579 322C581 325 582 328 584 330C585 333 587 334 589 336C591 337 593 339 595 340C598 341 600 341 603 342C606 342 608 341 611 340C614 340 616 338 619 337C621 335 624 334 626 332C628 331 631 329 633 328C635 327 637 327 640 327C642 327 644 327 646 328C648 329 650 331 652 333C654 334 656 336 658 338C661 339 663 341 666 341C668 342 671 343 674 342C676 342 679 342 682 341C684 340 687 339 689 337C692 336 694 334 696 332C698 330 700 328 702 326C704 323 706 321 708 319C710 316 712 314 713 311C715 309 716 306 718 304C719 301 721 298 722 296C724 293 725 290 726 288C728 285 729 282 730 280C732 277 733 274 735 272C737 270 738 267 740 265C742 264 744 262 746 261C748 260 750 260 751 260C753 261 755 262 756 264C757 265 758 268 758 270C759 273 759 276 759 279C760 282 759 285 759 288C759 291 759 294 759 297C758 300 758 303 758 306C758 309 758 312 758 315C758 317 758 320 758 323C759 325 759 328 760 329C761 331 762 332 764 332C765 332 767 332 769 331C771 330 772 328 774 326C776 324 778 321 779 319C781 316 782 314 784 311C785 309 787 306 788 303C790 301 792 298 793 296C795 293 797 291 798 288C800 286 802 284 804 281C806 279 808 277 810 275C812 273 814 271 816 270C819 269 821 268 823 268C826 268 828 268 830 269C832 271 833 272 834 274C836 276 836 279 837 282C837 284 838 287 838 290C838 293 838 296 838 299C838 302 837 305 837 308C838 311 838 314 838 317C838 320 839 323 840 326C840 328 841 331 843 333C844 335 846 338 848 339C850 341 852 342 855 342C857 343 860 343 863 342C865 342 868 341 871 340C873 339 876 337 878 336C881 334 883 332 885 330C887 328 889 326 891 324C894 322 896 320 898 317C899 315 901 313 903 311C905 308 907 306 908 303C909 301 910 298 911 296C912 293 912 290 913 287C913 284 913 281 914 278C914 275 914 272 914 269C914 266 914 263 914 260C914 257 914 254 914 251C914 248 915 245 915 242C915 239 915 236 915 233C915 230 915 227 915 224C915 221 915 218 915 215C915 212 915 209 915 206C915 203 915 200 915 197C915 194 915 191 915 188C915 185 916 182 916 179C916 176 916 173 916 170C916 167 916 164 916 161C916 158 916 155 916 152C916 149 916 146 916 143C916 140 916 137 916 134C916 131 916 128 916 125C916 122 916 119 916 116C916 113 916 110 917 107C917 104 917 101 917 98C917 96 917 94 917 91C917 88 917 83 917 80C917 78 917 76 917 75"/><path class="ty-s" d="M911 308C912 309 913 315 914 316C915 318 918 317 920 317C921 317 923 316 924 315C926 314 928 312 929 310C931 308 932 305 933 303C935 300 936 298 938 295C939 292 941 290 942 287C944 285 945 282 947 280C949 277 951 275 953 273C955 271 957 269 959 267C961 265 964 264 966 263C969 262 972 261 974 261C977 260 980 261 982 261C984 262 987 263 988 265C990 267 992 269 993 271C994 274 994 276 994 279C994 282 994 284 993 287C992 289 991 292 989 294C987 297 986 299 983 301C981 303 979 305 977 307C974 308 972 310 969 311C967 313 964 315 962 316C961 318 959 320 957 322C956 324 956 326 956 328C956 330 957 332 958 334C959 336 961 339 963 340C965 342 968 343 970 345C973 346 976 346 978 347C981 348 984 348 987 348C990 348 993 348 996 347C999 347 1002 346 1004 345C1007 344 1010 343 1013 342C1015 341 1018 339 1020 337C1023 336 1025 334 1027 332C1030 330 1032 328 1034 326C1036 324 1038 322 1040 319C1042 317 1043 315 1045 312C1047 310 1048 308 1050 306C1051 303 1054 300 1055 297C1057 295 1058 292 1059 291"/><path class="ty-s" d="M1219 253C1218 253 1213 252 1210 250C1208 249 1204 247 1202 246C1199 244 1197 243 1195 241C1193 240 1190 238 1188 236C1186 234 1184 232 1182 229C1180 227 1178 225 1176 222C1175 220 1173 217 1172 215C1170 212 1169 209 1168 207C1167 204 1166 201 1165 198C1164 195 1164 193 1163 190C1163 187 1162 184 1162 181C1162 178 1162 175 1161 172C1161 169 1162 166 1162 163C1162 160 1162 157 1163 154C1163 151 1163 148 1164 145C1164 142 1165 139 1166 136C1167 133 1168 131 1169 128C1170 125 1171 122 1172 120C1173 117 1175 114 1176 112C1178 109 1179 107 1181 104C1183 102 1185 99 1187 97C1189 95 1191 93 1193 91C1195 89 1197 87 1199 85C1202 83 1204 81 1206 79C1209 78 1211 76 1214 75C1217 73 1219 72 1222 70C1225 69 1227 68 1230 67C1233 66 1236 65 1239 65C1242 64 1245 63 1248 63C1250 62 1253 62 1256 62C1259 62 1262 62 1265 62C1268 62 1271 62 1274 62C1277 63 1280 63 1283 64C1286 65 1289 66 1291 67C1294 68 1296 69 1299 71C1301 73 1304 74 1306 76C1308 78 1310 80 1313 82C1315 84 1317 87 1318 89C1320 91 1322 94 1324 96C1325 99 1327 101 1328 104C1329 106 1330 109 1331 112C1332 115 1333 118 1334 121C1334 124 1335 126 1335 129C1335 132 1335 135 1335 138C1336 141 1335 144 1335 147C1335 150 1335 153 1335 156C1334 159 1334 162 1333 165C1333 168 1332 171 1332 174C1331 177 1331 180 1330 183C1330 186 1329 189 1328 192C1328 195 1327 198 1327 201C1326 203 1325 206 1325 209C1324 212 1324 215 1323 218C1322 221 1322 224 1321 227C1321 230 1320 233 1319 236C1319 239 1318 242 1318 245C1317 248 1317 251 1316 254C1316 256 1315 259 1315 262C1315 265 1314 268 1314 271C1314 274 1313 277 1313 280C1313 283 1313 286 1313 289C1313 292 1313 295 1313 298C1313 301 1313 304 1314 307C1314 310 1315 313 1316 316C1316 319 1317 321 1319 324C1320 327 1321 329 1323 332C1324 334 1326 336 1328 339C1330 341 1332 343 1335 344C1337 346 1340 347 1342 349C1345 350 1348 351 1350 352C1353 352 1356 353 1359 353C1362 353 1365 353 1368 353C1371 353 1374 353 1377 352C1380 352 1382 351 1385 350C1388 349 1391 348 1393 347C1396 345 1399 344 1401 342C1403 340 1406 339 1408 337C1411 335 1413 333 1415 331C1417 329 1419 327 1421 325C1423 322 1425 320 1427 318C1429 315 1431 313 1433 311C1435 308 1436 306 1438 303C1440 301 1441 299 1443 296C1445 294 1446 291 1448 288C1449 286 1451 283 1452 281C1454 278 1455 275 1457 273C1458 270 1459 267 1461 265C1462 262 1463 259 1465 257C1466 254 1467 251 1468 248C1469 246 1470 243 1471 240C1473 237 1474 234 1475 232C1476 229 1478 226 1479 224C1480 221 1482 219 1483 216C1484 213 1486 211 1487 208C1488 205 1489 203 1490 200C1491 197 1492 194 1493 191C1494 188 1494 186 1495 183C1496 180 1496 177 1497 174C1497 171 1498 168 1499 165C1499 162 1500 159 1500 156C1501 153 1501 150 1502 147C1503 144 1503 141 1504 138C1504 136 1505 132 1505 130C1506 127 1506 125 1507 122C1507 119 1508 115 1509 112C1509 109 1510 106 1510 105"/><path class="ty-s" d="M1490 213C1490 214 1493 218 1493 221C1493 224 1492 228 1492 231C1492 234 1492 236 1492 239C1492 242 1492 245 1491 248C1491 251 1491 254 1491 257C1491 260 1490 263 1490 266C1490 269 1490 272 1490 275C1490 278 1489 281 1489 284C1489 287 1489 290 1489 293C1489 296 1489 299 1489 302C1489 305 1489 308 1489 311C1489 314 1489 317 1490 320C1490 323 1490 326 1490 329C1490 332 1490 335 1491 338C1491 341 1491 344 1491 347C1491 350 1492 353 1492 356C1492 359 1492 362 1492 365C1493 368 1493 371 1493 374C1493 377 1493 380 1493 383C1493 386 1493 389 1493 392C1493 395 1493 398 1493 401C1493 404 1493 407 1493 410C1493 413 1493 416 1493 419C1493 422 1493 425 1493 428C1492 431 1492 434 1492 437C1491 440 1491 442 1490 445C1490 448 1489 451 1488 454C1488 457 1487 460 1486 463C1485 466 1484 469 1483 471C1482 474 1481 477 1480 480C1478 482 1477 485 1475 487C1474 490 1472 492 1470 494C1468 497 1466 499 1464 501C1462 502 1459 504 1457 506C1454 507 1451 508 1449 509C1446 510 1443 511 1440 511C1437 511 1435 511 1432 511C1429 511 1426 510 1423 509C1421 508 1418 507 1416 506C1413 504 1411 502 1409 500C1407 498 1405 496 1403 494C1402 491 1400 489 1399 486C1398 483 1397 481 1397 478C1396 475 1396 472 1396 469C1396 466 1396 463 1397 460C1397 457 1398 454 1398 452C1399 449 1400 446 1401 443C1402 440 1403 438 1405 435C1406 432 1407 430 1409 427C1410 424 1412 422 1414 420C1415 417 1417 415 1419 412C1421 410 1423 408 1425 406C1427 403 1429 401 1431 399C1433 397 1436 395 1438 393C1440 391 1443 389 1445 388C1447 386 1450 384 1452 382C1454 380 1457 378 1459 377C1462 375 1464 373 1467 372C1469 370 1471 369 1474 368C1476 366 1479 364 1482 363C1485 362 1490 362 1491 362"/><path class="ty-s" d="M1492 355C1493 355 1498 353 1501 353C1504 352 1507 351 1510 350C1513 349 1515 349 1518 348C1521 347 1524 346 1527 346C1530 345 1532 344 1535 344C1538 343 1541 342 1544 341C1547 340 1551 339 1552 339"/><path class="ty-s" d="M1602 266C1601 267 1597 269 1594 271C1592 273 1590 276 1588 278C1586 280 1585 282 1583 284C1582 287 1580 289 1579 292C1578 295 1578 298 1577 300C1577 303 1576 306 1576 309C1576 312 1577 315 1577 318C1578 321 1579 323 1580 326C1581 329 1582 331 1584 333C1586 335 1588 338 1590 339C1592 341 1595 342 1597 344C1600 345 1603 346 1605 346C1608 346 1611 347 1614 346C1617 346 1620 346 1622 345C1625 344 1628 343 1630 341C1633 340 1635 338 1637 336C1639 334 1641 332 1643 330C1645 327 1646 325 1647 322C1649 320 1650 317 1651 314C1652 311 1652 309 1653 306C1653 303 1654 300 1654 297C1654 294 1654 291 1653 288C1653 285 1652 282 1651 280C1650 277 1649 274 1648 272C1646 270 1645 268 1643 266C1641 265 1639 264 1637 264C1635 264 1632 265 1631 266C1629 267 1628 269 1627 271C1626 273 1625 276 1625 279C1625 281 1625 284 1625 287C1626 290 1627 292 1628 295C1630 297 1631 300 1633 302C1635 304 1637 306 1639 308C1641 310 1644 311 1646 313C1649 314 1651 315 1654 316C1657 317 1659 318 1662 318C1665 318 1668 318 1671 318C1674 318 1677 317 1679 317C1682 316 1685 315 1688 314C1690 313 1693 311 1695 310C1698 308 1700 306 1702 304C1704 302 1706 300 1707 298C1709 295 1710 293 1711 290C1712 287 1714 284 1715 282C1716 279 1716 277 1718 274C1719 272 1720 268 1722 265C1723 263 1724 260 1725 259"/><path class="ty-s" d="M1708 307C1708 308 1710 313 1710 316C1711 319 1712 322 1713 325C1714 327 1715 329 1717 331C1718 333 1720 336 1722 337C1725 339 1727 340 1730 341C1732 341 1735 342 1737 341C1740 341 1743 340 1745 339C1748 338 1750 337 1753 335C1755 334 1757 332 1759 330C1761 328 1763 325 1765 323C1767 321 1768 318 1769 316C1770 313 1771 310 1772 307C1773 305 1773 302 1774 299C1774 296 1775 293 1775 290C1775 287 1775 285 1776 282C1776 279 1776 275 1776 272C1777 269 1777 265 1777 264"/><path class="ty-s" d="M1773 320C1774 321 1777 324 1779 327C1781 329 1783 332 1785 334C1787 336 1789 337 1791 339C1793 340 1796 341 1798 342C1801 343 1804 343 1806 343C1809 343 1812 342 1815 341C1817 340 1820 339 1822 337C1825 336 1827 334 1829 332C1832 330 1834 328 1836 326C1837 324 1839 321 1841 319C1843 316 1844 314 1846 311C1847 309 1848 307 1850 305C1851 302 1854 298 1855 296C1856 293 1857 292 1857 291"/><path class="ty-s sw" d="M1442.1 511.7C1592.1 519.7 1742.1 489.7 1862.1 449.7S2002.1 383.7 2052.1 361.7"/></g><circle class="ty-pen" r="22" fill="url(#tyPen)" cx="-99" cy="-99"/></svg></h2>
+      <p class="ty-q ty-step" data-i18n="ty_quote">“Thank you for blessing our journey with your love and prayers. Your presence will make our day complete, and we can't wait to celebrate with you.”</p>
+      <div class="ty-hearts ty-step">
+        <svg class="ty-hearts-svg" viewBox="0 0 440 330" aria-hidden="true">
+  <defs>
+    <linearGradient id="thGold" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#FFF0BE"/><stop offset=".28" stop-color="#E3B455"/><stop offset=".55" stop-color="#9E6A1C"/><stop offset=".78" stop-color="#F2CF79"/><stop offset="1" stop-color="#A5701F"/></linearGradient>
+    <linearGradient id="thGoldV" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#FFE9A8"/><stop offset=".5" stop-color="#D49E3E"/><stop offset="1" stop-color="#8E5E17"/></linearGradient>
+    <radialGradient id="thRed" cx="50%" cy="46%" r="62%"><stop offset="0" stop-color="#C8202F"/><stop offset=".62" stop-color="#9C1220"/><stop offset="1" stop-color="#5E0812"/></radialGradient>
+    <path id="thHeart" d="M0 82C-52 44-100 14-100-30C-100-66-74-90-45-90C-23-90-7-77 0-59C7-77 23-90 45-90C74-90 100-66 100-30C100 14 52 44 0 82Z"/>
+    <filter id="thSh" x="-30%" y="-30%" width="160%" height="160%"><feDropShadow dx="0" dy="6" stdDeviation="7" flood-color="#5E0812" flood-opacity=".35"/></filter>
+  </defs>
+  <g class="th-h l" filter="url(#thSh)"><g transform="translate(118 196) rotate(-7)">
+    <use href="#thHeart" fill="url(#thRed)" stroke="url(#thGold)" stroke-width="11"/>
+    <use href="#thHeart" fill="none" stroke="#FFE7A6" stroke-opacity=".55" stroke-width="1.6" transform="scale(.9)"/>
+    <ellipse cx="-46" cy="-50" rx="26" ry="13" fill="#fff" opacity=".16" transform="rotate(-30 -46 -50)"/></g></g>
+  <g class="th-h r" filter="url(#thSh)"><g transform="translate(322 196) rotate(7)">
+    <use href="#thHeart" fill="url(#thRed)" stroke="url(#thGold)" stroke-width="11"/>
+    <use href="#thHeart" fill="none" stroke="#FFE7A6" stroke-opacity=".55" stroke-width="1.6" transform="scale(.9)"/>
+    <ellipse cx="-46" cy="-50" rx="26" ry="13" fill="#fff" opacity=".16" transform="rotate(-30 -46 -50)"/></g></g>
+  <g class="th-bow" transform="translate(220 72) scale(1.32) translate(-220 -72)">
+    <path d="M220 104v-26" stroke="url(#thGoldV)" stroke-width="6" stroke-linecap="round"/>
+    <ellipse cx="220" cy="112" rx="9" ry="11" fill="none" stroke="url(#thGold)" stroke-width="5"/>
+    <path d="M214 62C190 54 172 66 176 84L198 70C202 78 210 76 214 70Z" fill="none"/>
+    <path d="M217 60C196 34 152 24 138 40C126 54 146 76 216 66Z" fill="url(#thGold)" stroke="#8E5E17" stroke-width="1.2"/>
+    <path d="M223 60C244 34 288 24 302 40C314 54 294 76 224 66Z" fill="url(#thGold)" stroke="#8E5E17" stroke-width="1.2"/>
+    <path d="M206 54C186 42 158 40 150 48C170 48 190 54 206 62Z" fill="#8E5E17" opacity=".45"/>
+    <path d="M234 54C254 42 282 40 290 48C270 48 250 54 234 62Z" fill="#8E5E17" opacity=".45"/>
+    <path d="M213 68C200 84 182 100 160 112L176 116L172 128C192 112 208 92 219 72Z" fill="url(#thGoldV)" stroke="#8E5E17" stroke-width="1.2"/>
+    <path d="M227 68C240 84 258 100 280 112L264 116L268 128C248 112 232 92 221 72Z" fill="url(#thGoldV)" stroke="#8E5E17" stroke-width="1.2"/>
+    <rect x="209" y="52" width="22" height="20" rx="7" fill="url(#thGold)" stroke="#8E5E17" stroke-width="1.2"/>
+  </g>
+</svg>
+        <span class="ty-nm l" data-i18n="bride">Ayisha</span><span class="ty-nm r" data-i18n="groom_short">Omar</span>
+      </div>
+      <div class="ty-date ty-step">
+        <p class="ty-save" data-i18n="ty_save">Save the Date</p>
+        <p class="ty-d" dir="ltr">15 · 11 · 2026</p>
+        <p class="ty-div" aria-hidden="true"><span></span><svg viewBox="0 0 32 29"><path d="M16 28.5C6.4 21.2 0 15.7 0 8.9 0 3.9 3.8 0 8.6 0c3 0 5.7 1.5 7.4 4 1.7-2.5 4.4-4 7.4-4C28.2 0 32 3.9 32 8.9c0 6.8-6.4 12.3-16 19.6z"/></svg><span></span></p>
+      </div>
+      <div class="ty-couple ty-step"><img src="assets/thanks/couple.webp" width="644" height="700" alt="The bride and groom walking side by side" data-i18n-alt="ty_couple_alt" loading="lazy" decoding="async"></div>
+      <button class="ty-top ty-step" type="button" id="toTop"><span data-i18n="ty_top">Return to top</span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 19V5M6 11l6-6 6 6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
     </div>
   </section>
 
@@ -1513,7 +1977,7 @@ html[lang="hi"] .eyebrow,html[lang="hi"] .btn,html[lang="hi"] .badge,html[lang="
 /* ---------- desktop: iPhone 17 Pro Max mockup ---------- */
 if(document.documentElement.classList.contains("mock")){
   var mk=document.createElement("div"); mk.id="mockup"; mk.className="mockup";
-  var src=location.pathname+"?inframe=1"+location.hash;
+  var src=location.pathname+"?inframe=1"+(/[?&]test=1/.test(location.search)?"&test=1":"")+location.hash;
   mk.innerHTML='<canvas class="mk-sky" aria-hidden="true"></canvas><div class="mk-pattern" aria-hidden="true"></div><div class="mk-moonglow" aria-hidden="true"></div><div class="mk-moon" aria-hidden="true"></div>'+
     '<svg class="mk-city" viewBox="0 0 1600 240" preserveAspectRatio="xMidYMax slice" aria-hidden="true"><defs><linearGradient id="mkCity" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#0C1B4A"/><stop offset="1" stop-color="#040A1E"/></linearGradient></defs>'+
     '<path fill="url(#mkCity)" d="M0 240V176h60v-22h18v22h40v-40c0-26 30-44 30-44s30 18 30 44v40h34V120h6l4-30 4 30h6v56h44v-28c0-18 22-32 22-32s22 14 22 32v28h70v-36h20v36h30v-60c0-44 54-74 54-74s54 30 54 74v60h28V108h6l4-34 4 34h6v68h60v-30c0-20 26-36 26-36s26 16 26 36v30h96v-22h22v22h40v-46c0-30 36-52 36-52s36 22 36 52v46h40V112h6l4-32 4 32h6v64h50v-26c0-16 20-28 20-28s20 12 20 28v26h80v-50c0-36 44-60 44-60s44 24 44 60v50h30V116h6l4-30 4 30h6v60h62v-24h20v24h50v-34c0-22 28-40 28-40s28 18 28 40v34h90V240z"/></svg>'+
@@ -1601,15 +2065,15 @@ couple_eyebrow:"The Families",couple_title:"Meet Our Families",fam_lead:"With jo
 events_eyebrow:"The Celebrations",events_title:"Wedding Celebrations",confirmed:"Confirmed",pending:"Pending confirmation",ev_pending_detail:"Date, time and venue to be confirmed",events_note:"Sample schedule · Please confirm details",ev_map:"View location",ev_alt:"The couple at the {e}",
 gal_eyebrow:"Gallery",gal_title:"Moments",gal_alt:"Ayisha and Omar, moment {n}",story_ch:"Chapter {n} · {y}",
 venue_eyebrow:"The Venue",directions:"Get Directions",copy_addr:"Copy address",copied:"Address copied",copy_fail:"Select the address above to copy it",ph_venue:"Venue photograph coming soon\nvenue-01.jpg · 1600 × 1000",ph_parking:"Parking and arrival note",
-travel_eyebrow:"For our guests",travel_title:"Travel & Stay",t_arrive:"Arriving in Dubai",ph_arrive:"Airport and transfer advice",t_stay:"Where to stay",ph_stay:"Recommended hotels and any group rate",t_visa:"Visas",t_visa_body:"Please check the visa requirements for your nationality before you travel.",t_getting:"Getting to the venue",ph_getting:"Taxi, ride-hailing and valet details",
+travel_eyebrow:"For our guests",travel_title:"Travel & Stay",tr_lede:"Everything you need to reach the palace, and a little of Dubai to enjoy between the celebrations.",tr_g_arrive:"Arrive",tr_g_stay:"Stay",tr_g_venue:"Celebrate",tr_g_explore:"Explore Dubai",tr_loc:"View location",tr_route:"Route to the palace",tr_air_t:"Arriving by air",tr_air_d:"Most flights land at Dubai International Airport (DXB), about 27 km from the palace, or 30 to 35 minutes by taxi. Some flights use Al Maktoum International (DWC), about 45 minutes away. Please check the visa rules for your passport before you travel.",tr_air_c1:"27 km to the palace",tr_air_c2:"30–35 min by taxi",tr_air_alt:"An Emirates plane at Dubai International Airport",tr_metro_t:"Metro & bus",tr_metro_d:"The nearest Metro station is Mall of the Emirates on the Red Line, about 3 km from the palace; taxis wait outside for the 5 to 10 minute ride. Bus 81 runs from the bus station beside the Metro to the Burj Al Arab stop, a 12-minute walk away. Pay with a Nol card and plan trips in the RTA S'hail app.",tr_metro_c1:"Red Line · Mall of the Emirates",tr_metro_c2:"Bus 81",tr_metro_alt:"A Dubai Metro train on the elevated line",tr_taxi_t:"Taxis & rides",tr_taxi_d:"Official cream RTA taxis queue outside every arrivals hall, at the Metro station and at the palace entrance, day and night. Careem and Uber work across Dubai. Ask for “Jumeirah Al Qasr, Madinat Jumeirah”, or open the route below for your driver.",tr_taxi_c1:"Day & night",tr_taxi_c2:"Careem · Uber",tr_taxi_alt:"An official Dubai taxi waiting at a hotel entrance",tr_stay_t:"Where to stay",tr_stay_d:"We suggest Jumeirah Beach Hotel, the wave-shaped hotel on the same beach, about five minutes from the palace. Mina A'Salam and Dar Al Masyaf at Madinat Jumeirah are even closer.",tr_stay_c1:"5 min to the palace",tr_stay_c2:"Beachfront",tr_stay_alt:"Jumeirah Beach Hotel and its beach",tr_venue_t:"The palace venue",tr_venue_d:"Our celebrations are at the palace, Jumeirah Al Qasr at Madinat Jumeirah, beside the Burj Al Arab. Taxis drop guests at the main palace entrance, and valet parking is available.",tr_venue_c1:"Madinat Jumeirah",tr_venue_c2:"Valet parking",tr_desert_t:"Desert safari",tr_desert_d:"An evening in the red dunes: a dune drive, camel rides, sandboarding and dinner under the stars. Most tours collect you from your hotel in the afternoon and bring you back after dinner.",tr_desert_c1:"Afternoon to night",tr_desert_c2:"Hotel pickup",tr_desert_alt:"A camel caravan crossing golden dunes",tr_village_t:"Global Village",tr_village_d:"Pavilions from around the world, street food, shopping and shows. Open for the season from October to May, 4 pm to midnight (1 am at weekends), about 30 minutes from the palace.",tr_village_c1:"4 pm – midnight",tr_village_c2:"October – May",tr_village_alt:"A lit pavilion at Global Village at night",
 dress_eyebrow:"What to wear",dress_title:"Dress Code",dress_intro:"We kindly invite you to dress in elegant traditional attire that reflects the grace and joy of our celebration.",dress_shades:"Suggested shades",sh_ivory:"Ivory",sh_gold:"Champagne Gold",sh_emerald:"Emerald",sh_maroon:"Maroon",sh_royal:"Royal Blue",sh_blush:"Blush Pink",dc_men:"For Gentlemen",dc_men_txt:"Sherwani, achkan or kurta pajama with a waistcoat; a classic suit is welcome too.",dc_women:"For Ladies",dc_women_txt:"Lehenga, sharara, gharara or anarkali with a dupatta; an elegant saree is welcome too.",dc_kids:"For Little Ones",dc_kids_txt:"Mini sherwani or kurta pajama for boys; lehenga choli, sharara or a festive frock for girls.",dc_men_alt:"An ivory sherwani with a gold stole and mojaris",dc_women_alt:"A maroon lehenga choli with a blush dupatta",dc_kids_alt:"A little emerald kurta and a pink lehenga choli",ph_dress:"Dress code to be confirmed",
 rsvp_eyebrow:"RSVP",rsvp_title:"Kindly Reply",rsvp_kicker:"Kindly reply · Respond by 1 November",rsvp_quote:"“Your presence will complete our celebration at Jumeirah Al Qasr.”",rsvp_q:"Will you join us on our dream day?",rsvp_sub:"Your presence is our greatest joy",rsvp_when:"15 · 11 · 2026 · Jumeirah Al Qasr",rsvp_accept:"Lovingly accept & RSVP",rsvp_decline:"Regretfully unable to attend?",rsvp_replied:"Your reply is saved · view or change",rsvp_form_title:"Your RSVP",acc_title:"Invitation Accepted",acc_quote:"“We can't wait to welcome you to our celebration.”",acc_love:"With all our love,",acc_note:"Add your name and guests in Full RSVP details so we can keep your seat.",acc_change:"Change response",acc_details:"Full RSVP details →",rsvp_by:"Please reply by Sunday, 1 November 2026.",rsvp_btn:"RSVP",rsvp_preview:"Preview: replies are saved on this device only. They will go to your Google Sheet once it is connected.",
 f_fullname:"Full name",f_attend:"Will you attend?",yes:"Joyfully attending",no:"Regretfully unable to attend",f_guests:"Number of guests, including you",guests_hint:"Up to {max} guests",f_events:"Which celebrations will you attend?",f_diet:"Dietary requirements",diet_hint:"Allergies or dietary needs (optional)",f_msg:"A private note to the couple",optional:"(optional)",required:"(required)",send_rsvp:"Send RSVP",sending:"Sending your reply…",
 e_name:"Please enter your full name.",e_name_short:"Please enter at least 2 characters.",e_attend:"Please choose whether you will attend.",e_events:"Please choose at least one celebration.",e_summary:"Please check the following:",e_save:"We couldn't save your reply. Please check your connection and try again. Your answers are still here.",try_again:"Try again",
 ok_yes:"Thank you, {name}. Your reply is saved. We look forward to celebrating with you.",ok_no:"Thank you, {name}. Your reply is saved. You will be missed.",ok_title:"Reply received",s_attend:"Attending",s_guests:"Guests",s_events:"Celebrations",s_diet:"Dietary",change:"Change my reply",closed:"RSVPs closed on 1 November 2026. Please contact the family if you need to change your reply.",
 wish_eyebrow:"Guest book",wish_title:"Wishes for the Couple",leave_wish:"Leave a wish",f_name:"Your name",f_wish:"Your wish",send_wish:"Send wish",e_wish:"Please write a short wish (at least 2 characters).",wish_ok:"Thank you! Your wish will appear once it has been approved.",wish_none:"Be the first to leave a wish.",sample:"Sample",pending_approval:"Pending approval",wish_from:"Wishes from our loved ones",view_all:"View all wishes",wish_typing:"{name} is writing a wish",wc_guest:"A dear guest",f_rel:"How do you know the couple?",f_rel_ph:"e.g. Aunt, best friend, colleague",f_photo:"Your photo",f_photo_hint:"Shown on the front of your card.",wish_preview:"Preview: the six wishes here are samples so you can see the cards. New wishes wait for your approval before anyone else sees them.",
-contact_eyebrow:"Guest assistance",contact_title:"Need help?",contact_lede:"For anything about the day, travel or your reply, please get in touch.",ph_contact1:"Contact name",ph_contact2:"Contact name",ph_role1:"Role, e.g. Bride's family",ph_role2:"Role, e.g. Groom's family",
-thanks_title:"Thank you",thanks_body:"We can't wait to celebrate with you.",back_top:"Back to top",
+contact_title:"Need help?",contact_lede:"For anything about the day, travel or your reply, please get in touch.",ct_title_a:"Contact",ct_title_b:"Us",ct_bf:"Bride's Father",ct_bf_name:"Mr. Yusuf Al Hashimi",ct_gf:"Groom's Father",ct_gf_name:"Mr. Abdullah Sheikh",ct_ec:"Event Coordinator",ct_ec_name:"Planning & on-the-day help",ct_tap:"Tap here",ct_hide:"Hide details",ct_mobile:"Mobile",ct_wa:"WhatsApp",
+thanks_title:"Thank you",ty_quote:"“Thank you for blessing our journey with your love and prayers. Your presence will make our day complete, and we can't wait to celebrate with you.”",ty_save:"Save the Date",ty_top:"Return to top",ty_couple_alt:"The bride and groom walking side by side",
 footer:"Preview build · details confirmed · photos and some text are placeholders",replay:"Replay opening",sim_err:"Test: simulate a failed save",reset:"Test: clear my RSVP and wishes",
 menu:"Open menu",close:"Close",reduce_motion:"Reduce motion",prev:"Previous photo",next:"Next photo",
 nav_home:"Home",nav_couple:"Families",nav_events:"Events",nav_gallery:"Gallery",nav_venue:"Venue",nav_travel:"Travel",nav_dress:"Dress Code",nav_rsvp:"RSVP",nav_wishes:"Wishes",nav_contact:"Contact",
@@ -1622,15 +2086,15 @@ couple_eyebrow:"دونوں خاندان",couple_title:"ہمارے خاندانو
 events_eyebrow:"تقریبات",events_title:"شادی کی تقریبات",confirmed:"تصدیق شدہ",pending:"تصدیق باقی",ev_pending_detail:"تاریخ، وقت اور مقام کی تصدیق ابھی باقی ہے",events_note:"نمونہ پروگرام · براہِ کرم تفصیلات کی تصدیق کریں",ev_map:"مقام دیکھیں",ev_alt:"{e} میں دولہا دلہن",
 gal_eyebrow:"گیلری",gal_title:"یادگار لمحات",gal_alt:"عائشہ اور عمر، یادگار لمحہ {n}",story_ch:"باب {n} · {y}",
 venue_eyebrow:"مقامِ تقریب",directions:"راستہ دیکھیں",copy_addr:"پتہ کاپی کریں",copied:"پتہ کاپی ہو گیا",copy_fail:"کاپی کرنے کے لیے اوپر دیا گیا پتہ منتخب کریں",ph_venue:"مقامِ تقریب کی تصویر جلد آ رہی ہے\nvenue-01.jpg · 1600 × 1000",ph_parking:"پارکنگ اور آمد سے متعلق معلومات",
-travel_eyebrow:"ہمارے مہمانوں کے لیے",travel_title:"سفر اور قیام",t_arrive:"دبئی آمد",ph_arrive:"ہوائی اڈے اور آمد و رفت سے متعلق مشورے",t_stay:"کہاں ٹھہریں",ph_stay:"تجویز کردہ ہوٹل اور گروپ ریٹ، اگر کوئی ہو",t_visa:"ویزا",t_visa_body:"براہِ کرم سفر سے پہلے اپنی قومیت کے لیے ویزا کی شرائط ضرور معلوم کر لیں۔",t_getting:"مقامِ تقریب تک پہنچنا",ph_getting:"ٹیکسی، کیب ایپس اور ویلے پارکنگ کی تفصیلات",
+travel_eyebrow:"ہمارے مہمانوں کے لیے",travel_title:"سفر اور قیام",tr_lede:"محل تک پہنچنے کے لیے ضروری معلومات، اور تقریبات کے درمیان دبئی کی سیر کے لیے چند جگہیں۔",tr_g_arrive:"آمد",tr_g_stay:"قیام",tr_g_venue:"تقریب",tr_g_explore:"دبئی کی سیر",tr_loc:"مقام دیکھیں",tr_route:"محل کا راستہ",tr_air_t:"ہوائی سفر سے آمد",tr_air_d:"زیادہ تر پروازیں دبئی انٹرنیشنل ایئرپورٹ (DXB) پر اترتی ہیں، جو محل سے تقریباً 27 کلومیٹر یعنی ٹیکسی سے 30 سے 35 منٹ کی دوری پر ہے۔ کچھ پروازیں المکتوم انٹرنیشنل (DWC) پر اترتی ہیں، جو تقریباً 45 منٹ دور ہے۔ سفر سے پہلے اپنے پاسپورٹ کے لیے ویزا کے قواعد ضرور دیکھ لیں۔",tr_air_c1:"محل تک 27 کلومیٹر",tr_air_c2:"ٹیکسی سے 30–35 منٹ",tr_air_alt:"دبئی انٹرنیشنل ایئرپورٹ پر امارات کا طیارہ",tr_metro_t:"میٹرو اور بس",tr_metro_d:"قریب ترین میٹرو اسٹیشن ریڈ لائن پر مال آف دی ایمریٹس ہے، جو محل سے تقریباً 3 کلومیٹر دور ہے؛ باہر ٹیکسیاں ملتی ہیں اور سفر 5 سے 10 منٹ کا ہے۔ میٹرو کے ساتھ والے بس اسٹیشن سے بس 81 برج العرب اسٹاپ تک جاتی ہے، جہاں سے 12 منٹ پیدل ہے۔ کرایہ نول کارڈ سے ادا کریں اور RTA S'hail ایپ سے راستہ دیکھیں۔",tr_metro_c1:"ریڈ لائن · مال آف دی ایمریٹس",tr_metro_c2:"بس 81",tr_metro_alt:"بلند لائن پر دبئی میٹرو کی ٹرین",tr_taxi_t:"ٹیکسی اور رائیڈ",tr_taxi_d:"سرکاری کریم رنگ کی RTA ٹیکسیاں ہر آمد ہال کے باہر، میٹرو اسٹیشن پر اور محل کے دروازے پر دن رات دستیاب ہیں۔ کریم اور اوبر پورے دبئی میں چلتی ہیں۔ ڈرائیور سے “جمیرا القصر، مدینہ جمیرا” کہیں، یا نیچے دیا گیا راستہ کھول کر دکھا دیں۔",tr_taxi_c1:"دن رات",tr_taxi_c2:"کریم · اوبر",tr_taxi_alt:"ہوٹل کے دروازے پر کھڑی دبئی کی سرکاری ٹیکسی",tr_stay_t:"کہاں ٹھہریں",tr_stay_d:"ہمارا مشورہ جمیرا بیچ ہوٹل ہے، اسی ساحل پر لہر کی شکل والا ہوٹل، جو محل سے تقریباً پانچ منٹ کے فاصلے پر ہے۔ مدینہ جمیرا میں مینا السلام اور دار المصیف اس سے بھی قریب ہیں۔",tr_stay_c1:"محل تک 5 منٹ",tr_stay_c2:"ساحل کے کنارے",tr_stay_alt:"جمیرا بیچ ہوٹل اور اس کا ساحل",tr_venue_t:"تقریب کا محل",tr_venue_d:"ہماری تقریبات جمیرا القصر، مدینہ جمیرا کے محل میں ہوں گی، برج العرب کے قریب۔ ٹیکسیاں مہمانوں کو محل کے مرکزی دروازے پر اتارتی ہیں، اور ویلے پارکنگ بھی دستیاب ہے۔",tr_venue_c1:"مدینہ جمیرا",tr_venue_c2:"ویلے پارکنگ",tr_desert_t:"صحرائی سفاری",tr_desert_d:"سرخ ٹیلوں میں ایک شام: ٹیلوں پر ڈرائیو، اونٹ کی سواری، سینڈ بورڈنگ اور ستاروں تلے رات کا کھانا۔ زیادہ تر ٹور دوپہر کو ہوٹل سے لے جاتے ہیں اور کھانے کے بعد واپس چھوڑ دیتے ہیں۔",tr_desert_c1:"دوپہر سے رات تک",tr_desert_c2:"ہوٹل سے پک اپ",tr_desert_alt:"سنہری ٹیلوں سے گزرتا اونٹوں کا قافلہ",tr_village_t:"گلوبل ولیج",tr_village_d:"دنیا بھر کے پویلین، اسٹریٹ فوڈ، خریداری اور شوز۔ اکتوبر سے مئی تک سیزن میں کھلا رہتا ہے، شام 4 بجے سے آدھی رات تک (ویک اینڈ پر رات 1 بجے تک)، محل سے تقریباً 30 منٹ کی دوری پر۔",tr_village_c1:"شام 4 بجے سے آدھی رات",tr_village_c2:"اکتوبر – مئی",tr_village_alt:"رات کو گلوبل ولیج کا روشن پویلین",
 dress_eyebrow:"کیا پہنیں",dress_title:"ڈریس کوڈ",dress_intro:"براہِ کرم ایسا نفیس روایتی لباس زیبِ تن کریں جو ہماری تقریب کے وقار اور خوشی کی عکاسی کرے۔",dress_shades:"تجویز کردہ رنگ",sh_ivory:"ہاتھی دانت",sh_gold:"شیمپین گولڈ",sh_emerald:"زمردی",sh_maroon:"میرون",sh_royal:"شاہی نیلا",sh_blush:"ہلکا گلابی",dc_men:"حضرات کے لیے",dc_men_txt:"شیروانی، اچکن یا واسکٹ کے ساتھ کُرتا پاجامہ؛ کلاسک سوٹ بھی خوش آمدید۔",dc_women:"خواتین کے لیے",dc_women_txt:"لہنگا، شرارہ، غرارہ یا انارکلی دوپٹے کے ساتھ؛ نفیس ساڑھی بھی خوش آمدید۔",dc_kids:"بچوں کے لیے",dc_kids_txt:"لڑکوں کے لیے چھوٹی شیروانی یا کُرتا پاجامہ؛ لڑکیوں کے لیے لہنگا چولی، شرارہ یا رنگین فراک۔",dc_men_alt:"سنہری شال اور کھسّے کے ساتھ ہاتھی دانت رنگ شیروانی",dc_women_alt:"ہلکے گلابی دوپٹے کے ساتھ میرون لہنگا چولی",dc_kids_alt:"بچوں کا زمردی کُرتا اور گلابی لہنگا چولی",ph_dress:"ڈریس کوڈ جلد بتایا جائے گا",
 rsvp_eyebrow:"شرکت کی تصدیق",rsvp_title:"براہِ کرم جواب دیجیے",rsvp_kicker:"براہِ کرم جواب دیجیے · 1 نومبر تک",rsvp_quote:"“آپ کی موجودگی جمیرا القصر میں ہماری تقریب کو مکمل کر دے گی۔”",rsvp_q:"کیا آپ ہمارے خوابوں کے دن ہمارے ساتھ ہوں گے؟",rsvp_sub:"آپ کی موجودگی ہماری سب سے بڑی خوشی ہے",rsvp_when:"15 · 11 · 2026 · جمیرا القصر",rsvp_accept:"محبت سے قبول کریں",rsvp_decline:"افسوس، شرکت نہیں کر سکیں گے؟",rsvp_replied:"آپ کا جواب محفوظ ہے · دیکھیں یا بدلیں",rsvp_form_title:"آپ کا جواب",acc_title:"دعوت قبول ہو گئی",acc_quote:"“ہم آپ کو اپنی تقریب میں خوش آمدید کہنے کے منتظر ہیں۔”",acc_love:"ڈھیر ساری محبت کے ساتھ،",acc_note:"اپنی جگہ محفوظ کرنے کے لیے مکمل تفصیلات میں اپنا نام اور مہمان شامل کریں۔",acc_change:"جواب بدلیں",acc_details:"مکمل تفصیلات ←",rsvp_by:"براہِ کرم اتوار، 1 نومبر 2026 تک جواب دیجیے۔",rsvp_btn:"شرکت کی تصدیق کریں",rsvp_preview:"پیش نظارہ: جوابات صرف اسی ڈیوائس پر محفوظ ہوتے ہیں۔ آپ کی Google Sheet منسلک ہوتے ہی جوابات وہاں پہنچ جائیں گے۔",
 f_fullname:"پورا نام",f_attend:"کیا آپ تشریف لائیں گے؟",yes:"بڑی خوشی سے شرکت کریں گے",no:"معذرت، شرکت نہیں کر سکیں گے",f_guests:"مہمانوں کی تعداد، آپ سمیت",guests_hint:"زیادہ سے زیادہ {max} مہمان",f_events:"آپ کن تقریبات میں شرکت کریں گے؟",f_diet:"کھانے سے متعلق ضروریات",diet_hint:"الرجی یا کھانے سے متعلق کوئی خاص ضرورت (اختیاری)",f_msg:"دولہا دلہن کے نام ایک ذاتی پیغام",optional:"(اختیاری)",required:"(لازمی)",send_rsvp:"جواب بھیجیں",sending:"آپ کا جواب بھیجا جا رہا ہے…",
 e_name:"براہِ کرم اپنا پورا نام لکھیں۔",e_name_short:"براہِ کرم کم از کم 2 حروف لکھیں۔",e_attend:"براہِ کرم بتائیں کہ آپ شرکت کریں گے یا نہیں۔",e_events:"براہِ کرم کم از کم ایک تقریب منتخب کریں۔",e_summary:"براہِ کرم درج ذیل باتیں دیکھ لیں:",e_save:"ہم آپ کا جواب محفوظ نہیں کر سکے۔ براہِ کرم اپنا انٹرنیٹ کنکشن چیک کر کے دوبارہ کوشش کریں۔ آپ کے جوابات یہیں موجود ہیں۔",try_again:"دوبارہ کوشش کریں",
 ok_yes:"شکریہ، {name}۔ آپ کا جواب محفوظ ہو گیا ہے۔ ہم آپ کے ساتھ خوشیاں منانے کے منتظر ہیں۔",ok_no:"شکریہ، {name}۔ آپ کا جواب محفوظ ہو گیا ہے۔ ہمیں آپ کی کمی محسوس ہوگی۔",ok_title:"جواب موصول ہو گیا",s_attend:"شرکت",s_guests:"مہمان",s_events:"تقریبات",s_diet:"کھانے کی ضروریات",change:"اپنا جواب تبدیل کریں",closed:"شرکت کی تصدیق کی آخری تاریخ 1 نومبر 2026 تھی۔ اگر آپ اپنا جواب تبدیل کرنا چاہیں تو براہِ کرم اہلِ خانہ سے رابطہ کریں۔",
 wish_eyebrow:"مہمانوں کے پیغامات",wish_title:"دولہا دلہن کے لیے نیک تمنائیں",leave_wish:"اپنی نیک تمنا لکھیں",f_name:"آپ کا نام",f_wish:"آپ کی نیک تمنا",send_wish:"نیک تمنا بھیجیں",e_wish:"براہِ کرم ایک مختصر سی نیک تمنا لکھیں (کم از کم 2 حروف)۔",wish_ok:"شکریہ! آپ کی نیک تمنا منظوری کے بعد یہاں نظر آئے گی۔",wish_none:"سب سے پہلے نیک تمنا بھیجنے والے آپ بنیں۔",sample:"نمونہ",pending_approval:"منظوری کا انتظار",wish_from:"ہمارے پیاروں کی نیک تمنائیں",view_all:"تمام نیک تمنائیں دیکھیں",wish_typing:"{name} نیک تمنا لکھ رہے ہیں",wc_guest:"عزیز مہمان",f_rel:"آپ کا دولہا دلہن سے کیا رشتہ ہے؟",f_rel_ph:"مثلاً خالہ، پکی دوست، ساتھی",f_photo:"آپ کی تصویر",f_photo_hint:"آپ کے کارڈ کے سامنے دکھائی جائے گی۔",wish_preview:"پیش نظارہ: یہاں کی چھ نیک تمنائیں نمونہ ہیں تاکہ آپ کارڈ دیکھ سکیں۔ نئی نیک تمنائیں آپ کی منظوری کے بعد ہی دوسروں کو نظر آئیں گی۔",
-contact_eyebrow:"مہمانوں کی رہنمائی",contact_title:"کیا آپ کو مدد چاہیے؟",contact_lede:"تقریب کے دن، سفر یا اپنے جواب سے متعلق کسی بھی بات کے لیے براہِ کرم ہم سے رابطہ کریں۔",ph_contact1:"رابطہ کار کا نام",ph_contact2:"رابطہ کار کا نام",ph_role1:"رشتہ، مثلاً دلہن کا خاندان",ph_role2:"رشتہ، مثلاً دولہا کا خاندان",
-thanks_title:"شکریہ",thanks_body:"ہم آپ کے ساتھ خوشیاں منانے کا بے صبری سے انتظار کر رہے ہیں۔",back_top:"اوپر واپس جائیں",
+contact_title:"کیا آپ کو مدد چاہیے؟",contact_lede:"تقریب کے دن، سفر یا اپنے جواب سے متعلق کسی بھی بات کے لیے براہِ کرم ہم سے رابطہ کریں۔",ct_title_a:"رابطہ",ct_title_b:"کریں",ct_bf:"دلہن کے والد",ct_bf_name:"جناب یوسف الہاشمی",ct_gf:"دولہا کے والد",ct_gf_name:"جناب عبداللہ شیخ",ct_ec:"ایونٹ کوآرڈینیٹر",ct_ec_name:"انتظامات اور تقریب کے دن مدد",ct_tap:"یہاں ٹیپ کریں",ct_hide:"تفصیل چھپائیں",ct_mobile:"موبائل",ct_wa:"واٹس ایپ",
+thanks_title:"شکریہ",ty_quote:"“اپنی محبت اور دعاؤں سے ہمارے سفر کو بابرکت بنانے کا شکریہ۔ آپ کی موجودگی ہمارے دن کو مکمل کر دے گی، اور ہم آپ کے ساتھ خوشیاں منانے کے منتظر ہیں۔”",ty_save:"تاریخ یاد رکھیں",ty_top:"واپس اوپر",ty_couple_alt:"دولہا اور دلہن ساتھ ساتھ چلتے ہوئے",
 footer:"پیش نظارہ ورژن · تفصیلات کی تصدیق ہو چکی ہے · تصاویر اور کچھ متن عارضی ہیں · اردو متن نظرِ ثانی کے لیے",replay:"افتتاحی منظر دوبارہ دیکھیں",sim_err:"ٹیسٹ: جواب محفوظ نہ ہونے کی صورتِ حال آزمائیں",reset:"ٹیسٹ: میرا جواب اور نیک تمنائیں صاف کریں",
 menu:"مینو کھولیں",close:"بند کریں",reduce_motion:"اینیمیشن کم کریں",prev:"پچھلی تصویر",next:"اگلی تصویر",
 nav_home:"سرورق",nav_couple:"خاندان",nav_events:"تقریبات",nav_gallery:"گیلری",nav_venue:"مقام",nav_travel:"سفر",nav_dress:"ڈریس کوڈ",nav_rsvp:"شرکت کی تصدیق",nav_wishes:"نیک تمنائیں",nav_contact:"رابطہ",
@@ -1643,15 +2107,15 @@ couple_eyebrow:"दोनों परिवार",couple_title:"हमार�
 events_eyebrow:"ख़ुशी के मौक़े",events_title:"शादी के समारोह",confirmed:"पुष्टि हो चुकी",pending:"पुष्टि बाक़ी",ev_pending_detail:"तारीख़, समय और जगह की पुष्टि अभी बाक़ी है",events_note:"नमूना कार्यक्रम · कृपया विवरण की पुष्टि करें",ev_map:"लोकेशन देखें",ev_alt:"{e} में दूल्हा-दुल्हन",
 gal_eyebrow:"गैलरी",gal_title:"यादगार लम्हे",gal_alt:"आयशा और उमर, यादगार लम्हा {n}",story_ch:"अध्याय {n} · {y}",
 venue_eyebrow:"समारोह स्थल",directions:"रास्ता देखें",copy_addr:"पता कॉपी करें",copied:"पता कॉपी हो गया",copy_fail:"कॉपी करने के लिए ऊपर दिया गया पता चुनें",ph_venue:"समारोह स्थल की फ़ोटो जल्द आ रही है\nvenue-01.jpg · 1600 × 1000",ph_parking:"पार्किंग और पहुँचने से जुड़ी जानकारी",
-travel_eyebrow:"हमारे मेहमानों के लिए",travel_title:"सफ़र और ठहरना",t_arrive:"दुबई पहुँचना",ph_arrive:"एयरपोर्ट और ट्रांसफ़र से जुड़ी सलाह",t_stay:"कहाँ ठहरें",ph_stay:"सुझाए गए होटल और ग्रुप रेट, अगर कोई हो",t_visa:"वीज़ा",t_visa_body:"कृपया सफ़र से पहले अपनी नागरिकता के हिसाब से वीज़ा की शर्तें ज़रूर जाँच लें।",t_getting:"समारोह स्थल तक पहुँचना",ph_getting:"टैक्सी, कैब ऐप और वैले पार्किंग की जानकारी",
+travel_eyebrow:"हमारे मेहमानों के लिए",travel_title:"सफ़र और ठहरना",tr_lede:"महल तक पहुँचने की ज़रूरी जानकारी, और जश्न के बीच दुबई घूमने की कुछ जगहें।",tr_g_arrive:"आगमन",tr_g_stay:"ठहरना",tr_g_venue:"जश्न",tr_g_explore:"दुबई घूमें",tr_loc:"लोकेशन देखें",tr_route:"महल का रास्ता",tr_air_t:"हवाई सफ़र से आगमन",tr_air_d:"ज़्यादातर उड़ानें दुबई इंटरनेशनल एयरपोर्ट (DXB) पर उतरती हैं, जो महल से लगभग 27 किलोमीटर, यानी टैक्सी से 30 से 35 मिनट की दूरी पर है। कुछ उड़ानें अल मकतूम इंटरनेशनल (DWC) पर उतरती हैं, जो लगभग 45 मिनट दूर है। सफ़र से पहले अपने पासपोर्ट के लिए वीज़ा नियम ज़रूर देख लें।",tr_air_c1:"महल तक 27 किमी",tr_air_c2:"टैक्सी से 30–35 मिनट",tr_air_alt:"दुबई इंटरनेशनल एयरपोर्ट पर एमिरेट्स का विमान",tr_metro_t:"मेट्रो और बस",tr_metro_d:"सबसे नज़दीकी मेट्रो स्टेशन रेड लाइन पर मॉल ऑफ़ द एमिरेट्स है, जो महल से लगभग 3 किलोमीटर दूर है; बाहर टैक्सियाँ मिलती हैं और सफ़र 5 से 10 मिनट का है। मेट्रो के पास वाले बस स्टेशन से बस 81 बुर्ज अल अरब स्टॉप तक जाती है, वहाँ से 12 मिनट पैदल। किराया नोल कार्ड से दें और RTA S'hail ऐप से रास्ता देखें।",tr_metro_c1:"रेड लाइन · मॉल ऑफ़ द एमिरेट्स",tr_metro_c2:"बस 81",tr_metro_alt:"ऊँची लाइन पर दुबई मेट्रो की ट्रेन",tr_taxi_t:"टैक्सी और राइड",tr_taxi_d:"सरकारी क्रीम रंग की RTA टैक्सियाँ हर अराइवल हॉल के बाहर, मेट्रो स्टेशन पर और महल के गेट पर दिन-रात मिलती हैं। करीम और उबर पूरे दुबई में चलती हैं। ड्राइवर से “जुमेराह अल क़स्र, मदीनत जुमेराह” कहें, या नीचे दिया रास्ता खोलकर दिखा दें।",tr_taxi_c1:"दिन-रात",tr_taxi_c2:"करीम · उबर",tr_taxi_alt:"होटल के गेट पर खड़ी दुबई की सरकारी टैक्सी",tr_stay_t:"कहाँ ठहरें",tr_stay_d:"हमारा सुझाव जुमेराह बीच होटल है, उसी समुद्र तट पर लहर के आकार वाला होटल, जो महल से लगभग पाँच मिनट की दूरी पर है। मदीनत जुमेराह में मीना अस-सलाम और दार अल मसीफ़ इससे भी पास हैं।",tr_stay_c1:"महल तक 5 मिनट",tr_stay_c2:"समुद्र किनारे",tr_stay_alt:"जुमेराह बीच होटल और उसका समुद्र तट",tr_venue_t:"जश्न का महल",tr_venue_d:"हमारे समारोह जुमेराह अल क़स्र, मदीनत जुमेराह के महल में होंगे, बुर्ज अल अरब के पास। टैक्सियाँ मेहमानों को महल के मुख्य द्वार पर उतारती हैं, और वैले पार्किंग भी उपलब्ध है।",tr_venue_c1:"मदीनत जुमेराह",tr_venue_c2:"वैले पार्किंग",tr_desert_t:"डेज़र्ट सफ़ारी",tr_desert_d:"लाल टीलों में एक शाम: टीलों पर ड्राइव, ऊँट की सवारी, सैंडबोर्डिंग और तारों के नीचे डिनर। ज़्यादातर टूर दोपहर में होटल से ले जाते हैं और डिनर के बाद वापस छोड़ देते हैं।",tr_desert_c1:"दोपहर से रात तक",tr_desert_c2:"होटल से पिक-अप",tr_desert_alt:"सुनहरे टीलों से गुज़रता ऊँटों का काफ़िला",tr_village_t:"ग्लोबल विलेज",tr_village_d:"दुनिया भर के पवेलियन, स्ट्रीट फ़ूड, ख़रीदारी और शो। अक्टूबर से मई तक सीज़न में खुला रहता है, शाम 4 बजे से आधी रात तक (वीकेंड पर रात 1 बजे तक), महल से लगभग 30 मिनट की दूरी पर।",tr_village_c1:"शाम 4 बजे से आधी रात",tr_village_c2:"अक्टूबर – मई",tr_village_alt:"रात में ग्लोबल विलेज का रोशन पवेलियन",
 dress_eyebrow:"क्या पहनें",dress_title:"ड्रेस कोड",dress_intro:"कृपया ऐसी शानदार पारंपरिक पोशाक पहनें जो हमारे जश्न की शान और ख़ुशी को दर्शाए।",dress_shades:"सुझाए गए रंग",sh_ivory:"आइवरी",sh_gold:"शैम्पेन गोल्ड",sh_emerald:"ज़मुर्रदी",sh_maroon:"मैरून",sh_royal:"शाही नीला",sh_blush:"हल्का गुलाबी",dc_men:"सज्जनों के लिए",dc_men_txt:"शेरवानी, अचकन या वास्कट के साथ कुर्ता पजामा; क्लासिक सूट भी स्वागत है।",dc_women:"महिलाओं के लिए",dc_women_txt:"लहंगा, शरारा, ग़रारा या अनारकली दुपट्टे के साथ; ख़ूबसूरत साड़ी भी स्वागत है।",dc_kids:"बच्चों के लिए",dc_kids_txt:"लड़कों के लिए छोटी शेरवानी या कुर्ता पजामा; लड़कियों के लिए लहंगा चोली, शरारा या रंगीन फ़्रॉक।",dc_men_alt:"सुनहरे दुशाले और मोजड़ी के साथ आइवरी शेरवानी",dc_women_alt:"हल्के गुलाबी दुपट्टे के साथ मैरून लहंगा चोली",dc_kids_alt:"बच्चों का ज़मुर्रदी कुर्ता और गुलाबी लहंगा चोली",ph_dress:"ड्रेस कोड जल्द बताया जाएगा",
 rsvp_eyebrow:"आने की पुष्टि",rsvp_title:"कृपया जवाब दीजिए",rsvp_kicker:"कृपया जवाब दें · 1 नवंबर तक",rsvp_quote:"“आपकी मौजूदगी जुमेराह अल क़स्र में हमारे जश्न को मुकम्मल कर देगी।”",rsvp_q:"क्या आप हमारे ख़्वाबों के दिन हमारे साथ होंगे?",rsvp_sub:"आपकी मौजूदगी हमारी सबसे बड़ी ख़ुशी है",rsvp_when:"15 · 11 · 2026 · जुमेराह अल क़स्र",rsvp_accept:"मोहब्बत से स्वीकार करें",rsvp_decline:"अफ़सोस, नहीं आ पाएँगे?",rsvp_replied:"आपका जवाब सहेजा गया · देखें या बदलें",rsvp_form_title:"आपका जवाब",acc_title:"न्योता स्वीकार",acc_quote:"“हम आपको अपने जश्न में ख़ुशआमदीद कहने का इंतज़ार कर रहे हैं।”",acc_love:"ढेर सारी मोहब्बत के साथ,",acc_note:"अपनी जगह पक्की करने के लिए पूरी जानकारी में अपना नाम और मेहमान जोड़ें।",acc_change:"जवाब बदलें",acc_details:"पूरी जानकारी →",rsvp_by:"कृपया रविवार, 1 नवंबर 2026 तक जवाब दीजिए।",rsvp_btn:"आने की पुष्टि करें",rsvp_preview:"प्रीव्यू: जवाब सिर्फ़ इसी डिवाइस पर सेव होते हैं। आपकी Google Sheet जुड़ते ही जवाब वहाँ पहुँचने लगेंगे।",
 f_fullname:"पूरा नाम",f_attend:"क्या आप तशरीफ़ लाएँगे?",yes:"बड़ी ख़ुशी से शामिल होंगे",no:"माफ़ी चाहते हैं, शामिल नहीं हो पाएँगे",f_guests:"मेहमानों की संख्या, आपको मिलाकर",guests_hint:"ज़्यादा से ज़्यादा {max} मेहमान",f_events:"आप किन समारोहों में शामिल होंगे?",f_diet:"खाने से जुड़ी ज़रूरतें",diet_hint:"एलर्जी या खाने से जुड़ी कोई ख़ास ज़रूरत (वैकल्पिक)",f_msg:"दूल्हा-दुल्हन के लिए एक निजी संदेश",optional:"(वैकल्पिक)",required:"(ज़रूरी)",send_rsvp:"जवाब भेजें",sending:"आपका जवाब भेजा जा रहा है…",
 e_name:"कृपया अपना पूरा नाम लिखें।",e_name_short:"कृपया कम से कम 2 अक्षर लिखें।",e_attend:"कृपया बताएँ कि आप शामिल होंगे या नहीं।",e_events:"कृपया कम से कम एक समारोह चुनें।",e_summary:"कृपया नीचे दी गई बातें देख लें:",e_save:"हम आपका जवाब सेव नहीं कर सके। कृपया अपना इंटरनेट कनेक्शन जाँचकर फिर से कोशिश करें। आपके जवाब यहीं मौजूद हैं।",try_again:"फिर से कोशिश करें",
 ok_yes:"शुक्रिया, {name}। आपका जवाब सेव हो गया है। हमें आपके साथ ख़ुशियाँ मनाने का इंतज़ार रहेगा।",ok_no:"शुक्रिया, {name}। आपका जवाब सेव हो गया है। हमें आपकी कमी महसूस होगी।",ok_title:"जवाब मिल गया",s_attend:"हाज़िरी",s_guests:"मेहमान",s_events:"समारोह",s_diet:"खान-पान",change:"अपना जवाब बदलें",closed:"आने की पुष्टि की आख़िरी तारीख़ 1 नवंबर 2026 थी। अगर आपको अपना जवाब बदलना हो, तो कृपया परिवार से संपर्क करें।",
 wish_eyebrow:"मेहमानों के संदेश",wish_title:"दूल्हा-दुल्हन के लिए दुआएँ",leave_wish:"अपनी दुआ लिखें",f_name:"आपका नाम",f_wish:"आपकी दुआ",send_wish:"दुआ भेजें",e_wish:"कृपया एक छोटी-सी दुआ लिखें (कम से कम 2 अक्षर)।",wish_ok:"शुक्रिया! आपकी दुआ मंज़ूरी के बाद यहाँ दिखेगी।",wish_none:"सबसे पहले दुआ भेजने वाले आप बनें।",sample:"नमूना",pending_approval:"मंज़ूरी बाक़ी",wish_from:"हमारे अपनों की दुआएँ",view_all:"सारी दुआएँ देखें",wish_typing:"{name} दुआ लिख रहे हैं",wc_guest:"प्यारे मेहमान",f_rel:"आपका दूल्हा-दुल्हन से क्या रिश्ता है?",f_rel_ph:"जैसे ख़ाला, पक्की दोस्त, सहकर्मी",f_photo:"आपकी फ़ोटो",f_photo_hint:"आपके कार्ड के सामने दिखेगी।",wish_preview:"प्रीव्यू: यहाँ की छह दुआएँ नमूना हैं, ताकि आप कार्ड देख सकें। नई दुआएँ आपकी मंज़ूरी के बाद ही दूसरों को दिखेंगी।",
-contact_eyebrow:"मेहमानों के लिए मदद",contact_title:"क्या आपको मदद चाहिए?",contact_lede:"शादी के दिन, सफ़र या अपने जवाब से जुड़ी किसी भी बात के लिए कृपया हमसे संपर्क करें।",ph_contact1:"संपर्क व्यक्ति का नाम",ph_contact2:"संपर्क व्यक्ति का नाम",ph_role1:"रिश्ता, जैसे दुल्हन का परिवार",ph_role2:"रिश्ता, जैसे दूल्हे का परिवार",
-thanks_title:"शुक्रिया",thanks_body:"हमें आपके साथ ख़ुशियाँ मनाने का बेसब्री से इंतज़ार है।",back_top:"ऊपर वापस जाएँ",
+contact_title:"क्या आपको मदद चाहिए?",contact_lede:"शादी के दिन, सफ़र या अपने जवाब से जुड़ी किसी भी बात के लिए कृपया हमसे संपर्क करें।",ct_title_a:"संपर्क",ct_title_b:"करें",ct_bf:"दुल्हन के पिता",ct_bf_name:"जनाब यूसुफ़ अल हाशिमी",ct_gf:"दूल्हे के पिता",ct_gf_name:"जनाब अब्दुल्लाह शेख़",ct_ec:"इवेंट कोऑर्डिनेटर",ct_ec_name:"इंतज़ाम और समारोह के दिन मदद",ct_tap:"यहाँ टैप करें",ct_hide:"जानकारी छिपाएँ",ct_mobile:"मोबाइल",ct_wa:"व्हाट्सऐप",
+thanks_title:"शुक्रिया",ty_quote:"“अपनी मोहब्बत और दुआओं से हमारे सफ़र को मुबारक बनाने का शुक्रिया। आपकी मौजूदगी हमारे दिन को मुकम्मल कर देगी, और हम आपके साथ जश्न मनाने का इंतज़ार कर रहे हैं।”",ty_save:"तारीख़ याद रखें",ty_top:"वापस ऊपर",ty_couple_alt:"साथ-साथ चलते दूल्हा और दुल्हन",
 footer:"प्रीव्यू वर्ज़न · जानकारी की पुष्टि हो चुकी है · फ़ोटो और कुछ टेक्स्ट अस्थायी हैं · हिंदी टेक्स्ट समीक्षा के लिए",replay:"शुरुआती दृश्य फिर से देखें",sim_err:"टेस्ट: सेव फ़ेल होने की स्थिति आज़माएँ",reset:"टेस्ट: मेरा जवाब और दुआएँ मिटाएँ",
 menu:"मेन्यू खोलें",close:"बंद करें",reduce_motion:"एनिमेशन कम करें",prev:"पिछली फ़ोटो",next:"अगली फ़ोटो",
 nav_home:"होम",nav_couple:"परिवार",nav_events:"समारोह",nav_gallery:"गैलरी",nav_venue:"स्थल",nav_travel:"सफ़र",nav_dress:"ड्रेस कोड",nav_rsvp:"आने की पुष्टि",nav_wishes:"दुआएँ",nav_contact:"संपर्क",
@@ -1702,7 +2166,6 @@ function stars(container, n, topBand){
     s.innerHTML='<svg viewBox="0 0 24 24"><use href="#i-star"/></svg>'; sky.appendChild(s);
   }
 }
-stars("#thanksSky", 18, 60);
 
 /* pause loops when off-screen or tab hidden */
 var loopIO = "IntersectionObserver" in window ? new IntersectionObserver(function(es){es.forEach(function(e){e.target.classList.toggle("run", e.isIntersecting && !document.hidden);});}) : null;
@@ -2057,6 +2520,98 @@ root.classList.add("gated");
     e.preventDefault(); root.classList.remove("gated"); updateBars();
     var cd=$("#countdown"); requestAnimationFrame(function(){ cd.scrollIntoView({behavior: reduced()?"auto":"smooth", block:"start"}); });
   });
+})();
+
+/* ---------- Travel & Stay accordion: hovering a row (with a mouse) or tapping it opens it, and the photo changes with it ---------- */
+(function(){
+  var box = $("#trAcc"); if(!box) return;
+  var items = $$(".tr-item", box), figs = $$(".tr-fig", box), cur = 0, mouse = window.matchMedia("(hover:hover) and (pointer:fine)");
+  function go(i){
+    if(i === cur) return; cur = i;
+    items.forEach(function(it, k){ it.classList.toggle("on", k === i); $(".tr-head", it).setAttribute("aria-expanded", k === i ? "true" : "false"); });
+    figs.forEach(function(f, k){ f.classList.toggle("on", k === i); f.setAttribute("aria-hidden", k === i ? "false" : "true"); });
+  }
+  items.forEach(function(it, k){
+    $(".tr-head", it).addEventListener("click", function(){ go(k); });
+    it.addEventListener("mouseenter", function(){ if(mouse.matches) go(k); });
+  });
+  /* the photo stays pinned just under the top bar while the rows scroll */
+  function tb(){ var b = $("#topbar"); box.style.setProperty("--tb", (b ? b.offsetHeight : 64) + "px"); }
+  tb(); window.addEventListener("resize", tb);
+})();
+
+/* ---------- Need help? timeline: the heart follows the scroll down the line and lights each contact as it reaches them ---------- */
+(function(){
+  var tl = $("#ctTl"); if(!tl) return;
+  var line = $(".ct-line", tl), rows = $$(".ct-row", tl), raf = 0;
+  function upd(){
+    raf = 0;
+    var r = line.getBoundingClientRect(), H = r.height; if(!H) return;   /* still hidden behind the opening */
+    var p = reduced() ? 1 : Math.min(1, Math.max(0, (innerHeight*.6 - r.top)/H));
+    tl.style.setProperty("--ctp", (p*100).toFixed(2) + "%"); tl.style.setProperty("--cty", (p*H).toFixed(1) + "px");
+    tl.classList.toggle("end", p > .985);
+    rows.forEach(function(row){ var c = row.getBoundingClientRect(); if(p*H >= c.top + c.height*.35 - r.top) row.classList.add("lit"); });
+  }
+  function on(){ if(!raf) raf = requestAnimationFrame(upd); }
+  window.addEventListener("scroll", on, {passive:true}); window.addEventListener("resize", on); upd();
+  /* "Tap here" shows that person's mobile and WhatsApp numbers */
+  $$(".ct-tap", tl).forEach(function(b){
+    b.addEventListener("click", function(){
+      var d = document.getElementById(b.getAttribute("aria-controls")), open = b.getAttribute("aria-expanded") !== "true", lab = $("span", b);
+      b.setAttribute("aria-expanded", open ? "true" : "false"); d.hidden = !open;
+      lab.setAttribute("data-i18n", open ? "ct_hide" : "ct_tap"); lab.textContent = t(open ? "ct_hide" : "ct_tap");
+      b.closest(".ct-row").classList.add("lit"); on();
+    });
+  });
+})();
+
+/* ---------- Thank you: the grid lights up around the pointer (and drifts on its own on phones); on arrival the
+   "Thank You" writes itself with a glowing pen, then the note, locket, date, couple and button follow ---------- */
+(function(){
+  var sec = $("#thanks"); if(!sec) return;
+  var bg = $(".ty-bg", sec), lastMove = 0, raf = 0, vis = false;
+  function setXY(x, y){ bg.style.setProperty("--mx", x.toFixed(0) + "px"); bg.style.setProperty("--my", y.toFixed(0) + "px"); }
+  sec.addEventListener("pointermove", function(e){ var r = sec.getBoundingClientRect(); setXY(e.clientX - r.left, e.clientY - r.top); lastMove = Date.now(); });
+  function drift(ts){
+    raf = 0; if(!vis || reduced()) return;
+    if(Date.now() - lastMove > 2200){ var w = sec.clientWidth, h = sec.clientHeight, t = ts/1000; setXY(w*(.5 + .34*Math.sin(t*.33)), h*(.42 + .26*Math.sin(t*.61))); }
+    raf = requestAnimationFrame(drift);
+  }
+  /* the handwriting */
+  var svg = $(".ty-script", sec), paths = svg ? $$(".ty-s", svg) : [], pen = svg ? $(".ty-pen", svg) : null, lens = [];
+  function inkAll(full){ paths.forEach(function(pth, i){ pth.style.strokeDasharray = lens[i] + " " + lens[i]; pth.style.strokeDashoffset = full ? 0 : lens[i]; pth.style.opacity = full ? 1 : 0; }); }
+  if(paths.length && !reduced()){ lens = paths.map(function(pth){ return pth.getTotalLength(); }); inkAll(false); sec.classList.add("armed"); }
+  else if(!reduced()) sec.classList.add("armed");
+  function write(done){
+    var SPEED = 2100, GAP = 70, t0 = 0, plan = [], at = 0;   /* units per second, ms between strokes */
+    lens.forEach(function(L, i){ var d = Math.max(140, L/SPEED*1000) * (paths[i].classList.contains("sw") ? .8 : 1); plan.push([at, d]); at += d + GAP; });
+    sec.classList.add("writing");
+    function step(ts){
+      if(!t0) t0 = ts; var t = ts - t0;
+      plan.forEach(function(pd, i){ var k = Math.min(1, Math.max(0, (t - pd[0])/pd[1])); if(paths[i].classList.contains("sw")) k = 1 - Math.pow(1 - k, 2);
+        paths[i].style.strokeDashoffset = (lens[i]*(1 - k)).toFixed(1); paths[i].style.opacity = k > 0 ? 1 : 0;   /* no round-cap dots before a stroke starts */
+        if(k > 0 && k < 1 && pen){ var pt = paths[i].getPointAtLength(lens[i]*k); pen.setAttribute("cx", pt.x.toFixed(1)); pen.setAttribute("cy", pt.y.toFixed(1)); } });
+      if(t < at) requestAnimationFrame(step); else { sec.classList.remove("writing"); done(); }
+    }
+    requestAnimationFrame(step);
+  }
+  var played = false;
+  function play(){
+    if(played) return; played = true;
+    if(reduced()){ inkAll(true); sec.classList.add("go", "done"); return; }
+    sec.classList.add("go");
+    if(document.documentElement.lang === "en" && svg && svg.getBoundingClientRect().width) write(function(){ sec.classList.add("done"); });
+    else { if(lens.length) inkAll(true); setTimeout(function(){ sec.classList.add("done"); }, 1700); }
+  }
+  var io = window.IntersectionObserver ? new IntersectionObserver(function(es){
+    es.forEach(function(e){
+      if(e.target === sec){ vis = e.isIntersecting; if(vis && !raf) raf = requestAnimationFrame(drift); }
+      else if(e.isIntersecting) play();
+    });
+  }, {rootMargin:"0px 0px -22% 0px"}) : null;
+  if(io){ io.observe(sec); io.observe($(".ty-title", sec)); } else play();
+  /* switching to English after the Urdu/Hindi version played: show the finished writing */
+  new MutationObserver(function(){ if(played && lens.length && !sec.classList.contains("writing")) inkAll(true); }).observe(document.documentElement, {attributes:true, attributeFilter:["lang"]});
 })();
 
 /* ---------- venue: a few small fireworks over the palace as it comes into view ----------
