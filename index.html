@@ -662,7 +662,7 @@ html[lang="ur"] .tr-g,html[lang="hi"] .tr-g{font-size:13px}
 }
 
 /* ---------- Need help? -> glowing "Contact Us" illustration and a heart timeline (after Agrim's references) ---------- */
-.ct-top{position:relative;display:grid;justify-items:center;width:100%;max-width:420px;margin:6px auto 0}
+.ct-top{position:relative;display:grid;justify-items:center;width:100%;max-width:300px;margin:6px auto 0}
 .ct-top::before{content:"";position:absolute;left:50%;top:44%;width:86%;aspect-ratio:1.6;transform:translate(-50%,-50%);border-radius:50%;
   background:radial-gradient(closest-side,rgba(87,180,255,.22),rgba(241,213,146,.08) 60%,transparent);pointer-events:none}
 .ct-hero{position:relative;display:block;width:100%;height:auto;overflow:visible}
@@ -678,17 +678,17 @@ html[lang="ur"] .tr-g,html[lang="hi"] .tr-g{font-size:13px}
 .ct-spark path:nth-child(2){animation-delay:-.6s}.ct-spark path:nth-child(3){animation-delay:-1.2s}.ct-spark path:nth-child(4){animation-delay:-1.8s}
 @keyframes ctTw{0%,100%{opacity:.25;transform:scale(.6)}50%{opacity:1;transform:scale(1.15)}}
 /* the plate: dark glass, gold rim, silver "Contact" and gold "Us", a light sweep now and then */
-.ct-plate{position:relative;z-index:1;display:inline-flex;align-items:baseline;gap:.26em;margin:-30px 0 0;padding:10px 30px 14px;border-radius:16px;overflow:hidden;
+.ct-plate{position:relative;z-index:1;display:inline-flex;align-items:baseline;gap:.26em;margin:-20px 0 0;padding:7px 22px 10px;border-radius:13px;overflow:hidden;
   background:linear-gradient(180deg,#262E44,#0A0E1B 55%,#161C2E);border:1.5px solid #D9B262;
   box-shadow:0 0 0 4px rgba(8,12,28,.92),0 0 0 5.5px rgba(217,178,98,.55),0 0 26px rgba(241,213,146,.5),0 12px 30px rgba(0,0,0,.5);
-  font:600 clamp(36px,10.5vw,48px)/1.05 var(--f-display);letter-spacing:.02em;animation:ctPlate 3.2s ease-in-out infinite}
+  font:600 clamp(26px,7.4vw,34px)/1.05 var(--f-display);letter-spacing:.02em;animation:ctPlate 3.2s ease-in-out infinite}
 .ct-plate::after{content:"";position:absolute;top:0;bottom:0;left:-50%;width:34%;background:linear-gradient(100deg,transparent,rgba(255,244,214,.38),transparent);transform:skewX(-18deg);animation:ctSweep 4.5s ease-in-out 1s infinite}
 @keyframes ctSweep{0%{left:-50%}45%,100%{left:130%}}
 @keyframes ctPlate{0%,100%{box-shadow:0 0 0 4px rgba(8,12,28,.92),0 0 0 5.5px rgba(217,178,98,.5),0 0 20px rgba(241,213,146,.38),0 12px 30px rgba(0,0,0,.5)}50%{box-shadow:0 0 0 4px rgba(8,12,28,.92),0 0 0 5.5px rgba(217,178,98,.8),0 0 36px rgba(241,213,146,.7),0 12px 30px rgba(0,0,0,.5)}}
 .ct-a,.ct-b{-webkit-background-clip:text;background-clip:text;color:transparent}
 .ct-a{background-image:linear-gradient(180deg,#FFFFFF 0%,#E9EDF4 44%,#9AA6BA 56%,#F4F6FA 100%);filter:drop-shadow(0 0 6px rgba(255,255,255,.35))}
 .ct-b{background-image:linear-gradient(180deg,#FFF3C9 0%,#F1C761 44%,#B07A1E 58%,#FFE39A 100%);filter:drop-shadow(0 0 8px rgba(241,199,97,.55))}
-html[lang="ur"] .ct-plate{font-family:var(--f-ur-display);font-weight:400;line-height:1.55;padding:2px 28px 10px}
+html[lang="ur"] .ct-plate{font-family:var(--f-ur-display);font-weight:400;line-height:1.75;padding:6px 20px 6px}
 /* tall Nastaliq / Devanagari strokes reach outside the line box: pad the gradient so they are not clipped */
 html[lang="ur"] .ct-a,html[lang="ur"] .ct-b,html[lang="hi"] .ct-a,html[lang="hi"] .ct-b{padding:.45em .12em .2em;margin:-.45em -.12em -.2em}
 html[lang="hi"] .ct-plate{font-family:var(--f-hi-display);font-weight:400;line-height:1.3}
@@ -714,14 +714,14 @@ html[lang="hi"] .ct-plate{font-family:var(--f-hi-display);font-weight:400;line-h
 .ct-row.lit .ct-card{opacity:1;transform:none}
 .ct-row.lit .ct-mini{opacity:1}
 .ct-row.lit .ct-mini svg{animation:ctBeat 1.6s ease-in-out infinite}
-.ct-ph{display:block;width:100px;height:100px;border-radius:50%;padding:3px;background:conic-gradient(#F1D592,#B07A1E,#FFF1C2,#D9B262,#8A5A12,#F1D592);
+.ct-ph{display:block;width:86px;height:86px;border-radius:50%;padding:3px;background:conic-gradient(#F1D592,#B07A1E,#FFF1C2,#D9B262,#8A5A12,#F1D592);
   box-shadow:0 0 0 2px rgba(8,12,28,.9),0 0 14px rgba(241,213,146,.3)}
 .ct-row.lit .ct-ph{animation:ctPh 2.6s ease-in-out infinite}
 @keyframes ctPh{0%,100%{box-shadow:0 0 0 2px rgba(8,12,28,.9),0 0 16px rgba(241,213,146,.45)}50%{box-shadow:0 0 0 2px rgba(8,12,28,.9),0 0 32px rgba(241,213,146,.9)}}
 .ct-ph img{display:block;width:100%;height:100%;border-radius:50%;object-fit:cover}
-.ct-name{margin:6px 0 0;font:600 clamp(19px,5.2vw,22px)/1.15 var(--f-display);color:var(--gold);text-shadow:0 0 12px rgba(241,213,146,.35)}
+.ct-name{margin:6px 0 0;font:600 clamp(17px,4.7vw,20px)/1.15 var(--f-display);color:var(--gold);text-shadow:0 0 12px rgba(241,213,146,.35)}
 .ct-who{margin:0;font-size:13px;line-height:1.35;color:var(--silver)}
-.ct-tap{position:relative;overflow:hidden;margin-top:6px;min-height:42px;padding:0 20px;border-radius:999px;cursor:pointer;border:1px solid rgba(255,255,255,.6);
+.ct-tap{position:relative;overflow:hidden;margin-top:6px;min-height:40px;padding:0 18px;border-radius:999px;cursor:pointer;border:1px solid rgba(255,255,255,.6);
   background:linear-gradient(180deg,rgba(255,255,255,.24),rgba(255,255,255,.06));-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px);color:#FFF8EA;
   font:500 13px/1 var(--f-body);letter-spacing:.12em;text-transform:uppercase;
   box-shadow:inset 0 1px 1px rgba(255,255,255,.6),0 0 0 3px rgba(214,176,98,.14),0 0 16px rgba(120,170,255,.35);transition:transform .2s ease,box-shadow .3s ease}
@@ -1756,7 +1756,7 @@ html[lang="hi"] .eyebrow,html[lang="hi"] .btn,html[lang="hi"] .badge,html[lang="
     <div class="wrap center wide">
       <p class="eyebrow rv" data-i18n="contact_title">Need help?</p>
       <div class="ct-top rv">
-      <svg class="ct-hero" viewBox="0 0 360 232" aria-hidden="true">
+      <svg class="ct-hero" viewBox="0 0 360 206" aria-hidden="true">
         <defs>
           <radialGradient id="ctRing" cx="50%" cy="40%" r="62%"><stop offset="0" stop-color="#22397A"/><stop offset="1" stop-color="#0A1230"/></radialGradient>
           <radialGradient id="ctBub" cx="40%" cy="35%" r="70%"><stop offset="0" stop-color="#1C2A57"/><stop offset="1" stop-color="#070C22"/></radialGradient>
@@ -1770,6 +1770,7 @@ html[lang="hi"] .eyebrow,html[lang="hi"] .btn,html[lang="hi"] .badge,html[lang="
           <path d="M84 30 Q180 -14 276 30"/><path d="M86 54 Q118 44 146 58"/><path d="M274 54 Q242 44 214 58"/>
           <path d="M70 132 Q92 128 112 120"/><path d="M290 132 Q268 128 248 120"/>
         </g>
+        <g transform="translate(180 112) scale(.78) translate(-180 -112)">
         <circle class="ct-halo" cx="180" cy="104" r="72" fill="none" stroke="#57B4FF" stroke-width="8" filter="url(#ctHalo)"/>
         <circle cx="180" cy="104" r="70" fill="url(#ctRing)" stroke="#6CC0FF" stroke-width="2.6" filter="url(#ctGlow)"/>
         <g class="ct-agent">
@@ -1786,6 +1787,7 @@ html[lang="hi"] .eyebrow,html[lang="hi"] .btn,html[lang="hi"] .badge,html[lang="
           <rect x="201" y="95" width="19" height="29" rx="8" fill="url(#ctGold)"/><rect x="205" y="100" width="11" height="19" rx="5" fill="#2A2620"/>
           <path d="M150 122C152 135 161 141 172 139" fill="none" stroke="url(#ctGold)" stroke-width="3" stroke-linecap="round"/>
           <circle cx="174" cy="138.5" r="4" fill="#1B1B1F" stroke="#E2B455" stroke-width="1.4"/>
+        </g>
         </g>
         <g class="ct-bub" style="--c:#F5C451"><circle class="ct-bh" cx="62" cy="46" r="27" fill="none" stroke="#F5C451" stroke-width="7" filter="url(#ctHalo)"/>
           <circle cx="62" cy="46" r="26" fill="url(#ctBub)" stroke="#F5C451" stroke-width="2.4" filter="url(#ctGlow)"/>
