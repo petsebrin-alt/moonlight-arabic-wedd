@@ -867,20 +867,6 @@ html.rm .ty-sec .ty-step,html.rm .ty-sec .ty-word{transition:none!important}
 .sx::before{top:calc(var(--bl) * -1);height:calc(var(--bl) * 2);-webkit-backdrop-filter:blur(9px);backdrop-filter:blur(9px);
   -webkit-mask:linear-gradient(180deg,transparent,#000 40%,#000 60%,transparent);mask:linear-gradient(180deg,transparent,#000 40%,#000 60%,transparent)}
 
-/* Wishes form: every box in Agrim's gold baroque frame - only the gold border, a soft white inside */
-.wf{position:relative;width:100%;max-width:460px;aspect-ratio:686/224;margin-inline:auto}
-.wf.tall{aspect-ratio:686/262}
-.wf::before,.wf::after{content:"";position:absolute;inset:0;pointer-events:none;background:center/100% 100% no-repeat}
-.wf::before{z-index:0;background-image:url("assets/wishes/frame/fill.webp")}
-.wf::after{z-index:2;background-image:url("assets/wishes/frame/frame.webp");filter:drop-shadow(0 4px 6px rgba(122,92,36,.2));transition:filter .3s ease}
-.wf:focus-within::after{filter:drop-shadow(0 0 7px rgba(214,176,98,.85)) drop-shadow(0 4px 6px rgba(122,92,36,.2))}
-.wf:has([aria-invalid="true"])::after{filter:drop-shadow(0 0 6px rgba(179,38,30,.75))}
-#wishes .wf input,#wishes .wf textarea,#wishes .wf .rel-btn{position:absolute;z-index:1;inset:31% 13%;width:auto;height:auto;min-height:0;margin:0;padding:0 6px;
-  border:0!important;border-radius:0;background:transparent;box-shadow:none;outline:none;color:var(--ink);font-size:18px;text-align:center}
-#wishes .wf textarea{inset:23% 14% 20%;padding:2px 6px;resize:none;line-height:1.45;font-size:17px}
-#wishes .wf .rel-btn{inset:30% 12%;justify-content:center;gap:12px}
-#wishes .wf .rel-btn .rel-val{flex:1;text-align:center}
-.wf .rel-list{z-index:30}
 /* Wishes: "How do you know the couple?" is a pick list (tap the box or its arrow, choose a relation) */
 .rel{position:relative}
 .rel-btn{width:100%;min-height:52px;display:flex;align-items:center;justify-content:space-between;gap:10px;padding:12px 14px;border-radius:6px;border:1.5px solid var(--silver-mute);
@@ -953,7 +939,7 @@ legend{padding:0;margin-bottom:8px}
 /* wishes */
 #wishes form label,#wishes .legend,#wishes .field > .label{color:var(--ink)}
 #wishes .hint{color:var(--ink-mute)}
-#wishes input,#wishes textarea{border-color:var(--ink-mute);background:#F6F9FE}
+#wishes input,#wishes textarea,#wishes .rel-btn{border-color:var(--ink-mute);background:#F6F9FE}
 #wishes [aria-invalid="true"]{border-color:var(--err-on-light)!important}
 #wishes .err{color:var(--err-on-light)}
 #wishes .err::before{background:var(--err-on-light);color:var(--ivory)}
@@ -1702,9 +1688,9 @@ html[lang="hi"] .eyebrow,html[lang="hi"] .btn,html[lang="hi"] .badge,html[lang="
       <svg class="divider"><use href="#i-divider"/></svg>
       <h3 style="text-align:center;color:var(--navy)" data-i18n="leave_wish">Leave a wish</h3>
       <form id="wishForm" novalidate>
-        <div class="field"><label for="wName"><span data-i18n="f_name">Your name</span> <span class="req" data-i18n="required">(required)</span></label><div class="wf"><input type="text" id="wName" name="name" autocomplete="name" maxlength="60"></div><p class="err" id="wNameErr"></p></div>
-        <div class="field"><span class="label" id="wRelLab"><span data-i18n="f_rel">How do you know the couple?</span> <span class="opt" data-i18n="optional">(optional)</span></span><div class="rel wf" id="wRelBox"><button type="button" class="rel-btn" id="wRel" aria-haspopup="listbox" aria-expanded="false" aria-controls="wRelList" aria-labelledby="wRelLab wRelVal"><span class="rel-val" id="wRelVal">Select your relation</span><svg class="rel-chev" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 9l6 6 6-6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></button><ul class="rel-list" id="wRelList" role="listbox" aria-labelledby="wRelLab" hidden></ul></div></div>
-        <div class="field"><label for="wMsg"><span data-i18n="f_wish">Your wish</span> <span class="req" data-i18n="required">(required)</span></label><div class="wf tall"><textarea id="wMsg" name="message" maxlength="500" aria-describedby="wMsgHint"></textarea></div><p class="hint" id="wMsgHint"><span id="wCount">0</span> / 500</p><p class="err" id="wMsgErr"></p></div>
+        <div class="field"><label for="wName"><span data-i18n="f_name">Your name</span> <span class="req" data-i18n="required">(required)</span></label><input type="text" id="wName" name="name" autocomplete="name" maxlength="60"><p class="err" id="wNameErr"></p></div>
+        <div class="field"><span class="label" id="wRelLab"><span data-i18n="f_rel">How do you know the couple?</span> <span class="opt" data-i18n="optional">(optional)</span></span><div class="rel" id="wRelBox"><button type="button" class="rel-btn" id="wRel" aria-haspopup="listbox" aria-expanded="false" aria-controls="wRelList" aria-labelledby="wRelLab wRelVal"><span class="rel-val" id="wRelVal">Select your relation</span><svg class="rel-chev" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 9l6 6 6-6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></button><ul class="rel-list" id="wRelList" role="listbox" aria-labelledby="wRelLab" hidden></ul></div></div>
+        <div class="field"><label for="wMsg"><span data-i18n="f_wish">Your wish</span> <span class="req" data-i18n="required">(required)</span></label><textarea id="wMsg" name="message" maxlength="500" aria-describedby="wMsgHint"></textarea><p class="hint" id="wMsgHint"><span id="wCount">0</span> / 500</p><p class="err" id="wMsgErr"></p></div>
         <div class="field"><label for="wPhoto"><span data-i18n="f_photo">Your photo</span> <span class="opt" data-i18n="optional">(optional)</span></label>
           <div class="wv-file"><img id="wPhotoPrev" alt="" hidden><input type="file" id="wPhoto" accept="image/*" aria-describedby="wPhotoHint"></div><p class="hint" id="wPhotoHint" data-i18n="f_photo_hint">Shown on the front of your card.</p></div>
         <div class="hp" aria-hidden="true"><label for="wWeb">Website</label><input type="text" id="wWeb" tabindex="-1" autocomplete="off"></div>
