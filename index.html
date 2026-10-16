@@ -877,25 +877,29 @@ html.rm .ty-sec .ty-step,html.rm .ty-sec .ty-word{transition:none!important}
 
 
 /* Wishes: "Leave a Blessing" under a carved crescent moon (after Agrim's reference) */
-.wb{position:relative;isolation:isolate;overflow:hidden;width:100vw;margin:4px calc(50% - 50vw) 0;color:#F3EEE2;text-align:start;
+.wb{position:relative;isolation:isolate;overflow:hidden;width:100vw;margin:0 calc(50% - 50vw);padding-block:48px 62px;color:#F3EEE2;text-align:start}
+/* the night scene melts into the light section above and below: the sky fades out softly at both edges */
+.wb::before{content:"";position:absolute;inset:0;z-index:-1;
   background:url("assets/wishes/sky.webp") 50% 100%/cover no-repeat,linear-gradient(180deg,#0A1644,#15296B 60%,#0C1A47);
-  box-shadow:inset 0 1px 0 rgba(217,178,98,.45),inset 0 -1px 0 rgba(217,178,98,.45);animation:wbSky 70s ease-in-out infinite alternate}
+  -webkit-mask:linear-gradient(180deg,transparent 0,rgba(0,0,0,.08) 14px,rgba(0,0,0,.3) 34px,rgba(0,0,0,.7) 58px,#000 84px,#000 calc(100% - 92px),rgba(0,0,0,.7) calc(100% - 62px),rgba(0,0,0,.3) calc(100% - 36px),rgba(0,0,0,.08) calc(100% - 14px),transparent 100%);
+  mask:linear-gradient(180deg,transparent 0,rgba(0,0,0,.08) 14px,rgba(0,0,0,.3) 34px,rgba(0,0,0,.7) 58px,#000 84px,#000 calc(100% - 92px),rgba(0,0,0,.7) calc(100% - 62px),rgba(0,0,0,.3) calc(100% - 36px),rgba(0,0,0,.08) calc(100% - 14px),transparent 100%);
+  animation:wbSky 70s ease-in-out infinite alternate}
 @keyframes wbSky{to{background-position:58% 100%,0 0}}
-.wb-scene{position:absolute;inset:0;z-index:0;pointer-events:none}
+.wb-scene{position:absolute;inset:0 0 60px;z-index:0;pointer-events:none}
 .wb-tw{position:absolute;inset:0;background-image:radial-gradient(2px 2px at 82% 7%,#fff,transparent),radial-gradient(1.8px 1.8px at 66% 21%,#fff,transparent),radial-gradient(2.2px 2.2px at 92% 33%,#fff,transparent),radial-gradient(1.6px 1.6px at 48% 4%,#fff,transparent),radial-gradient(1.8px 1.8px at 74% 50%,#fff,transparent),radial-gradient(1.6px 1.6px at 12% 62%,#fff,transparent);animation:wbTw 3.4s ease-in-out infinite}
 @keyframes wbTw{0%,100%{opacity:.2}50%{opacity:1}}
 .wb-lan{position:absolute;z-index:0;height:auto;filter:drop-shadow(0 0 7px rgba(255,180,80,.85)) drop-shadow(0 0 18px rgba(255,160,60,.45));
   transform-origin:50% 40%;animation:wbBob 4.6s ease-in-out var(--d,0s) infinite}
 @keyframes wbBob{0%,100%{transform:translateY(0) rotate(-2.5deg)}50%{transform:translateY(-5px) rotate(2.5deg)}}
 .wb-in{position:relative;z-index:1;max-width:560px;margin-inline:auto}
-.wb-front{position:absolute;inset:0;z-index:2;pointer-events:none}
+.wb-front{position:absolute;inset:0 0 60px;z-index:2;pointer-events:none}
 .wb-lan.far{opacity:.85;filter:drop-shadow(0 0 5px rgba(255,180,80,.8)) blur(.3px)}
 /* the carved ivory crescent with Agrim's bouquet resting on its lower curve */
 .wb-moon{position:absolute;z-index:0;left:-7%;top:5%;bottom:9%;aspect-ratio:602/1044;pointer-events:none}
 .wb-moon-img{position:absolute;inset:0;width:100%;height:100%;filter:drop-shadow(0 0 22px rgba(255,240,205,.5)) drop-shadow(0 0 70px rgba(150,180,255,.3))}
 .wb-bq{position:absolute;left:4%;top:56%;width:82%;height:auto;filter:drop-shadow(0 10px 14px rgba(3,8,30,.5));
   -webkit-mask:linear-gradient(90deg,#000 66%,transparent 92%);mask:linear-gradient(90deg,#000 66%,transparent 92%)}
-html.rm .wb,html.rm .wb-lan,html.rm .wb-tw{animation:none}
+html.rm .wb::before,html.rm .wb-lan,html.rm .wb-tw{animation:none}
 /* the form sits to the right of the moon */
 .wb-form{position:relative;z-index:1;display:grid;grid-template-columns:minmax(0,1fr);gap:12px;padding:44px 16px 30px 31%}
 .wb-title{margin:0;white-space:nowrap;text-align:center;font:400 clamp(30px,8.4vw,40px)/1.2 "Pinyon Script",cursive;color:#FFF7E6;text-shadow:0 0 3px rgba(8,18,60,.9),0 0 14px rgba(8,18,60,.85),0 0 26px rgba(241,213,146,.45)}
