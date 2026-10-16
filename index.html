@@ -877,36 +877,29 @@ html.rm .ty-sec .ty-step,html.rm .ty-sec .ty-word{transition:none!important}
 
 
 /* Wishes: "Leave a Blessing" under a carved crescent moon (after Agrim's reference) */
-.wb{position:relative;width:100%;max-width:560px;margin:4px auto 0;border-radius:26px;overflow:hidden;isolation:isolate;color:#F3EEE2;text-align:start;
-  background:radial-gradient(90% 55% at 18% 26%,#2E4A9A 0%,rgba(46,74,154,0) 62%),linear-gradient(180deg,#0A1644 0%,#15296B 42%,#1B347A 66%,#0C1A47 100%);
-  box-shadow:0 26px 50px rgba(16,26,51,.32),0 0 0 1px rgba(217,178,98,.4)}
+.wb{position:relative;isolation:isolate;overflow:hidden;width:100vw;margin:4px calc(50% - 50vw) 0;color:#F3EEE2;text-align:start;
+  background:url("assets/wishes/sky.webp") 50% 100%/cover no-repeat,linear-gradient(180deg,#0A1644,#15296B 60%,#0C1A47);
+  box-shadow:inset 0 1px 0 rgba(217,178,98,.45),inset 0 -1px 0 rgba(217,178,98,.45);animation:wbSky 70s ease-in-out infinite alternate}
+@keyframes wbSky{to{background-position:58% 100%,0 0}}
 .wb-scene{position:absolute;inset:0;z-index:0;pointer-events:none}
-.wb-stars{position:absolute;inset:0;background-image:radial-gradient(1.3px 1px at 40% 4%,rgba(255,255,255,0.91),transparent),radial-gradient(1px 1.3px at 58% 64%,rgba(255,255,255,0.61),transparent),radial-gradient(1px 1.6px at 42% 18%,rgba(255,255,255,0.78),transparent),radial-gradient(1px 1px at 93% 45%,rgba(255,255,255,0.79),transparent),radial-gradient(1px 1.6px at 7% 16%,rgba(255,255,255,0.78),transparent),radial-gradient(1px 1.3px at 42% 38%,rgba(255,255,255,0.79),transparent),radial-gradient(1px 1px at 58% 45%,rgba(255,255,255,0.69),transparent),radial-gradient(1px 1px at 61% 35%,rgba(255,255,255,0.77),transparent),radial-gradient(1.3px 1.6px at 58% 32%,rgba(255,255,255,0.65),transparent),radial-gradient(1px 1px at 10% 22%,rgba(255,255,255,0.75),transparent),radial-gradient(1.3px 1.6px at 30% 69%,rgba(255,255,255,0.56),transparent),radial-gradient(1.6px 1px at 75% 11%,rgba(255,255,255,0.74),transparent),radial-gradient(1px 1px at 75% 41%,rgba(255,255,255,0.94),transparent),radial-gradient(1.3px 1.3px at 69% 42%,rgba(255,255,255,0.79),transparent),radial-gradient(1.6px 1px at 83% 66%,rgba(255,255,255,0.74),transparent),radial-gradient(1px 1px at 72% 22%,rgba(255,255,255,0.79),transparent),radial-gradient(1.6px 1.3px at 71% 62%,rgba(255,255,255,0.67),transparent),radial-gradient(1.6px 1.3px at 18% 9%,rgba(255,255,255,0.53),transparent),radial-gradient(1.3px 1px at 73% 28%,rgba(255,255,255,0.96),transparent),radial-gradient(1.6px 1px at 18% 29%,rgba(255,255,255,0.64),transparent),radial-gradient(1px 1.6px at 85% 20%,rgba(255,255,255,0.71),transparent),radial-gradient(1.3px 1.6px at 94% 11%,rgba(255,255,255,0.59),transparent),radial-gradient(1px 1px at 3% 58%,rgba(255,255,255,0.59),transparent),radial-gradient(1.3px 1px at 16% 38%,rgba(255,255,255,0.80),transparent),radial-gradient(1.3px 1px at 68% 37%,rgba(255,255,255,0.81),transparent),radial-gradient(1px 1.6px at 88% 55%,rgba(255,255,255,0.94),transparent),radial-gradient(1.6px 1.6px at 40% 8%,rgba(255,255,255,0.82),transparent),radial-gradient(1px 1px at 8% 15%,rgba(255,255,255,0.58),transparent),radial-gradient(1.3px 1px at 12% 40%,rgba(255,255,255,0.77),transparent),radial-gradient(1.3px 1px at 9% 15%,rgba(255,255,255,0.69),transparent),radial-gradient(1.3px 1.3px at 60% 34%,rgba(255,255,255,0.56),transparent),radial-gradient(1.6px 1.6px at 48% 23%,rgba(255,255,255,0.57),transparent),radial-gradient(1.3px 1.3px at 48% 49%,rgba(255,255,255,0.76),transparent),radial-gradient(1px 1.3px at 16% 38%,rgba(255,255,255,0.51),transparent),radial-gradient(1.3px 1px at 69% 19%,rgba(255,255,255,0.68),transparent),radial-gradient(1px 1.3px at 76% 38%,rgba(255,255,255,0.89),transparent),radial-gradient(1.3px 1px at 61% 55%,rgba(255,255,255,0.88),transparent),radial-gradient(1px 1px at 81% 52%,rgba(255,255,255,0.61),transparent),radial-gradient(1.6px 1.3px at 72% 69%,rgba(255,255,255,0.90),transparent),radial-gradient(1.6px 1.3px at 21% 43%,rgba(255,255,255,0.67),transparent),radial-gradient(1.3px 1.3px at 10% 8%,rgba(255,255,255,0.74),transparent),radial-gradient(1.3px 1px at 48% 69%,rgba(255,255,255,0.81),transparent),radial-gradient(1px 1.6px at 89% 25%,rgba(255,255,255,0.82),transparent),radial-gradient(1px 1.6px at 77% 53%,rgba(255,255,255,0.74),transparent),radial-gradient(1px 1.6px at 78% 24%,rgba(255,255,255,0.90),transparent),radial-gradient(1.6px 1.6px at 41% 66%,rgba(255,255,255,0.86),transparent)}
-.wb-stars::after{content:"";position:absolute;inset:0;background-image:radial-gradient(2px 2px at 82% 9%,#fff,transparent),radial-gradient(1.8px 1.8px at 64% 22%,#fff,transparent),radial-gradient(2px 2px at 91% 38%,#fff,transparent),radial-gradient(1.6px 1.6px at 47% 6%,#fff,transparent);animation:wbTw 3.6s ease-in-out infinite}
-@keyframes wbTw{0%,100%{opacity:.25}50%{opacity:1}}
-.wb-glow{position:absolute;left:-12%;top:-4%;width:84%;aspect-ratio:1;border-radius:50%;background:radial-gradient(closest-side,rgba(255,244,214,.3),rgba(140,170,255,.1) 60%,transparent)}
-.wb-cloud{position:absolute;border-radius:50%;background:radial-gradient(closest-side,rgba(214,224,248,.34),rgba(214,224,248,.12) 60%,transparent);filter:blur(5px);animation:wbDrift 26s ease-in-out infinite alternate}
-.wb-cloud.c1{right:-18%;top:6%;width:82%;height:16%}
-.wb-cloud.c2{right:-6%;top:31%;width:62%;height:11%;animation-duration:32s;animation-direction:alternate-reverse}
-.wb-cloud.c3{left:18%;top:58%;width:84%;height:13%;opacity:.8;animation-duration:38s}
-@keyframes wbDrift{to{transform:translateX(-9%)}}
-.wb-moon{position:absolute;left:-9%;top:1%;width:90%;max-width:470px}
-.wb-moon-svg{display:block;width:100%;height:auto;overflow:visible}
-.wb-flowers{position:absolute;left:3%;top:63%;width:50%;aspect-ratio:1.1}
-.wb-f{position:absolute;height:auto;filter:drop-shadow(0 6px 8px rgba(3,8,30,.45))}
-.wb-f.leaf{opacity:.95;-webkit-mask:radial-gradient(closest-side,#000 55%,transparent);mask:radial-gradient(closest-side,#000 55%,transparent)}
-.wb-f.blue{filter:brightness(.62) sepia(1) hue-rotate(178deg) saturate(5.5) contrast(1.2) drop-shadow(0 6px 8px rgba(3,8,30,.45))}
-.wb-water{position:absolute;left:0;right:0;bottom:0;height:17%;background:radial-gradient(14% 30% at 10% 92%,rgba(255,170,70,.35),transparent),radial-gradient(12% 26% at 61% 98%,rgba(255,170,70,.32),transparent),radial-gradient(12% 26% at 94% 94%,rgba(255,170,70,.3),transparent),linear-gradient(180deg,rgba(17,34,92,0),#132661 22%,#0A173F)}
-.wb-shine{position:absolute;inset:18% 0 0;background:repeating-linear-gradient(180deg,rgba(255,232,180,.13) 0 1px,transparent 1px 6px);
-  -webkit-mask:radial-gradient(60% 90% at 30% 0,#000,transparent);mask:radial-gradient(60% 90% at 30% 0,#000,transparent)}
-.wb-lan{position:absolute;height:auto;filter:drop-shadow(0 0 8px rgba(255,178,80,.9)) drop-shadow(0 0 18px rgba(255,160,60,.45));
-  animation:wbBob 4.2s ease-in-out var(--d,0s) infinite}
-@keyframes wbBob{0%,100%{transform:translateY(0) rotate(-2deg)}50%{transform:translateY(-4px) rotate(2deg)}}
-html.rm .wb-cloud,html.rm .wb-lan,html.rm .wb-stars::after{animation:none}
+.wb-tw{position:absolute;inset:0;background-image:radial-gradient(2px 2px at 82% 7%,#fff,transparent),radial-gradient(1.8px 1.8px at 66% 21%,#fff,transparent),radial-gradient(2.2px 2.2px at 92% 33%,#fff,transparent),radial-gradient(1.6px 1.6px at 48% 4%,#fff,transparent),radial-gradient(1.8px 1.8px at 74% 50%,#fff,transparent),radial-gradient(1.6px 1.6px at 12% 62%,#fff,transparent);animation:wbTw 3.4s ease-in-out infinite}
+@keyframes wbTw{0%,100%{opacity:.2}50%{opacity:1}}
+.wb-lan{position:absolute;z-index:0;height:auto;filter:drop-shadow(0 0 7px rgba(255,180,80,.85)) drop-shadow(0 0 18px rgba(255,160,60,.45));
+  transform-origin:50% 40%;animation:wbBob 4.6s ease-in-out var(--d,0s) infinite}
+@keyframes wbBob{0%,100%{transform:translateY(0) rotate(-2.5deg)}50%{transform:translateY(-5px) rotate(2.5deg)}}
+.wb-in{position:relative;z-index:1;max-width:560px;margin-inline:auto}
+.wb-front{position:absolute;inset:0;z-index:2;pointer-events:none}
+.wb-lan.far{opacity:.85;filter:drop-shadow(0 0 5px rgba(255,180,80,.8)) blur(.3px)}
+/* the carved ivory crescent with Agrim's bouquet resting on its lower curve */
+.wb-moon{position:absolute;z-index:0;left:-7%;top:5%;bottom:9%;aspect-ratio:602/1044;pointer-events:none}
+.wb-moon-img{position:absolute;inset:0;width:100%;height:100%;filter:drop-shadow(0 0 22px rgba(255,240,205,.5)) drop-shadow(0 0 70px rgba(150,180,255,.3))}
+.wb-bq{position:absolute;left:4%;top:56%;width:82%;height:auto;filter:drop-shadow(0 10px 14px rgba(3,8,30,.5));
+  -webkit-mask:linear-gradient(90deg,#000 66%,transparent 92%);mask:linear-gradient(90deg,#000 66%,transparent 92%)}
+html.rm .wb,html.rm .wb-lan,html.rm .wb-tw{animation:none}
 /* the form sits to the right of the moon */
 .wb-form{position:relative;z-index:1;display:grid;grid-template-columns:minmax(0,1fr);gap:12px;padding:44px 16px 30px 31%}
-.wb-title{margin:0 0 0 -24%;white-space:nowrap;text-align:center;font:400 clamp(30px,8.4vw,40px)/1.2 "Pinyon Script",cursive;color:#FFF7E6;text-shadow:0 0 14px rgba(241,213,146,.55),0 2px 6px rgba(3,8,30,.5)}
-.wb-sub{margin:-4px 0 6px -12%;text-align:center;font:400 14.5px/1.45 var(--f-body);color:#E7E4F2;text-shadow:0 1px 4px rgba(3,8,30,.6)}
+.wb-title{margin:0;white-space:nowrap;text-align:center;font:400 clamp(30px,8.4vw,40px)/1.2 "Pinyon Script",cursive;color:#FFF7E6;text-shadow:0 0 3px rgba(8,18,60,.9),0 0 14px rgba(8,18,60,.85),0 0 26px rgba(241,213,146,.45)}
+.wb-sub{margin:-4px 0 6px;text-align:center;font:400 14.5px/1.45 var(--f-body);color:#EEEBF7;text-shadow:0 0 3px rgba(8,18,60,.95),0 0 10px rgba(8,18,60,.85)}
 .wb-field{position:relative}
 .wb-ic{position:absolute;z-index:1;inset-inline-start:16px;top:15px;width:20px;height:20px;color:#1B2A5E;pointer-events:none}
 .wb-ic svg{display:block;width:100%;height:100%;fill:currentColor}
@@ -921,7 +914,7 @@ html.rm .wb-cloud,html.rm .wb-lan,html.rm .wb-stars::after{animation:none}
 .wb-msg .err ~ .wb-count{bottom:auto}
 #wishes .wb .err{margin:6px 6px 0;color:#FFB9B1;font-size:13.5px}
 #wishes .wb .err:empty{display:none}
-.wb-lab{margin:2px 0 0;font:400 16px/1.3 var(--f-display);color:#F6F0E2;text-shadow:0 1px 4px rgba(3,8,30,.6)}
+.wb-lab{margin:2px 0 0;font:400 16px/1.3 var(--f-display);color:#F6F0E2;text-shadow:0 0 3px rgba(8,18,60,.95),0 0 10px rgba(8,18,60,.8)}
 .wb-chips{display:flex;flex-wrap:wrap;gap:8px;margin-top:8px}
 .wb-chip{min-height:38px;padding:0 16px;border-radius:999px;cursor:pointer;border:1px solid rgba(255,255,255,.7);background:linear-gradient(180deg,#FBF7EE,#EFE7D7);
   color:#14214A;font:500 15px/1 var(--f-display);box-shadow:0 6px 12px rgba(3,8,30,.28);transition:background .25s ease,color .25s ease,box-shadow .25s ease}
@@ -929,13 +922,13 @@ html.rm .wb-cloud,html.rm .wb-lan,html.rm .wb-stars::after{animation:none}
 .wb-chip:focus-visible{outline:2px solid #F1D592;outline-offset:2px}
 .wb-photo{display:grid;gap:4px}
 .wb-pbtn{position:relative;justify-self:start;display:inline-flex;align-items:center;gap:10px;min-height:42px;padding:0 16px 0 44px;padding-inline:44px 16px;border-radius:999px;cursor:pointer;
-  border:1px dashed rgba(241,213,146,.75);background:rgba(255,255,255,.08);color:#F3EEE2;font:400 14px/1 var(--f-body)}
+  border:1px dashed rgba(241,213,146,.8);background:rgba(10,22,68,.72);-webkit-backdrop-filter:blur(4px);backdrop-filter:blur(4px);color:#F3EEE2;font:400 14px/1 var(--f-body)}
 #wishes .wb .wb-pbtn{color:#F3EEE2}
 .wb-pbtn .wb-ic{top:11px;color:#F1D592}
 .wb-pbtn .wb-ic svg{fill:none}
 .wb-pbtn img{position:absolute;inset-inline-start:6px;top:5px;width:32px;height:32px;border-radius:50%;object-fit:cover;border:1.5px solid #D9B262;z-index:2}
 .wb-photo input:focus-visible + .wb-pbtn{outline:2px solid #F1D592;outline-offset:2px}
-.wb-hint{margin:0 4px;font-size:12.5px;color:#C9CCE0}
+.wb-hint{margin:0 4px;font-size:12.5px;color:#DADDEE;text-shadow:0 0 3px rgba(8,18,60,.95),0 0 8px rgba(8,18,60,.8)}
 #wishes .wb #wishStatus .ok-msg{color:#D8F2E2;border-color:rgba(160,220,190,.7);background:rgba(10,40,30,.35)}
 #wishes .wb .form-error{color:#FFD2CC}
 /* "Send Your Blessings": navy with a gold double border and paper planes */
@@ -1759,12 +1752,9 @@ html[lang="hi"] .eyebrow,html[lang="hi"] .btn,html[lang="hi"] .badge,html[lang="
       </div>
       <svg class="divider"><use href="#i-divider"/></svg>
       <div class="wb" id="wishBless">
-        <div class="wb-scene" aria-hidden="true">
-          <span class="wb-stars"></span><span class="wb-glow"></span>
-          <span class="wb-cloud c1"></span><span class="wb-cloud c2"></span><span class="wb-cloud c3"></span>
-          <div class="wb-moon"><svg class="wb-moon-svg" viewBox="6 14 372 402" aria-hidden="true" focusable="false"><defs> <linearGradient id="wbIv" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#FFFEF8"/><stop offset=".45" stop-color="#F6EEDC"/><stop offset="1" stop-color="#D9CBA8"/></linearGradient> <radialGradient id="wbSh" cx="262" cy="186" r="208" gradientUnits="userSpaceOnUse"><stop offset=".78" stop-color="#9C8A62" stop-opacity=".55"/><stop offset=".9" stop-color="#C9B88F" stop-opacity=".18"/><stop offset="1" stop-color="#fff" stop-opacity="0"/></radialGradient> <linearGradient id="wbGold" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#F7E1A0"/><stop offset=".5" stop-color="#C9973A"/><stop offset="1" stop-color="#F2D287"/></linearGradient> <pattern id="wbPat" width="18" height="18" patternUnits="userSpaceOnUse" patternTransform="rotate(28)"><path d="M1 9c3-5 7-5 8 0s5 5 8 0" fill="none" stroke="#B98A33" stroke-width=".8"/><circle cx="9" cy="2" r=".9" fill="#C9973A"/></pattern><clipPath id="wbClip"><path d="M219.3 23.5A192.0 192.0 0 1 0 368.2 316.2A168.0 168.0 0 1 1 219.3 23.5Z"/></clipPath> <filter id="wbGlow" x="-30%" y="-30%" width="160%" height="160%"><feGaussianBlur stdDeviation="12"/></filter></defs><path d="M219.3 23.5A192.0 192.0 0 1 0 368.2 316.2A168.0 168.0 0 1 1 219.3 23.5Z" fill="#FFF4D6" opacity=".55" filter="url(#wbGlow)"/><path d="M219.3 23.5A192.0 192.0 0 1 0 368.2 316.2A168.0 168.0 0 1 1 219.3 23.5Z" fill="url(#wbIv)"/><g clip-path="url(#wbClip)"> <rect x="0" y="0" width="420" height="440" fill="url(#wbPat)" opacity=".32"/> <circle cx="262" cy="186" r="208" fill="url(#wbSh)"/> <circle cx="205" cy="215" r="183" fill="none" stroke="url(#wbGold)" stroke-width="2.4"/> <circle cx="205" cy="215" r="178" fill="none" stroke="#C9973A" stroke-width=".9" opacity=".8"/> <circle cx="262" cy="186" r="176" fill="none" stroke="url(#wbGold)" stroke-width="2"/> <circle cx="228" cy="204" r="182" fill="none" stroke="#C9973A" stroke-width="3.2" stroke-linecap="round" stroke-dasharray=".1 11" opacity=".85"/> <circle cx="228" cy="204" r="182" fill="none" stroke="#B88A33" stroke-width="1" stroke-dasharray="14 8" stroke-dashoffset="6" opacity=".55"/></g></svg><div class="wb-flowers"><img class="wb-f leaf" src="assets/flowers/foliage.webp" alt="" loading="lazy" decoding="async" style="left:-8%;bottom:20%;width:96%"><img class="wb-f" src="assets/rsvp/f-peony.webp" alt="" loading="lazy" decoding="async" style="left:6%;bottom:26%;width:44%"><img class="wb-f" src="assets/wishes/rose-blue-1.webp" alt="" loading="lazy" decoding="async" style="left:38%;bottom:10%;width:38%"><img class="wb-f" src="assets/wishes/rose-blue-2.webp" alt="" loading="lazy" decoding="async" style="left:-10%;bottom:56%;width:30%"><img class="wb-f" src="assets/rsvp/f-rose.webp" alt="" loading="lazy" decoding="async" style="left:30%;bottom:44%;width:26%"><img class="wb-f" src="assets/rsvp/f-peony.webp" alt="" loading="lazy" decoding="async" style="left:60%;bottom:2%;width:28%"><img class="wb-f" src="assets/wishes/rose-blue-3.webp" alt="" loading="lazy" decoding="async" style="left:16%;bottom:2%;width:22%"><img class="wb-f" src="assets/rsvp/f-lone.webp" alt="" loading="lazy" decoding="async" style="left:74%;bottom:22%;width:17%"><img class="wb-f" src="assets/rsvp/f-cream.webp" alt="" loading="lazy" decoding="async" style="left:-4%;bottom:86%;width:20%"><img class="wb-f" src="assets/rsvp/f-bud.webp" alt="" loading="lazy" decoding="async" style="left:52%;bottom:38%;width:13%"><img class="wb-f" src="assets/wishes/rose-blue-3.webp" alt="" loading="lazy" decoding="async" style="left:84%;bottom:4%;width:15%"></div></div>
-          <div class="wb-water"><span class="wb-shine"></span><img class="wb-lan" src="assets/wishes/lantern.webp" alt="" style="left:8%;bottom:5%;width:26px;--d:-.4s"><img class="wb-lan" src="assets/wishes/lantern.webp" alt="" style="left:24%;bottom:12%;width:18px;--d:-1.6s"><img class="wb-lan" src="assets/wishes/lantern.webp" alt="" style="left:58%;bottom:2%;width:30px;--d:-2.4s"><img class="wb-lan" src="assets/wishes/lantern.webp" alt="" style="left:78%;bottom:10%;width:20px;--d:-.9s"><img class="wb-lan" src="assets/wishes/lantern.webp" alt="" style="left:92%;bottom:4%;width:24px;--d:-3.1s"></div>
-        </div>
+        <div class="wb-scene" aria-hidden="true"><span class="wb-tw"></span><img class="wb-lan far" src="assets/wishes/lamp-float.webp" alt="" loading="lazy" decoding="async" style="left:84%;bottom:13.5%;width:12px;--d:-1.3s"><img class="wb-lan far" src="assets/wishes/lamp-float.webp" alt="" loading="lazy" decoding="async" style="left:66%;bottom:14.5%;width:10px;--d:-2.8s"></div>
+        <div class="wb-in">
+        <div class="wb-moon" aria-hidden="true"><img class="wb-moon-img" src="assets/wishes/moon.webp" width="602" height="1044" alt="" loading="lazy" decoding="async"><img class="wb-bq" src="assets/wishes/bouquet.webp" width="760" height="728" alt="" loading="lazy" decoding="async"></div>
         <form id="wishForm" class="wb-form" novalidate>
           <h3 class="wb-title" data-i18n="leave_wish">Leave a Blessing</h3>
           <p class="wb-sub" data-i18n="wish_sub">Share your love and best wishes for our new chapter.</p>
@@ -1776,6 +1766,8 @@ html[lang="hi"] .eyebrow,html[lang="hi"] .btn,html[lang="hi"] .badge,html[lang="
           <div id="wishStatus" aria-live="polite"></div>
           <button class="wb-send" type="submit" id="wishSubmit"><span data-i18n="send_wish">Send Your Blessings</span></button>
         </form>
+        </div>
+        <div class="wb-front" aria-hidden="true"><img class="wb-lan" src="assets/wishes/lamp-float.webp" alt="" loading="lazy" decoding="async" style="left:1%;bottom:1%;width:30px;--d:-.4s"><img class="wb-lan" src="assets/wishes/lamp-float.webp" alt="" loading="lazy" decoding="async" style="left:13%;bottom:4%;width:20px;--d:-1.9s"><img class="wb-lan" src="assets/wishes/lamp-float.webp" alt="" loading="lazy" decoding="async" style="left:92.5%;bottom:1.5%;width:26px;--d:-2.4s"><img class="wb-lan" src="assets/wishes/lamp-float.webp" alt="" loading="lazy" decoding="async" style="left:93%;bottom:12%;width:15px;--d:-3.4s"></div>
       </div>
     </div>
     <div class="sec-orn rv" aria-hidden="true"></div>
