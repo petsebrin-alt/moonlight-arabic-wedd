@@ -348,7 +348,7 @@ html[dir="rtl"] .ev-row.flip .ev-pic img{-webkit-mask:linear-gradient(90deg,#000
 .ev-cl.r img{transform:scaleX(-1)}
 html.rm .ev-cl{display:none}
 /* the board: champagne-gold plaque with scooped corners, a fine inner line and an ornament each side */
-.ev-board{position:relative;z-index:2;filter:drop-shadow(0 12px 22px rgba(0,0,0,.35)) drop-shadow(0 2px 4px rgba(0,0,0,.25))}
+.ev-board{position:relative;z-index:2;container-type:inline-size;filter:drop-shadow(0 12px 22px rgba(0,0,0,.35)) drop-shadow(0 2px 4px rgba(0,0,0,.25))}
 .ev-plate{--r:clamp(10px,3vw,16px);position:relative;overflow:hidden;padding:clamp(16px,4.4vw,26px) clamp(18px,5vw,34px) clamp(14px,3.8vw,20px);text-align:center;color:#14214A;
   background:linear-gradient(155deg,#FCF3DC 0%,#F2DFAC 34%,#E5C680 66%,#F4E3B6 100%);
   -webkit-mask:radial-gradient(circle at 0 0,#0000 var(--r),#000 calc(var(--r) + .5px)) 0 0/51% 51% no-repeat,radial-gradient(circle at 100% 0,#0000 var(--r),#000 calc(var(--r) + .5px)) 100% 0/51% 51% no-repeat,radial-gradient(circle at 0 100%,#0000 var(--r),#000 calc(var(--r) + .5px)) 0 100%/51% 51% no-repeat,radial-gradient(circle at 100% 100%,#0000 var(--r),#000 calc(var(--r) + .5px)) 100% 100%/51% 51% no-repeat;
@@ -362,6 +362,14 @@ html.rm .ev-cl{display:none}
   radial-gradient(circle at 100% 0,#0000 9.6px,var(--c) 10.1px,var(--c) 11px,#0000 11.5px) 100% 0/12px 12px no-repeat,
   radial-gradient(circle at 0 100%,#0000 9.6px,var(--c) 10.1px,var(--c) 11px,#0000 11.5px) 0 100%/12px 12px no-repeat,
   radial-gradient(circle at 100% 100%,#0000 9.6px,var(--c) 10.1px,var(--c) 11px,#0000 11.5px) 100% 100%/12px 12px no-repeat}
+/* the boards: white, inside Agrim's gold ornamental frame (top and bottom halves keep the corners whole; the side lines
+   and dots between them repeat, so a board can be any height without stretching the ornaments) */
+.ev-plate{isolation:isolate;min-height:72cqw;padding:15cqw 12.5cqw 13.5cqw;border-radius:14px;
+  background:url("assets/events/frame/top.webp") top/100% auto no-repeat,url("assets/events/frame/bottom.webp") bottom/100% auto no-repeat,#FFFFFF;
+  -webkit-mask:none;mask:none;display:flex;flex-direction:column;justify-content:center;align-items:center}
+.ev-plate::before{inset:32.3cqw 0 32.4cqw;z-index:-1;border:0;-webkit-mask:none;mask:none;background:url("assets/events/frame/side.webp") top/100% auto repeat-y}
+.ev-plate::after{display:none}
+.ev-plate .ev-orn,.ev-plate .ev-shine{display:none}
 .ev-orn{position:absolute;top:50%;width:clamp(7px,2vw,10px);height:clamp(18px,5vw,24px);margin-top:calc(clamp(18px,5vw,24px) / -2);color:#A47A2C;opacity:.85}
 .ev-orn.l{left:clamp(6px,1.8vw,11px)} .ev-orn.r{right:clamp(6px,1.8vw,11px)}
 .ev-plate h3{margin:0;font:600 clamp(22px,6.2vw,36px)/1.05 var(--f-display);color:#14214A;letter-spacing:.01em}
@@ -867,34 +875,86 @@ html.rm .ty-sec .ty-step,html.rm .ty-sec .ty-word{transition:none!important}
 .sx::before{top:calc(var(--bl) * -1);height:calc(var(--bl) * 2);-webkit-backdrop-filter:blur(9px);backdrop-filter:blur(9px);
   -webkit-mask:linear-gradient(180deg,transparent,#000 40%,#000 60%,transparent);mask:linear-gradient(180deg,transparent,#000 40%,#000 60%,transparent)}
 
-/* the finger-heart line drawing (after Agrim's reference) in the corner under "Your wish": it draws itself, then the heart fills */
-.wv-msg{position:relative}
-.wv-msg .err{padding-inline-end:84px}
-.wv-heart{position:absolute;z-index:1;inset-inline-end:6px;top:calc(100% - 20px);width:66px;height:auto;overflow:visible;pointer-events:none}
-.wv-heart path{fill:none;stroke:#2B3150;stroke-width:7;stroke-linecap:round;stroke-linejoin:round}
-.wv-heart .wh-h,.wv-heart .wh-k{stroke:#D9446A}
-.wv-heart .wh-fill{fill:#F7B7C6;stroke:none;opacity:0;transition:opacity .6s ease}
-.wv-heart.done .wh-fill{opacity:1}
-.wv-heart.done .wh-beat{transform-box:fill-box;transform-origin:50% 60%;animation:whBeat 2.4s ease-in-out .3s infinite}
-@keyframes whBeat{0%,100%{transform:scale(1)}12%{transform:scale(1.12)}24%{transform:scale(1)}36%{transform:scale(1.07)}}
-html.rm .wv-heart .wh-fill{opacity:1;transition:none}
-html.rm .wv-heart .wh-beat{animation:none}
-/* Wishes: "How do you know the couple?" is a pick list (tap the box or its arrow, choose a relation) */
-.rel{position:relative}
-.rel-btn{width:100%;min-height:52px;display:flex;align-items:center;justify-content:space-between;gap:10px;padding:12px 14px;border-radius:6px;border:1.5px solid var(--silver-mute);
-  background:var(--ivory);color:var(--ink);font:inherit;font-size:17px;text-align:start;cursor:pointer;transition:border-color .2s ease,box-shadow .2s ease}
-.rel-btn.empty .rel-val{color:var(--ink-mute);opacity:.8}
-.rel-btn:focus-visible,.rel-btn[aria-expanded="true"]{outline:none;border-color:var(--gold-deep);box-shadow:0 0 0 3px rgba(214,176,98,.25)}
-.rel-chev{flex:none;width:22px;height:22px;padding:3px;border-radius:50%;color:#fff;background:var(--gold-deep);transition:transform .3s ease}
-.rel-btn[aria-expanded="true"] .rel-chev{transform:rotate(180deg)}
-.rel-list{position:absolute;z-index:30;top:calc(100% + 6px);inset-inline:0;margin:0;padding:6px;list-style:none;max-height:270px;overflow-y:auto;overscroll-behavior:contain;
-  background:#FFFDF8;border:1px solid rgba(122,92,36,.35);border-radius:12px;box-shadow:0 18px 36px rgba(16,26,51,.22);animation:relIn .22s ease-out}
-@keyframes relIn{from{opacity:0;transform:translateY(-6px)}to{opacity:1;transform:none}}
-html.rm .rel-list{animation:none}
-.rel-list li{display:flex;align-items:center;justify-content:space-between;gap:10px;min-height:44px;padding:8px 12px;border-radius:8px;cursor:pointer;color:var(--ink);font-size:16px}
-.rel-list li:hover,.rel-list li.act{background:rgba(214,176,98,.16)}
-.rel-list li[aria-selected="true"]{color:var(--gold-deep);font-weight:500}
-.rel-list li[aria-selected="true"]::after{content:"";flex:none;width:7px;height:12px;margin-inline-end:4px;border:solid currentColor;border-width:0 2px 2px 0;transform:rotate(45deg) translateY(-2px)}
+
+/* Wishes: "Leave a Blessing" under a carved crescent moon (after Agrim's reference) */
+.wb{position:relative;width:100%;max-width:560px;margin:4px auto 0;border-radius:26px;overflow:hidden;isolation:isolate;color:#F3EEE2;text-align:start;
+  background:radial-gradient(90% 55% at 18% 26%,#2E4A9A 0%,rgba(46,74,154,0) 62%),linear-gradient(180deg,#0A1644 0%,#15296B 42%,#1B347A 66%,#0C1A47 100%);
+  box-shadow:0 26px 50px rgba(16,26,51,.32),0 0 0 1px rgba(217,178,98,.4)}
+.wb-scene{position:absolute;inset:0;z-index:0;pointer-events:none}
+.wb-stars{position:absolute;inset:0;background-image:radial-gradient(1.3px 1px at 40% 4%,rgba(255,255,255,0.91),transparent),radial-gradient(1px 1.3px at 58% 64%,rgba(255,255,255,0.61),transparent),radial-gradient(1px 1.6px at 42% 18%,rgba(255,255,255,0.78),transparent),radial-gradient(1px 1px at 93% 45%,rgba(255,255,255,0.79),transparent),radial-gradient(1px 1.6px at 7% 16%,rgba(255,255,255,0.78),transparent),radial-gradient(1px 1.3px at 42% 38%,rgba(255,255,255,0.79),transparent),radial-gradient(1px 1px at 58% 45%,rgba(255,255,255,0.69),transparent),radial-gradient(1px 1px at 61% 35%,rgba(255,255,255,0.77),transparent),radial-gradient(1.3px 1.6px at 58% 32%,rgba(255,255,255,0.65),transparent),radial-gradient(1px 1px at 10% 22%,rgba(255,255,255,0.75),transparent),radial-gradient(1.3px 1.6px at 30% 69%,rgba(255,255,255,0.56),transparent),radial-gradient(1.6px 1px at 75% 11%,rgba(255,255,255,0.74),transparent),radial-gradient(1px 1px at 75% 41%,rgba(255,255,255,0.94),transparent),radial-gradient(1.3px 1.3px at 69% 42%,rgba(255,255,255,0.79),transparent),radial-gradient(1.6px 1px at 83% 66%,rgba(255,255,255,0.74),transparent),radial-gradient(1px 1px at 72% 22%,rgba(255,255,255,0.79),transparent),radial-gradient(1.6px 1.3px at 71% 62%,rgba(255,255,255,0.67),transparent),radial-gradient(1.6px 1.3px at 18% 9%,rgba(255,255,255,0.53),transparent),radial-gradient(1.3px 1px at 73% 28%,rgba(255,255,255,0.96),transparent),radial-gradient(1.6px 1px at 18% 29%,rgba(255,255,255,0.64),transparent),radial-gradient(1px 1.6px at 85% 20%,rgba(255,255,255,0.71),transparent),radial-gradient(1.3px 1.6px at 94% 11%,rgba(255,255,255,0.59),transparent),radial-gradient(1px 1px at 3% 58%,rgba(255,255,255,0.59),transparent),radial-gradient(1.3px 1px at 16% 38%,rgba(255,255,255,0.80),transparent),radial-gradient(1.3px 1px at 68% 37%,rgba(255,255,255,0.81),transparent),radial-gradient(1px 1.6px at 88% 55%,rgba(255,255,255,0.94),transparent),radial-gradient(1.6px 1.6px at 40% 8%,rgba(255,255,255,0.82),transparent),radial-gradient(1px 1px at 8% 15%,rgba(255,255,255,0.58),transparent),radial-gradient(1.3px 1px at 12% 40%,rgba(255,255,255,0.77),transparent),radial-gradient(1.3px 1px at 9% 15%,rgba(255,255,255,0.69),transparent),radial-gradient(1.3px 1.3px at 60% 34%,rgba(255,255,255,0.56),transparent),radial-gradient(1.6px 1.6px at 48% 23%,rgba(255,255,255,0.57),transparent),radial-gradient(1.3px 1.3px at 48% 49%,rgba(255,255,255,0.76),transparent),radial-gradient(1px 1.3px at 16% 38%,rgba(255,255,255,0.51),transparent),radial-gradient(1.3px 1px at 69% 19%,rgba(255,255,255,0.68),transparent),radial-gradient(1px 1.3px at 76% 38%,rgba(255,255,255,0.89),transparent),radial-gradient(1.3px 1px at 61% 55%,rgba(255,255,255,0.88),transparent),radial-gradient(1px 1px at 81% 52%,rgba(255,255,255,0.61),transparent),radial-gradient(1.6px 1.3px at 72% 69%,rgba(255,255,255,0.90),transparent),radial-gradient(1.6px 1.3px at 21% 43%,rgba(255,255,255,0.67),transparent),radial-gradient(1.3px 1.3px at 10% 8%,rgba(255,255,255,0.74),transparent),radial-gradient(1.3px 1px at 48% 69%,rgba(255,255,255,0.81),transparent),radial-gradient(1px 1.6px at 89% 25%,rgba(255,255,255,0.82),transparent),radial-gradient(1px 1.6px at 77% 53%,rgba(255,255,255,0.74),transparent),radial-gradient(1px 1.6px at 78% 24%,rgba(255,255,255,0.90),transparent),radial-gradient(1.6px 1.6px at 41% 66%,rgba(255,255,255,0.86),transparent)}
+.wb-stars::after{content:"";position:absolute;inset:0;background-image:radial-gradient(2px 2px at 82% 9%,#fff,transparent),radial-gradient(1.8px 1.8px at 64% 22%,#fff,transparent),radial-gradient(2px 2px at 91% 38%,#fff,transparent),radial-gradient(1.6px 1.6px at 47% 6%,#fff,transparent);animation:wbTw 3.6s ease-in-out infinite}
+@keyframes wbTw{0%,100%{opacity:.25}50%{opacity:1}}
+.wb-glow{position:absolute;left:-12%;top:-4%;width:84%;aspect-ratio:1;border-radius:50%;background:radial-gradient(closest-side,rgba(255,244,214,.3),rgba(140,170,255,.1) 60%,transparent)}
+.wb-cloud{position:absolute;border-radius:50%;background:radial-gradient(closest-side,rgba(214,224,248,.34),rgba(214,224,248,.12) 60%,transparent);filter:blur(5px);animation:wbDrift 26s ease-in-out infinite alternate}
+.wb-cloud.c1{right:-18%;top:6%;width:82%;height:16%}
+.wb-cloud.c2{right:-6%;top:31%;width:62%;height:11%;animation-duration:32s;animation-direction:alternate-reverse}
+.wb-cloud.c3{left:18%;top:58%;width:84%;height:13%;opacity:.8;animation-duration:38s}
+@keyframes wbDrift{to{transform:translateX(-9%)}}
+.wb-moon{position:absolute;left:-9%;top:1%;width:90%;max-width:470px}
+.wb-moon-svg{display:block;width:100%;height:auto;overflow:visible}
+.wb-flowers{position:absolute;left:3%;top:63%;width:50%;aspect-ratio:1.1}
+.wb-f{position:absolute;height:auto;filter:drop-shadow(0 6px 8px rgba(3,8,30,.45))}
+.wb-f.leaf{opacity:.95;-webkit-mask:radial-gradient(closest-side,#000 55%,transparent);mask:radial-gradient(closest-side,#000 55%,transparent)}
+.wb-f.blue{filter:brightness(.62) sepia(1) hue-rotate(178deg) saturate(5.5) contrast(1.2) drop-shadow(0 6px 8px rgba(3,8,30,.45))}
+.wb-water{position:absolute;left:0;right:0;bottom:0;height:17%;background:radial-gradient(14% 30% at 10% 92%,rgba(255,170,70,.35),transparent),radial-gradient(12% 26% at 61% 98%,rgba(255,170,70,.32),transparent),radial-gradient(12% 26% at 94% 94%,rgba(255,170,70,.3),transparent),linear-gradient(180deg,rgba(17,34,92,0),#132661 22%,#0A173F)}
+.wb-shine{position:absolute;inset:18% 0 0;background:repeating-linear-gradient(180deg,rgba(255,232,180,.13) 0 1px,transparent 1px 6px);
+  -webkit-mask:radial-gradient(60% 90% at 30% 0,#000,transparent);mask:radial-gradient(60% 90% at 30% 0,#000,transparent)}
+.wb-lan{position:absolute;height:auto;filter:drop-shadow(0 0 8px rgba(255,178,80,.9)) drop-shadow(0 0 18px rgba(255,160,60,.45));
+  animation:wbBob 4.2s ease-in-out var(--d,0s) infinite}
+@keyframes wbBob{0%,100%{transform:translateY(0) rotate(-2deg)}50%{transform:translateY(-4px) rotate(2deg)}}
+html.rm .wb-cloud,html.rm .wb-lan,html.rm .wb-stars::after{animation:none}
+/* the form sits to the right of the moon */
+.wb-form{position:relative;z-index:1;display:grid;grid-template-columns:minmax(0,1fr);gap:12px;padding:44px 16px 30px 31%}
+.wb-title{margin:0 0 0 -24%;white-space:nowrap;text-align:center;font:400 clamp(30px,8.4vw,40px)/1.2 "Pinyon Script",cursive;color:#FFF7E6;text-shadow:0 0 14px rgba(241,213,146,.55),0 2px 6px rgba(3,8,30,.5)}
+.wb-sub{margin:-4px 0 6px -12%;text-align:center;font:400 14.5px/1.45 var(--f-body);color:#E7E4F2;text-shadow:0 1px 4px rgba(3,8,30,.6)}
+.wb-field{position:relative}
+.wb-ic{position:absolute;z-index:1;inset-inline-start:16px;top:15px;width:20px;height:20px;color:#1B2A5E;pointer-events:none}
+.wb-ic svg{display:block;width:100%;height:100%;fill:currentColor}
+#wishes .wb input[type=text],#wishes .wb textarea{width:100%;min-height:50px;padding:0 18px;padding-inline-start:46px;border-radius:999px;border:1px solid rgba(255,255,255,.65);
+  background:linear-gradient(180deg,#FBF7EE,#F1EADC);color:#14214A;font:400 16px/1.4 var(--f-body);
+  box-shadow:inset 0 2px 5px rgba(60,40,10,.12),0 8px 18px rgba(3,8,30,.3);transition:box-shadow .25s ease}
+#wishes .wb textarea{min-height:118px;padding-top:14px;padding-bottom:28px;border-radius:20px;resize:none}
+#wishes .wb input::placeholder,#wishes .wb textarea::placeholder{color:#5B6178}
+#wishes .wb input:focus,#wishes .wb textarea:focus{outline:none;box-shadow:inset 0 2px 5px rgba(60,40,10,.12),0 0 0 3px rgba(241,213,146,.7),0 8px 18px rgba(3,8,30,.3)}
+#wishes .wb [aria-invalid="true"]{border-color:#FF9C94!important;border-width:2px!important}
+.wb-count{position:absolute;right:16px;bottom:10px;margin:0;font-size:12.5px;color:#6A6F86;pointer-events:none}
+.wb-msg .err ~ .wb-count{bottom:auto}
+#wishes .wb .err{margin:6px 6px 0;color:#FFB9B1;font-size:13.5px}
+#wishes .wb .err:empty{display:none}
+.wb-lab{margin:2px 0 0;font:400 16px/1.3 var(--f-display);color:#F6F0E2;text-shadow:0 1px 4px rgba(3,8,30,.6)}
+.wb-chips{display:flex;flex-wrap:wrap;gap:8px;margin-top:8px}
+.wb-chip{min-height:38px;padding:0 16px;border-radius:999px;cursor:pointer;border:1px solid rgba(255,255,255,.7);background:linear-gradient(180deg,#FBF7EE,#EFE7D7);
+  color:#14214A;font:500 15px/1 var(--f-display);box-shadow:0 6px 12px rgba(3,8,30,.28);transition:background .25s ease,color .25s ease,box-shadow .25s ease}
+.wb-chip[aria-pressed="true"]{background:linear-gradient(180deg,#1C2E6C,#0C1840);color:#FFF6E0;border:1.5px solid #D9B262;box-shadow:0 0 0 2px rgba(217,178,98,.3),0 0 14px rgba(241,213,146,.4),0 6px 12px rgba(3,8,30,.3)}
+.wb-chip:focus-visible{outline:2px solid #F1D592;outline-offset:2px}
+.wb-photo{display:grid;gap:4px}
+.wb-pbtn{position:relative;justify-self:start;display:inline-flex;align-items:center;gap:10px;min-height:42px;padding:0 16px 0 44px;padding-inline:44px 16px;border-radius:999px;cursor:pointer;
+  border:1px dashed rgba(241,213,146,.75);background:rgba(255,255,255,.08);color:#F3EEE2;font:400 14px/1 var(--f-body)}
+#wishes .wb .wb-pbtn{color:#F3EEE2}
+.wb-pbtn .wb-ic{top:11px;color:#F1D592}
+.wb-pbtn .wb-ic svg{fill:none}
+.wb-pbtn img{position:absolute;inset-inline-start:6px;top:5px;width:32px;height:32px;border-radius:50%;object-fit:cover;border:1.5px solid #D9B262;z-index:2}
+.wb-photo input:focus-visible + .wb-pbtn{outline:2px solid #F1D592;outline-offset:2px}
+.wb-hint{margin:0 4px;font-size:12.5px;color:#C9CCE0}
+#wishes .wb #wishStatus .ok-msg{color:#D8F2E2;border-color:rgba(160,220,190,.7);background:rgba(10,40,30,.35)}
+#wishes .wb .form-error{color:#FFD2CC}
+/* "Send Your Blessings": navy with a gold double border and paper planes */
+.wb-send{justify-self:center;position:relative;display:inline-flex;align-items:center;justify-content:center;gap:10px;max-width:100%;min-height:56px;margin-top:6px;padding:6px 46px;text-align:center;line-height:1.15;border-radius:999px;cursor:pointer;
+  border:1.5px solid #D9B262;background:linear-gradient(180deg,#1E3170,#0B173F);color:#FFF1D2;font:500 19px/1 var(--f-display);letter-spacing:.01em;
+  box-shadow:0 0 0 3px #0B173F,0 0 0 4.5px rgba(217,178,98,.75),0 0 20px rgba(241,213,146,.35),0 12px 24px rgba(3,8,30,.45);transition:transform .2s ease,box-shadow .3s ease}
+.wb-send::before,.wb-send::after{content:"";position:absolute;top:50%;width:20px;height:20px;margin-top:-10px;background:#E9C77A;
+  -webkit-mask:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M2 11.5 21.5 3l-4.2 18-6.4-5.2-3.4 3.3.4-5 8.7-8.3-11 6.7z'/%3E%3C/svg%3E") center/contain no-repeat;
+  mask:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M2 11.5 21.5 3l-4.2 18-6.4-5.2-3.4 3.3.4-5 8.7-8.3-11 6.7z'/%3E%3C/svg%3E") center/contain no-repeat}
+.wb-send::before{left:20px}.wb-send::after{right:20px;transform:scaleX(-1)}
+.wb-send:active{transform:scale(.97)}
+.wb-send:focus-visible{outline:2px solid #F1D592;outline-offset:4px}
+@media (hover:hover){.wb-send:hover{box-shadow:0 0 0 3px #0B173F,0 0 0 4.5px rgba(241,213,146,.95),0 0 30px rgba(241,213,146,.55),0 12px 24px rgba(3,8,30,.45)}}
+html[lang="ur"] .wb-title{font:400 34px/1.7 var(--f-ur-display);margin-inline:0}
+html[lang="hi"] .wb-title{font:400 32px/1.4 var(--f-hi-display);margin-inline:0}
+html[lang="ur"] .wb-sub,html[lang="ur"] .wb-lab,html[lang="ur"] .wb-chip,html[lang="ur"] .wb-pbtn,html[lang="ur"] .wb-send{font-family:var(--f-ur-head);line-height:1.6}
+html[lang="hi"] .wb-sub,html[lang="hi"] .wb-lab,html[lang="hi"] .wb-chip,html[lang="hi"] .wb-pbtn,html[lang="hi"] .wb-send{font-family:var(--f-hi-body)}
+html[lang="ur"] .wb-send,html[lang="hi"] .wb-send{font-size:18px}
+@media (min-width:700px){.wb-form{padding:40px 30px 36px 40%}}
 
 /* info cards (travel / dress / contact) */
 .cards{display:grid;gap:14px;width:100%}
@@ -951,7 +1011,7 @@ legend{padding:0;margin-bottom:8px}
 /* wishes */
 #wishes form label,#wishes .legend,#wishes .field > .label{color:var(--ink)}
 #wishes .hint{color:var(--ink-mute)}
-#wishes input,#wishes textarea,#wishes .rel-btn{border-color:var(--ink-mute);background:#F6F9FE}
+#wishes input,#wishes textarea{border-color:var(--ink-mute);background:#F6F9FE}
 #wishes [aria-invalid="true"]{border-color:var(--err-on-light)!important}
 #wishes .err{color:var(--err-on-light)}
 #wishes .err::before{background:var(--err-on-light);color:var(--ivory)}
@@ -1698,17 +1758,25 @@ html[lang="hi"] .eyebrow,html[lang="hi"] .btn,html[lang="hi"] .badge,html[lang="
         <div class="btn-row" id="wishMore"><button class="btn ghost" type="button" id="allWishesBtn" aria-haspopup="dialog"><span data-i18n="view_all">View all wishes</span> <span id="wishCount"></span></button></div>
       </div>
       <svg class="divider"><use href="#i-divider"/></svg>
-      <h3 style="text-align:center;color:var(--navy)" data-i18n="leave_wish">Leave a wish</h3>
-      <form id="wishForm" novalidate>
-        <div class="field"><label for="wName"><span data-i18n="f_name">Your name</span> <span class="req" data-i18n="required">(required)</span></label><input type="text" id="wName" name="name" autocomplete="name" maxlength="60"><p class="err" id="wNameErr"></p></div>
-        <div class="field"><span class="label" id="wRelLab"><span data-i18n="f_rel">How do you know the couple?</span> <span class="opt" data-i18n="optional">(optional)</span></span><div class="rel" id="wRelBox"><button type="button" class="rel-btn" id="wRel" aria-haspopup="listbox" aria-expanded="false" aria-controls="wRelList" aria-labelledby="wRelLab wRelVal"><span class="rel-val" id="wRelVal">Select your relation</span><svg class="rel-chev" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 9l6 6 6-6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></button><ul class="rel-list" id="wRelList" role="listbox" aria-labelledby="wRelLab" hidden></ul></div></div>
-        <div class="field wv-msg"><label for="wMsg"><span data-i18n="f_wish">Your wish</span> <span class="req" data-i18n="required">(required)</span></label><textarea id="wMsg" name="message" maxlength="500" aria-describedby="wMsgHint"></textarea><p class="hint" id="wMsgHint"><span id="wCount">0</span> / 500</p><svg class="wv-heart" viewBox="10 8 268 578" aria-hidden="true" focusable="false"><g class="wh-beat"><path class="wh-fill" d="M104 98C105 98 106 95 108 94C109 92 109 91 110 89C111 88 112 86 113 84C114 83 115 81 115 79C116 78 117 76 118 74C118 72 119 71 119 69C120 67 120 65 120 63C121 61 121 60 122 58C122 56 123 54 123 52C123 50 123 48 123 46C123 45 123 43 123 41C123 39 123 37 122 35C122 33 121 32 120 30C119 28 118 27 117 25C116 24 115 22 113 21C112 20 110 19 109 18C107 18 105 17 103 17C101 17 99 18 98 18C96 19 94 20 93 21C91 22 90 23 89 24C87 26 86 27 85 28C84 30 83 31 82 33C81 35 80 36 80 38C79 40 79 42 79 44C79 46 80 48 80 50C80 51 81 53 81 54C81 56 82 58 82 59C81 60 81 59 80 58C78 58 76 56 75 56C73 55 71 54 70 53C68 53 66 52 64 52C62 52 60 52 59 52C57 53 55 53 54 54C52 55 51 57 50 58C49 60 49 62 48 63C48 65 48 67 48 69C48 71 49 73 50 74C50 76 51 77 53 79C54 80 55 81 57 82C58 83 60 84 62 85C64 85 65 86 67 86C69 87 71 88 72 88C74 89 76 89 78 90C79 91 81 91 83 92C85 92 86 93 88 94C90 94 92 95 93 96C95 96 96 97 98 98C100 98 103 99 104 99Z"/><path class="wh-s wh-h" d="M104 98C105 98 106 95 108 94C109 92 109 91 110 89C111 88 112 86 113 84C114 83 115 81 115 79C116 78 117 76 118 74C118 72 119 71 119 69C120 67 120 65 120 63C121 61 121 60 122 58C122 56 123 54 123 52C123 50 123 48 123 46C123 45 123 43 123 41C123 39 123 37 122 35C122 33 121 32 120 30C119 28 118 27 117 25C116 24 115 22 113 21C112 20 110 19 109 18C107 18 105 17 103 17C101 17 99 18 98 18C96 19 94 20 93 21C91 22 90 23 89 24C87 26 86 27 85 28C84 30 83 31 82 33C81 35 80 36 80 38C79 40 79 42 79 44C79 46 80 48 80 50C80 51 81 53 81 54C81 56 81 58 82 59"/><path class="wh-s wh-h wh-same" d="M104 99C103 99 100 98 98 98C96 97 95 96 93 96C92 95 90 94 88 94C86 93 85 92 83 92C81 91 79 91 78 90C76 89 74 89 72 88C71 88 69 87 67 86C65 86 64 85 62 85C60 84 58 83 57 82C55 81 54 80 53 79C51 77 50 76 50 74C49 73 48 71 48 69C48 67 48 65 48 63C49 62 49 60 50 58C51 57 52 55 54 54C55 53 57 53 59 52C60 52 62 52 64 52C66 52 68 53 70 53C71 54 73 55 75 56C76 56 78 58 80 58C81 59 81 59 82 59"/><path class="wh-s wh-k" d="M80 112C80 111 78 109 77 108C76 106 74 106 73 105C71 104 69 104 68 104C66 103 64 103 62 102C60 102 58 102 56 102C54 102 52 102 50 102C49 102 47 103 45 103C44 104 43 106 43 107C43 109 43 111 43 112C44 114 45 115 46 116C47 117 49 116 51 116C52 116 54 115 56 115C58 114 60 114 62 114C63 113 65 113 67 113C69 113 71 113 73 112C75 112 78 113 79 112C80 112 80 112 80 112Z"/><path class="wh-s wh-k" d="M132 91C132 91 135 89 137 88C139 88 140 87 142 86C143 86 145 85 147 84C149 84 150 83 152 82C154 82 156 81 157 81C159 80 161 80 162 79C163 78 164 77 164 76C164 74 163 73 162 72C161 71 159 69 158 69C156 69 154 69 153 69C151 70 149 71 148 72C146 73 145 74 143 75C142 76 140 77 139 78C138 80 137 81 136 83C135 84 133 87 133 88C133 89 133 89 134 89Z"/></g><path class="wh-s" d="M60 520C59 519 59 516 59 514C58 512 58 510 58 509C58 507 57 505 57 503C57 501 57 499 56 497C56 495 56 493 56 492C55 490 55 488 55 486C54 484 54 482 54 480C53 479 53 477 52 475C52 473 52 471 51 470C51 468 50 466 50 464C49 462 49 461 48 459C47 457 46 455 46 454C45 452 44 451 43 449C42 447 41 446 40 444C39 442 39 441 38 439C37 437 37 436 36 434C35 433 34 431 32 430C31 428 30 427 28 426C27 424 26 423 25 421C24 420 23 418 23 416C22 414 22 412 22 411C22 409 22 407 22 405C22 403 22 401 22 399C22 397 23 395 23 394C24 392 24 390 25 388C25 386 25 384 25 382C25 381 25 379 24 377C24 375 23 373 23 371C23 370 22 368 22 366C21 364 21 362 20 361C19 359 19 357 18 355C18 353 18 352 18 350C18 348 17 346 18 344C19 343 20 342 21 340C22 339 23 338 24 337C25 335 25 334 25 332C25 330 25 328 25 326C25 324 25 322 26 320C26 318 26 316 26 315C27 313 27 311 28 309C29 308 30 306 30 304C31 303 33 301 34 300C35 298 36 297 38 296C40 295 41 294 43 293C45 293 47 293 48 293C50 294 52 294 53 295C55 296 56 297 58 299C59 300 60 301 61 303C62 304 63 306 64 308C64 309 65 311 65 313C66 314 66 316 67 318C68 320 68 322 69 323C69 325 70 327 70 329C71 330 72 332 72 334C73 336 73 337 74 339C75 341 75 343 76 344C76 346 77 348 78 349C79 351 80 352 80 354C81 355 83 356 83 357"/><path class="wh-s" d="M222 578C222 577 222 574 222 572C223 570 223 569 224 567C224 565 225 563 225 562C226 560 227 558 227 556C228 555 229 553 230 551C230 550 231 548 232 546C233 545 234 543 234 541C235 540 236 538 237 536C237 535 238 533 239 531C240 530 241 528 242 526C243 525 244 523 244 522C245 520 246 518 247 516C248 515 248 513 249 511C250 510 250 508 250 506C251 504 252 502 252 501C252 499 253 497 253 495C254 493 254 491 254 490C254 488 254 486 254 484C254 482 254 480 254 478C254 476 254 474 254 472C253 470 253 468 253 466C253 464 252 462 252 461C252 459 252 456 252 455C251 453 252 452 252 452"/><path class="wh-s" d="M248 395C249 396 250 398 251 400C252 402 253 403 253 405C254 406 255 408 255 410C256 412 256 414 256 416C257 417 257 419 256 421C256 423 256 425 255 426C255 428 254 430 253 432C253 434 252 435 251 437C250 438 249 440 248 442C247 443 245 444 244 446C243 447 241 449 240 450C238 451 237 452 236 454C234 455 232 456 231 457C229 458 228 459 226 460C225 461 223 462 222 463C220 464 219 466 217 467C215 468 214 469 212 470C211 471 209 472 208 474C206 475 205 476 203 477C202 478 200 479 199 480C197 481 196 482 194 484C192 485 191 486 189 487C188 488 186 489 185 490C183 491 182 492 180 493C178 494 177 496 175 497C174 498 173 499 171 500C170 501 168 502 168 502"/><path class="wh-s" d="M208 433C208 432 210 430 212 428C213 427 214 426 216 424C217 423 218 422 220 420C221 419 222 418 224 416C225 415 227 414 228 412C230 411 231 410 232 408C234 407 235 405 236 404C237 402 239 401 240 400C241 398 243 397 244 396C245 395 247 393 248 392C249 391 251 389 252 388C253 386 255 385 256 384C257 382 258 381 259 379C260 377 261 376 262 374C263 372 263 371 264 369C264 367 265 365 265 363C266 362 266 360 266 358C267 356 267 354 267 352C268 350 268 349 268 347C269 345 269 343 269 341C270 339 270 337 270 335C270 333 270 332 270 330C270 328 271 326 270 324C270 322 270 320 270 318C269 316 269 315 268 313C268 312 266 310 266 309"/><path class="wh-s" d="M77 454C76 453 74 452 72 450C70 449 69 449 68 448C66 447 64 446 63 445C61 444 59 443 58 443C56 442 54 441 53 441C51 440 49 439 47 439C46 438 44 438 43 437C41 436 39 436 38 436"/><path class="wh-s" d="M123 204C122 204 119 203 117 203C116 202 114 201 113 201C111 200 109 199 108 198C106 197 104 196 103 195C101 194 100 193 98 192C97 191 95 190 94 189C92 188 90 186 89 185C87 184 86 183 84 182C83 180 82 179 80 178C79 176 77 175 76 174C75 172 73 171 72 170C70 168 69 167 68 165C67 164 66 162 64 161C63 159 62 158 61 156C60 155 60 153 59 151C59 150 59 148 60 146C61 145 62 143 64 143C65 142 67 141 69 141C71 141 73 141 74 141C76 141 78 141 80 142C82 142 84 142 86 143C87 143 89 144 91 145C93 145 94 146 96 146C98 147 100 147 101 148C103 149 105 149 107 150C108 151 110 151 112 152C114 153 115 153 117 154C119 155 120 155 122 156C124 156 126 157 128 157C129 158 131 158 133 159C135 159 137 160 138 160C140 161 142 161 144 161C146 162 148 162 150 162C151 163 153 163 155 163C157 163 159 163 161 164C163 164 165 164 166 165C168 165 170 166 172 166C174 167 175 168 177 168C178 169 180 171 181 172C182 173 183 175 184 176C185 178 186 180 187 182C188 183 189 185 189 186C190 188 191 190 191 192C192 193 193 195 193 197C194 199 194 200 195 202C196 204 196 206 197 207C198 209 199 210 200 212C201 214 202 215 203 217C204 218 205 220 206 221C208 223 209 224 210 226C211 227 212 229 214 230C215 232 216 234 217 235C218 236 219 238 221 239C222 241 224 242 225 244C226 245 228 246 229 248C230 249 231 251 233 252C234 254 235 255 236 257C237 258 238 260 239 262C240 263 241 265 242 266C243 268 245 269 246 271C247 272 248 274 249 276C250 277 251 279 252 280C252 282 253 284 254 286C254 287 254 289 255 291C255 293 255 295 256 297C256 299 256 301 255 302C255 304 255 306 254 308C254 310 253 311 252 313C251 315 250 316 250 318C249 320 247 321 246 323C245 324 244 326 243 327C242 329 241 330 239 332C238 333 237 334 235 336C234 337 233 339 231 340C230 341 229 343 227 344C226 346 224 347 223 348C221 350 220 351 218 352C217 353 215 355 214 356C213 357 211 358 210 360C208 361 206 362 205 363C203 364 202 365 200 366C198 367 197 368 195 368C194 369 192 370 190 371C188 372 187 372 185 373C183 373 182 374 180 374C178 375 176 375 174 376C172 376 171 377 169 377C167 378 165 378 163 379C162 379 160 380 158 380C156 380 154 381 152 381C151 381 149 382 147 382C145 382 143 382 141 382C139 382 137 382 135 382C133 382 131 382 129 382C127 382 125 382 123 382C121 382 119 382 117 382C115 381 114 381 112 381C110 380 108 380 106 380C104 380 102 379 100 379C99 379 97 378 95 378C93 378 91 377 89 377C87 377 85 376 84 376C82 376 80 375 78 375C76 374 75 374 73 373C71 373 69 372 68 371C66 371 64 370 63 369C61 368 59 367 58 366C56 365 55 364 53 363C52 362 50 361 48 360C47 358 46 357 44 356C43 355 41 353 40 352"/><path class="wh-s" d="M50 292C51 292 51 288 52 286C52 285 52 283 52 281C53 280 53 278 54 276C54 274 54 272 55 270C55 268 56 267 56 265C57 263 57 261 58 259C58 258 59 256 60 254C60 253 62 251 63 250C64 249 66 248 67 247C69 247 71 246 73 246C75 245 76 245 78 245C80 245 82 245 84 245C86 246 88 246 90 246C91 247 92 248 94 250C95 251 96 252 97 254C99 255 100 257 101 258C102 260 104 262 105 262C106 263 106 264 106 264"/><path class="wh-s" d="M92 246C92 245 93 242 94 240C95 239 95 237 96 236C97 234 97 232 98 230C99 229 99 227 100 225C101 224 102 222 103 220C104 219 105 218 106 216C108 215 109 214 111 213C112 213 114 212 116 212C118 211 120 211 122 211C123 211 126 211 127 211C128 211 130 210 130 209C131 208 131 207 131 205C131 204 130 200 130 200"/><path class="wh-s" d="M132 324C132 323 131 320 130 318C130 317 129 315 128 314C128 312 127 310 126 308C126 307 125 305 124 303C124 302 123 300 122 298C122 296 121 295 120 293C120 291 119 290 118 288C117 286 116 285 116 283C115 281 114 279 114 278C113 276 113 274 112 272C112 271 112 270 112 270"/><path class="wh-s" d="M190 300C190 299 188 297 187 295C186 294 185 292 183 291C182 289 181 288 180 286C179 285 178 283 176 282C175 280 174 279 173 277C172 276 171 274 171 272C170 271 169 269 168 267C168 266 167 264 166 262C165 261 164 259 164 257C163 256 162 254 161 252C160 251 159 249 158 247C158 246 157 244 156 242C155 241 154 239 153 238C152 236 152 234 151 232C150 231 149 229 148 228C147 226 146 225 144 223C143 222 142 220 141 219C140 217 138 216 137 216C136 215 134 214 134 214"/><path class="wh-s" d="M176 166C175 165 175 162 175 160C174 158 174 157 174 155C173 153 173 151 173 150C173 148 173 146 173 144C173 142 173 140 174 138C174 136 174 135 175 133C175 131 176 129 176 127C177 125 177 124 177 122C177 120 177 118 176 116C176 115 175 113 174 112C172 110 171 109 169 108C168 108 166 107 164 107C162 107 160 107 158 108C156 108 154 108 153 109C151 110 149 111 148 112C147 113 145 114 144 116C143 117 142 119 140 120C139 122 138 124 138 125C137 127 136 128 135 130C134 132 133 133 133 135C132 137 132 139 131 140C131 142 130 144 130 146C130 148 130 149 129 151C129 153 129 156 128 157"/></svg><p class="err" id="wMsgErr"></p></div>
-        <div class="field"><label for="wPhoto"><span data-i18n="f_photo">Your photo</span> <span class="opt" data-i18n="optional">(optional)</span></label>
-          <div class="wv-file"><img id="wPhotoPrev" alt="" hidden><input type="file" id="wPhoto" accept="image/*" aria-describedby="wPhotoHint"></div><p class="hint" id="wPhotoHint" data-i18n="f_photo_hint">Shown on the front of your card.</p></div>
-        <div class="hp" aria-hidden="true"><label for="wWeb">Website</label><input type="text" id="wWeb" tabindex="-1" autocomplete="off"></div>
-        <div id="wishStatus" aria-live="polite"></div>
-        <button class="btn" type="submit" id="wishSubmit" style="justify-self:center"><span data-i18n="send_wish">Send wish</span></button>
-      </form>
+      <div class="wb" id="wishBless">
+        <div class="wb-scene" aria-hidden="true">
+          <span class="wb-stars"></span><span class="wb-glow"></span>
+          <span class="wb-cloud c1"></span><span class="wb-cloud c2"></span><span class="wb-cloud c3"></span>
+          <div class="wb-moon"><svg class="wb-moon-svg" viewBox="6 14 372 402" aria-hidden="true" focusable="false"><defs> <linearGradient id="wbIv" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#FFFEF8"/><stop offset=".45" stop-color="#F6EEDC"/><stop offset="1" stop-color="#D9CBA8"/></linearGradient> <radialGradient id="wbSh" cx="262" cy="186" r="208" gradientUnits="userSpaceOnUse"><stop offset=".78" stop-color="#9C8A62" stop-opacity=".55"/><stop offset=".9" stop-color="#C9B88F" stop-opacity=".18"/><stop offset="1" stop-color="#fff" stop-opacity="0"/></radialGradient> <linearGradient id="wbGold" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#F7E1A0"/><stop offset=".5" stop-color="#C9973A"/><stop offset="1" stop-color="#F2D287"/></linearGradient> <pattern id="wbPat" width="18" height="18" patternUnits="userSpaceOnUse" patternTransform="rotate(28)"><path d="M1 9c3-5 7-5 8 0s5 5 8 0" fill="none" stroke="#B98A33" stroke-width=".8"/><circle cx="9" cy="2" r=".9" fill="#C9973A"/></pattern><clipPath id="wbClip"><path d="M219.3 23.5A192.0 192.0 0 1 0 368.2 316.2A168.0 168.0 0 1 1 219.3 23.5Z"/></clipPath> <filter id="wbGlow" x="-30%" y="-30%" width="160%" height="160%"><feGaussianBlur stdDeviation="12"/></filter></defs><path d="M219.3 23.5A192.0 192.0 0 1 0 368.2 316.2A168.0 168.0 0 1 1 219.3 23.5Z" fill="#FFF4D6" opacity=".55" filter="url(#wbGlow)"/><path d="M219.3 23.5A192.0 192.0 0 1 0 368.2 316.2A168.0 168.0 0 1 1 219.3 23.5Z" fill="url(#wbIv)"/><g clip-path="url(#wbClip)"> <rect x="0" y="0" width="420" height="440" fill="url(#wbPat)" opacity=".32"/> <circle cx="262" cy="186" r="208" fill="url(#wbSh)"/> <circle cx="205" cy="215" r="183" fill="none" stroke="url(#wbGold)" stroke-width="2.4"/> <circle cx="205" cy="215" r="178" fill="none" stroke="#C9973A" stroke-width=".9" opacity=".8"/> <circle cx="262" cy="186" r="176" fill="none" stroke="url(#wbGold)" stroke-width="2"/> <circle cx="228" cy="204" r="182" fill="none" stroke="#C9973A" stroke-width="3.2" stroke-linecap="round" stroke-dasharray=".1 11" opacity=".85"/> <circle cx="228" cy="204" r="182" fill="none" stroke="#B88A33" stroke-width="1" stroke-dasharray="14 8" stroke-dashoffset="6" opacity=".55"/></g></svg><div class="wb-flowers"><img class="wb-f leaf" src="assets/flowers/foliage.webp" alt="" loading="lazy" decoding="async" style="left:-8%;bottom:20%;width:96%"><img class="wb-f" src="assets/rsvp/f-peony.webp" alt="" loading="lazy" decoding="async" style="left:6%;bottom:26%;width:44%"><img class="wb-f" src="assets/wishes/rose-blue-1.webp" alt="" loading="lazy" decoding="async" style="left:38%;bottom:10%;width:38%"><img class="wb-f" src="assets/wishes/rose-blue-2.webp" alt="" loading="lazy" decoding="async" style="left:-10%;bottom:56%;width:30%"><img class="wb-f" src="assets/rsvp/f-rose.webp" alt="" loading="lazy" decoding="async" style="left:30%;bottom:44%;width:26%"><img class="wb-f" src="assets/rsvp/f-peony.webp" alt="" loading="lazy" decoding="async" style="left:60%;bottom:2%;width:28%"><img class="wb-f" src="assets/wishes/rose-blue-3.webp" alt="" loading="lazy" decoding="async" style="left:16%;bottom:2%;width:22%"><img class="wb-f" src="assets/rsvp/f-lone.webp" alt="" loading="lazy" decoding="async" style="left:74%;bottom:22%;width:17%"><img class="wb-f" src="assets/rsvp/f-cream.webp" alt="" loading="lazy" decoding="async" style="left:-4%;bottom:86%;width:20%"><img class="wb-f" src="assets/rsvp/f-bud.webp" alt="" loading="lazy" decoding="async" style="left:52%;bottom:38%;width:13%"><img class="wb-f" src="assets/wishes/rose-blue-3.webp" alt="" loading="lazy" decoding="async" style="left:84%;bottom:4%;width:15%"></div></div>
+          <div class="wb-water"><span class="wb-shine"></span><img class="wb-lan" src="assets/wishes/lantern.webp" alt="" style="left:8%;bottom:5%;width:26px;--d:-.4s"><img class="wb-lan" src="assets/wishes/lantern.webp" alt="" style="left:24%;bottom:12%;width:18px;--d:-1.6s"><img class="wb-lan" src="assets/wishes/lantern.webp" alt="" style="left:58%;bottom:2%;width:30px;--d:-2.4s"><img class="wb-lan" src="assets/wishes/lantern.webp" alt="" style="left:78%;bottom:10%;width:20px;--d:-.9s"><img class="wb-lan" src="assets/wishes/lantern.webp" alt="" style="left:92%;bottom:4%;width:24px;--d:-3.1s"></div>
+        </div>
+        <form id="wishForm" class="wb-form" novalidate>
+          <h3 class="wb-title" data-i18n="leave_wish">Leave a Blessing</h3>
+          <p class="wb-sub" data-i18n="wish_sub">Share your love and best wishes for our new chapter.</p>
+          <div class="wb-field"><label class="vh" for="wName"><span data-i18n="f_name">Your name</span> <span data-i18n="required">(required)</span></label><span class="wb-ic"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="8" r="4.2"/><path d="M3.8 21c.6-4.6 4-7.2 8.2-7.2s7.6 2.6 8.2 7.2z"/></svg></span><input type="text" id="wName" name="name" autocomplete="name" maxlength="60" data-i18n-ph="ph_name" placeholder="Your name *"><p class="err" id="wNameErr"></p></div>
+          <div class="wb-rel"><p class="wb-lab" id="wRelLab" data-i18n="f_rel">How do you know the couple?</p><div class="wb-chips" id="wRelChips" role="group" aria-labelledby="wRelLab"></div></div>
+          <div class="wb-field wb-msg"><label class="vh" for="wMsg"><span data-i18n="f_wish">Your wish</span> <span data-i18n="required">(required)</span></label><span class="wb-ic"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20.6 3.2c-6.8.6-11.6 4.6-13.3 11.2l-1.3 5 1.4.4.9-2.9c6.2-1 10.3-5.4 12.3-13.7zM9.3 15.1c1-3.8 3.6-6.8 7.4-8.6-2.3 2.6-4.5 5.6-7.4 8.6z"/><path d="M3 21.2h7" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" fill="none"/></svg></span><textarea id="wMsg" name="message" maxlength="500" aria-describedby="wMsgHint" data-i18n-ph="ph_wish" placeholder="Your wish *"></textarea><p class="wb-count" id="wMsgHint" dir="ltr"><span id="wCount">0</span> / 500</p><p class="err" id="wMsgErr"></p></div>
+          <div class="wb-photo"><input class="vh" type="file" id="wPhoto" accept="image/*" aria-describedby="wPhotoHint"><label class="wb-pbtn" for="wPhoto"><img id="wPhotoPrev" alt="" hidden><span class="wb-ic"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8.5 5.5 10 3.6h4l1.5 1.9H19a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-10a2 2 0 0 1 2-2z" fill="none" stroke="currentColor" stroke-width="1.6"/><circle cx="12" cy="12.4" r="3.6" fill="none" stroke="currentColor" stroke-width="1.6"/></svg></span><span data-i18n="f_photo_add">Add your photo (optional)</span></label><p class="wb-hint" id="wPhotoHint" data-i18n="f_photo_hint">Shown on the front of your card.</p></div>
+          <div class="hp" aria-hidden="true"><label for="wWeb">Website</label><input type="text" id="wWeb" tabindex="-1" autocomplete="off"></div>
+          <div id="wishStatus" aria-live="polite"></div>
+          <button class="wb-send" type="submit" id="wishSubmit"><span data-i18n="send_wish">Send Your Blessings</span></button>
+        </form>
+      </div>
     </div>
     <div class="sec-orn rv" aria-hidden="true"></div>
   </section>
@@ -2091,7 +2159,7 @@ rsvp_eyebrow:"RSVP",rsvp_title:"Kindly Reply",rsvp_kicker:"Kindly reply · Respo
 f_fullname:"Full name",f_attend:"Will you attend?",yes:"Joyfully attending",no:"Regretfully unable to attend",f_guests:"Number of guests, including you",guests_hint:"Up to {max} guests",f_events:"Which celebrations will you attend?",f_diet:"Dietary requirements",diet_hint:"Allergies or dietary needs (optional)",f_msg:"A private note to the couple",optional:"(optional)",required:"(required)",send_rsvp:"Send RSVP",sending:"Sending your reply…",
 e_name:"Please enter your full name.",e_name_short:"Please enter at least 2 characters.",e_attend:"Please choose whether you will attend.",e_events:"Please choose at least one celebration.",e_summary:"Please check the following:",e_save:"We couldn't save your reply. Please check your connection and try again. Your answers are still here.",try_again:"Try again",
 ok_yes:"Thank you, {name}. Your reply is saved. We look forward to celebrating with you.",ok_no:"Thank you, {name}. Your reply is saved. You will be missed.",ok_title:"Reply received",s_attend:"Attending",s_guests:"Guests",s_events:"Celebrations",s_diet:"Dietary",change:"Change my reply",closed:"RSVPs closed on 1 November 2026. Please contact the family if you need to change your reply.",
-wish_eyebrow:"Guest book",wish_title:"Wishes for the Couple",leave_wish:"Leave a wish",f_name:"Your name",f_wish:"Your wish",send_wish:"Send wish",e_wish:"Please write a short wish (at least 2 characters).",wish_ok:"Thank you! Your wish will appear once it has been approved.",wish_none:"Be the first to leave a wish.",sample:"Sample",pending_approval:"Pending approval",wish_from:"Wishes from our loved ones",view_all:"View all wishes",wish_typing:"{name} is writing a wish",wc_guest:"A dear guest",f_rel:"How do you know the couple?",f_rel_ph:"Select your relation",rel_bride_family:"Bride's family",rel_groom_family:"Groom's family",rel_grandparent:"Grandparent",rel_sibling:"Brother or sister",rel_aunt:"Aunt",rel_uncle:"Uncle",rel_cousin:"Cousin",rel_best_friend:"Best friend",rel_friend:"Friend",rel_family_friend:"Family friend",rel_colleague:"Colleague",rel_neighbour:"Neighbour",rel_other:"Other",f_photo:"Your photo",f_photo_hint:"Shown on the front of your card.",
+wish_eyebrow:"Guest book",wish_title:"Wishes for the Couple",leave_wish:"Leave a Blessing",f_name:"Your name",f_wish:"Your wish",send_wish:"Send Your Blessings",e_wish:"Please write a short wish (at least 2 characters).",wish_ok:"Thank you! Your wish will appear once it has been approved.",wish_none:"Be the first to leave a wish.",sample:"Sample",pending_approval:"Pending approval",wish_from:"Wishes from our loved ones",view_all:"View all wishes",wish_typing:"{name} is writing a wish",wc_guest:"A dear guest",f_rel:"How do you know the couple?",wish_sub:"Share your love and best wishes for our new chapter.",ph_name:"Your name *",ph_wish:"Your wish *",f_photo_add:"Add your photo (optional)",rel_family:"Family",rel_friend:"Friend",rel_colleague:"Colleague",rel_neighbour:"Neighbour",rel_other:"Other",f_photo_hint:"Shown on the front of your card.",
 contact_title:"Need help?",contact_lede:"For anything about the day, travel or your reply, please get in touch.",ct_title_a:"Contact",ct_title_b:"Us",ct_bf:"Bride's Father",ct_bf_name:"Mr. Yusuf Al Hashimi",ct_gf:"Groom's Father",ct_gf_name:"Mr. Abdullah Sheikh",ct_ec:"Event Coordinator",ct_ec_name:"Planning & on-the-day help",ct_tap:"Tap here",ct_hide:"Hide details",ct_mobile:"Mobile",ct_wa:"WhatsApp",
 thanks_title:"Thank you",ty_quote:"“Thank you for blessing our journey with your love and prayers. Your presence will make our day complete, and we can't wait to celebrate with you.”",ty_verse_tr:"“And We created you in pairs” (78:8)",ty_save:"Save the Date",ty_top:"Return to top",ty_couple_alt:"The bride and groom walking side by side",
 footer:"Preview build · details confirmed · photos and some text are placeholders",replay:"Replay opening",sim_err:"Test: simulate a failed save",reset:"Test: clear my RSVP and wishes",
@@ -2112,7 +2180,7 @@ rsvp_eyebrow:"شرکت کی تصدیق",rsvp_title:"براہِ کرم جواب �
 f_fullname:"پورا نام",f_attend:"کیا آپ تشریف لائیں گے؟",yes:"بڑی خوشی سے شرکت کریں گے",no:"معذرت، شرکت نہیں کر سکیں گے",f_guests:"مہمانوں کی تعداد، آپ سمیت",guests_hint:"زیادہ سے زیادہ {max} مہمان",f_events:"آپ کن تقریبات میں شرکت کریں گے؟",f_diet:"کھانے سے متعلق ضروریات",diet_hint:"الرجی یا کھانے سے متعلق کوئی خاص ضرورت (اختیاری)",f_msg:"دولہا دلہن کے نام ایک ذاتی پیغام",optional:"(اختیاری)",required:"(لازمی)",send_rsvp:"جواب بھیجیں",sending:"آپ کا جواب بھیجا جا رہا ہے…",
 e_name:"براہِ کرم اپنا پورا نام لکھیں۔",e_name_short:"براہِ کرم کم از کم 2 حروف لکھیں۔",e_attend:"براہِ کرم بتائیں کہ آپ شرکت کریں گے یا نہیں۔",e_events:"براہِ کرم کم از کم ایک تقریب منتخب کریں۔",e_summary:"براہِ کرم درج ذیل باتیں دیکھ لیں:",e_save:"ہم آپ کا جواب محفوظ نہیں کر سکے۔ براہِ کرم اپنا انٹرنیٹ کنکشن چیک کر کے دوبارہ کوشش کریں۔ آپ کے جوابات یہیں موجود ہیں۔",try_again:"دوبارہ کوشش کریں",
 ok_yes:"شکریہ، {name}۔ آپ کا جواب محفوظ ہو گیا ہے۔ ہم آپ کے ساتھ خوشیاں منانے کے منتظر ہیں۔",ok_no:"شکریہ، {name}۔ آپ کا جواب محفوظ ہو گیا ہے۔ ہمیں آپ کی کمی محسوس ہوگی۔",ok_title:"جواب موصول ہو گیا",s_attend:"شرکت",s_guests:"مہمان",s_events:"تقریبات",s_diet:"کھانے کی ضروریات",change:"اپنا جواب تبدیل کریں",closed:"شرکت کی تصدیق کی آخری تاریخ 1 نومبر 2026 تھی۔ اگر آپ اپنا جواب تبدیل کرنا چاہیں تو براہِ کرم اہلِ خانہ سے رابطہ کریں۔",
-wish_eyebrow:"مہمانوں کے پیغامات",wish_title:"دولہا دلہن کے لیے نیک تمنائیں",leave_wish:"اپنی نیک تمنا لکھیں",f_name:"آپ کا نام",f_wish:"آپ کی نیک تمنا",send_wish:"نیک تمنا بھیجیں",e_wish:"براہِ کرم ایک مختصر سی نیک تمنا لکھیں (کم از کم 2 حروف)۔",wish_ok:"شکریہ! آپ کی نیک تمنا منظوری کے بعد یہاں نظر آئے گی۔",wish_none:"سب سے پہلے نیک تمنا بھیجنے والے آپ بنیں۔",sample:"نمونہ",pending_approval:"منظوری کا انتظار",wish_from:"ہمارے پیاروں کی نیک تمنائیں",view_all:"تمام نیک تمنائیں دیکھیں",wish_typing:"{name} نیک تمنا لکھ رہے ہیں",wc_guest:"عزیز مہمان",f_rel:"آپ کا دولہا دلہن سے کیا رشتہ ہے؟",f_rel_ph:"اپنا رشتہ منتخب کریں",rel_bride_family:"دلہن کا خاندان",rel_groom_family:"دولہا کا خاندان",rel_grandparent:"دادا دادی / نانا نانی",rel_sibling:"بہن بھائی",rel_aunt:"خالہ / پھوپھی / چچی",rel_uncle:"چچا / ماموں / خالو",rel_cousin:"کزن",rel_best_friend:"بہترین دوست",rel_friend:"دوست",rel_family_friend:"خاندانی دوست",rel_colleague:"ساتھی کارکن",rel_neighbour:"پڑوسی",rel_other:"دیگر",f_photo:"آپ کی تصویر",f_photo_hint:"آپ کے کارڈ کے سامنے دکھائی جائے گی۔",
+wish_eyebrow:"مہمانوں کے پیغامات",wish_title:"دولہا دلہن کے لیے نیک تمنائیں",leave_wish:"دعا دیجیے",f_name:"آپ کا نام",f_wish:"آپ کی نیک تمنا",send_wish:"اپنی دعائیں بھیجیں",e_wish:"براہِ کرم ایک مختصر سی نیک تمنا لکھیں (کم از کم 2 حروف)۔",wish_ok:"شکریہ! آپ کی نیک تمنا منظوری کے بعد یہاں نظر آئے گی۔",wish_none:"سب سے پہلے نیک تمنا بھیجنے والے آپ بنیں۔",sample:"نمونہ",pending_approval:"منظوری کا انتظار",wish_from:"ہمارے پیاروں کی نیک تمنائیں",view_all:"تمام نیک تمنائیں دیکھیں",wish_typing:"{name} نیک تمنا لکھ رہے ہیں",wc_guest:"عزیز مہمان",f_rel:"آپ کا دولہا دلہن سے کیا رشتہ ہے؟",wish_sub:"ہماری نئی زندگی کے لیے اپنی محبت اور نیک تمنائیں لکھیے۔",ph_name:"آپ کا نام *",ph_wish:"آپ کی نیک تمنا *",f_photo_add:"اپنی تصویر لگائیں (اختیاری)",rel_family:"خاندان",rel_friend:"دوست",rel_colleague:"ساتھی کارکن",rel_neighbour:"پڑوسی",rel_other:"دیگر",f_photo_hint:"آپ کے کارڈ کے سامنے دکھائی جائے گی۔",
 contact_title:"کیا آپ کو مدد چاہیے؟",contact_lede:"تقریب کے دن، سفر یا اپنے جواب سے متعلق کسی بھی بات کے لیے براہِ کرم ہم سے رابطہ کریں۔",ct_title_a:"رابطہ",ct_title_b:"کریں",ct_bf:"دلہن کے والد",ct_bf_name:"جناب یوسف الہاشمی",ct_gf:"دولہا کے والد",ct_gf_name:"جناب عبداللہ شیخ",ct_ec:"ایونٹ کوآرڈینیٹر",ct_ec_name:"انتظامات اور تقریب کے دن مدد",ct_tap:"یہاں ٹیپ کریں",ct_hide:"تفصیل چھپائیں",ct_mobile:"موبائل",ct_wa:"واٹس ایپ",
 thanks_title:"شکریہ",ty_quote:"“اپنی محبت اور دعاؤں سے ہمارے سفر کو بابرکت بنانے کا شکریہ۔ آپ کی موجودگی ہمارے دن کو مکمل کر دے گی، اور ہم آپ کے ساتھ خوشیاں منانے کے منتظر ہیں۔”",ty_verse_tr:"“اور ہم نے تمہیں جوڑے جوڑے پیدا کیا” (النبا: ۸)",ty_save:"تاریخ یاد رکھیں",ty_top:"واپس اوپر",ty_couple_alt:"دولہا اور دلہن ساتھ ساتھ چلتے ہوئے",
 footer:"پیش نظارہ ورژن · تفصیلات کی تصدیق ہو چکی ہے · تصاویر اور کچھ متن عارضی ہیں · اردو متن نظرِ ثانی کے لیے",replay:"افتتاحی منظر دوبارہ دیکھیں",sim_err:"ٹیسٹ: جواب محفوظ نہ ہونے کی صورتِ حال آزمائیں",reset:"ٹیسٹ: میرا جواب اور نیک تمنائیں صاف کریں",
@@ -2133,7 +2201,7 @@ rsvp_eyebrow:"आने की पुष्टि",rsvp_title:"कृपया �
 f_fullname:"पूरा नाम",f_attend:"क्या आप तशरीफ़ लाएँगे?",yes:"बड़ी ख़ुशी से शामिल होंगे",no:"माफ़ी चाहते हैं, शामिल नहीं हो पाएँगे",f_guests:"मेहमानों की संख्या, आपको मिलाकर",guests_hint:"ज़्यादा से ज़्यादा {max} मेहमान",f_events:"आप किन समारोहों में शामिल होंगे?",f_diet:"खाने से जुड़ी ज़रूरतें",diet_hint:"एलर्जी या खाने से जुड़ी कोई ख़ास ज़रूरत (वैकल्पिक)",f_msg:"दूल्हा-दुल्हन के लिए एक निजी संदेश",optional:"(वैकल्पिक)",required:"(ज़रूरी)",send_rsvp:"जवाब भेजें",sending:"आपका जवाब भेजा जा रहा है…",
 e_name:"कृपया अपना पूरा नाम लिखें।",e_name_short:"कृपया कम से कम 2 अक्षर लिखें।",e_attend:"कृपया बताएँ कि आप शामिल होंगे या नहीं।",e_events:"कृपया कम से कम एक समारोह चुनें।",e_summary:"कृपया नीचे दी गई बातें देख लें:",e_save:"हम आपका जवाब सेव नहीं कर सके। कृपया अपना इंटरनेट कनेक्शन जाँचकर फिर से कोशिश करें। आपके जवाब यहीं मौजूद हैं।",try_again:"फिर से कोशिश करें",
 ok_yes:"शुक्रिया, {name}। आपका जवाब सेव हो गया है। हमें आपके साथ ख़ुशियाँ मनाने का इंतज़ार रहेगा।",ok_no:"शुक्रिया, {name}। आपका जवाब सेव हो गया है। हमें आपकी कमी महसूस होगी।",ok_title:"जवाब मिल गया",s_attend:"हाज़िरी",s_guests:"मेहमान",s_events:"समारोह",s_diet:"खान-पान",change:"अपना जवाब बदलें",closed:"आने की पुष्टि की आख़िरी तारीख़ 1 नवंबर 2026 थी। अगर आपको अपना जवाब बदलना हो, तो कृपया परिवार से संपर्क करें।",
-wish_eyebrow:"मेहमानों के संदेश",wish_title:"दूल्हा-दुल्हन के लिए दुआएँ",leave_wish:"अपनी दुआ लिखें",f_name:"आपका नाम",f_wish:"आपकी दुआ",send_wish:"दुआ भेजें",e_wish:"कृपया एक छोटी-सी दुआ लिखें (कम से कम 2 अक्षर)।",wish_ok:"शुक्रिया! आपकी दुआ मंज़ूरी के बाद यहाँ दिखेगी।",wish_none:"सबसे पहले दुआ भेजने वाले आप बनें।",sample:"नमूना",pending_approval:"मंज़ूरी बाक़ी",wish_from:"हमारे अपनों की दुआएँ",view_all:"सारी दुआएँ देखें",wish_typing:"{name} दुआ लिख रहे हैं",wc_guest:"प्यारे मेहमान",f_rel:"आपका दूल्हा-दुल्हन से क्या रिश्ता है?",f_rel_ph:"अपना रिश्ता चुनें",rel_bride_family:"दुल्हन का परिवार",rel_groom_family:"दूल्हे का परिवार",rel_grandparent:"दादा-दादी / नाना-नानी",rel_sibling:"भाई-बहन",rel_aunt:"ख़ाला / बुआ / चाची",rel_uncle:"चाचा / मामा / ख़ालू",rel_cousin:"कज़िन",rel_best_friend:"सबसे अच्छे दोस्त",rel_friend:"दोस्त",rel_family_friend:"पारिवारिक दोस्त",rel_colleague:"सहकर्मी",rel_neighbour:"पड़ोसी",rel_other:"अन्य",f_photo:"आपकी फ़ोटो",f_photo_hint:"आपके कार्ड के सामने दिखेगी।",
+wish_eyebrow:"मेहमानों के संदेश",wish_title:"दूल्हा-दुल्हन के लिए दुआएँ",leave_wish:"दुआ दीजिए",f_name:"आपका नाम",f_wish:"आपकी दुआ",send_wish:"अपनी दुआएँ भेजें",e_wish:"कृपया एक छोटी-सी दुआ लिखें (कम से कम 2 अक्षर)।",wish_ok:"शुक्रिया! आपकी दुआ मंज़ूरी के बाद यहाँ दिखेगी।",wish_none:"सबसे पहले दुआ भेजने वाले आप बनें।",sample:"नमूना",pending_approval:"मंज़ूरी बाक़ी",wish_from:"हमारे अपनों की दुआएँ",view_all:"सारी दुआएँ देखें",wish_typing:"{name} दुआ लिख रहे हैं",wc_guest:"प्यारे मेहमान",f_rel:"आपका दूल्हा-दुल्हन से क्या रिश्ता है?",wish_sub:"हमारी नई ज़िंदगी के लिए अपना प्यार और शुभकामनाएँ लिखिए।",ph_name:"आपका नाम *",ph_wish:"आपकी दुआ *",f_photo_add:"अपनी फ़ोटो जोड़ें (वैकल्पिक)",rel_family:"परिवार",rel_friend:"दोस्त",rel_colleague:"सहकर्मी",rel_neighbour:"पड़ोसी",rel_other:"अन्य",f_photo_hint:"आपके कार्ड के सामने दिखेगी।",
 contact_title:"क्या आपको मदद चाहिए?",contact_lede:"शादी के दिन, सफ़र या अपने जवाब से जुड़ी किसी भी बात के लिए कृपया हमसे संपर्क करें।",ct_title_a:"संपर्क",ct_title_b:"करें",ct_bf:"दुल्हन के पिता",ct_bf_name:"जनाब यूसुफ़ अल हाशिमी",ct_gf:"दूल्हे के पिता",ct_gf_name:"जनाब अब्दुल्लाह शेख़",ct_ec:"इवेंट कोऑर्डिनेटर",ct_ec_name:"इंतज़ाम और समारोह के दिन मदद",ct_tap:"यहाँ टैप करें",ct_hide:"जानकारी छिपाएँ",ct_mobile:"मोबाइल",ct_wa:"व्हाट्सऐप",
 thanks_title:"शुक्रिया",ty_quote:"“अपनी मोहब्बत और दुआओं से हमारे सफ़र को मुबारक बनाने का शुक्रिया। आपकी मौजूदगी हमारे दिन को मुकम्मल कर देगी, और हम आपके साथ जश्न मनाने का इंतज़ार कर रहे हैं।”",ty_verse_tr:"“और हमने तुम्हें जोड़ों में पैदा किया” (अन-नबा 78:8)",ty_save:"तारीख़ याद रखें",ty_top:"वापस ऊपर",ty_couple_alt:"साथ-साथ चलते दूल्हा और दुल्हन",
 footer:"प्रीव्यू वर्ज़न · जानकारी की पुष्टि हो चुकी है · फ़ोटो और कुछ टेक्स्ट अस्थायी हैं · हिंदी टेक्स्ट समीक्षा के लिए",replay:"शुरुआती दृश्य फिर से देखें",sim_err:"टेस्ट: सेव फ़ेल होने की स्थिति आज़माएँ",reset:"टेस्ट: मेरा जवाब और दुआएँ मिटाएँ",
@@ -2715,37 +2783,6 @@ root.classList.add("gated");
   steps.forEach(function(el){ stepIO.observe(el); });
   /* switching language after the writing started: show the finished "Thank You" */
   new MutationObserver(function(){ if(started && paths.length && !sec.classList.contains("writing")) inkAll(true); }).observe(document.documentElement, {attributes:true, attributeFilter:["lang"]});
-})();
-
-/* ---------- Wishes: the finger-heart drawing draws itself when it comes into view (hand first, then the heart) ---------- */
-(function(){
-  var svg = $(".wv-heart"); if(!svg) return;
-  var hand = $$(".wh-s:not(.wh-h):not(.wh-k)", svg), heart = $$(".wh-h", svg), sparks = $$(".wh-k", svg), all = hand.concat(heart, sparks);
-  if(reduced() || !window.IntersectionObserver){ svg.classList.add("done"); return; }
-  var L = all.map(function(p){ return p.getTotalLength(); }), plan = [], at = 0, run = 0, playing = false;
-  var handLen = hand.reduce(function(a, p, i){ return a + L[i]; }, 0), HAND_MS = 2200;      /* the hand in ~2.2 s, then the heart */
-  all.forEach(function(p, i){
-    var isHand = i < hand.length, d = isHand ? Math.max(90, L[i] / handLen * HAND_MS) : p.classList.contains("wh-k") ? 220 : 520;
-    if(p.classList.contains("wh-same")){ plan.push([plan[plan.length - 1][0], d]); return; }   /* both halves of the heart together */
-    if(i) at += isHand ? 40 : 160;
-    plan.push([at, d]); at += d;
-  });
-  function hide(){ svg.classList.remove("done"); all.forEach(function(p, i){ p.style.strokeDasharray = L[i] + " " + L[i]; p.style.strokeDashoffset = L[i]; p.style.opacity = 0; }); }
-  function play(){
-    if(playing) return; playing = true; var my = ++run, t0 = 0;
-    function step(ts){
-      if(my !== run) return; if(!t0) t0 = ts; var t = ts - t0;
-      all.forEach(function(p, i){ var k = Math.min(1, Math.max(0, (t - plan[i][0]) / plan[i][1])); k = k * (2 - k);
-        p.style.strokeDashoffset = (L[i] * (1 - k)).toFixed(1); p.style.opacity = k > 0 ? 1 : 0; });
-      if(t < at + 200) requestAnimationFrame(step); else svg.classList.add("done");
-    }
-    requestAnimationFrame(step);
-  }
-  hide();
-  new IntersectionObserver(function(es){ es.forEach(function(e){
-    if(e.isIntersecting && e.intersectionRatio > .6) play();
-    else if(!e.isIntersecting){ run++; playing = false; hide(); }     /* draws again next time it comes into view */
-  }); }, {threshold:[0, .6]}).observe(svg);
 })();
 
 /* ---------- venue: a few small fireworks over the palace as it comes into view ----------
@@ -3515,35 +3552,44 @@ $("#allWishesBtn").addEventListener("click", function(){
   var body = $("#wishesDlg .dlg-body"); requestAnimationFrame(function(){ body.scrollTop = body.scrollHeight; });   /* open at the newest, like a chat */
 });
 /* party crackers: two or three bursts of confetti and gold sparks over the screen */
-function wishCrackers(fromEl){
+/* a shower of gold stars: a fountain from the button, then stars drifting down over the whole screen, twinkling */
+function wishStars(fromEl){
   if(reduced()) return;
-  var cv = document.createElement("canvas"); cv.className = "wfx"; document.body.appendChild(cv);
-  var D = Math.min(devicePixelRatio || 1, 2), W = innerWidth, H = innerHeight; cv.width = W*D; cv.height = H*D;
-  var x = cv.getContext("2d"), bits = [], COLS = ["#D4B06A","#F6DC9C","#E9B8C0","#C23A68","#FFF6DC","#7A1F2E","#1F6B4E"];
-  var r = fromEl.getBoundingClientRect(), cx = r.left + r.width/2, cy = Math.min(H*.85, Math.max(H*.3, r.top));
-  function pop(px, py, dir, n){
-    for(var i = 0; i < n; i++){ var an = (-90 + dir*25 + (Math.random() - .5)*70)*Math.PI/180, sp = 320 + Math.random()*420, spark = i % 4 === 0;
-      bits.push({x:px, y:py, vx:Math.cos(an)*sp, vy:Math.sin(an)*sp, w:4 + Math.random()*5, h:6 + Math.random()*7, r:Math.random()*6.3, vr:(Math.random() - .5)*.4,
-                 c:spark ? "#FFE7A3" : COLS[Math.random()*COLS.length | 0], spark:spark, life:0, max:spark ? .8 : 2.2 + Math.random(), flip:Math.random()*6}); }
+  var cv = document.createElement("canvas"); cv.className = "wfx"; cv.setAttribute("aria-hidden", "true"); document.body.appendChild(cv);
+  var D = Math.min(devicePixelRatio || 1, 2), W = innerWidth, H = innerHeight; cv.width = W * D; cv.height = H * D;
+  var x = cv.getContext("2d"), P = [], COLS = ["#FFF3C4", "#FFE08A", "#F1C761", "#E2AE48", "#FFFFFF"];
+  var r = fromEl.getBoundingClientRect(), bx = r.left + r.width / 2, by = Math.min(H * .9, Math.max(H * .2, r.top + r.height / 2)), i;
+  for(i = 0; i < 70; i++){ var an = (-90 + (Math.random() - .5) * 110) * Math.PI / 180, sp = 260 + Math.random() * 520;
+    P.push({x:bx, y:by, vx:Math.cos(an) * sp, vy:Math.sin(an) * sp, at:Math.random() * 180, s:3 + Math.random() * 5, r:Math.random() * 6.3, vr:(Math.random() - .5) * 6,
+      c:COLS[i % COLS.length], k:i % 3 ? 5 : 4, max:2 + Math.random() * 1.4, g:420}); }
+  for(i = 0; i < 60; i++) P.push({x:Math.random() * W, y:-20 - Math.random() * 40, vx:(Math.random() - .5) * 30, vy:70 + Math.random() * 90, at:300 + Math.random() * 1900,
+      s:2.5 + Math.random() * 4.5, r:Math.random() * 6.3, vr:(Math.random() - .5) * 2, c:COLS[i % COLS.length], k:i % 2 ? 5 : 4, max:5 + Math.random() * 2, g:0, sway:10 + Math.random() * 18});
+  function star(k, s){
+    x.beginPath();
+    if(k === 5){ for(var j = 0; j < 10; j++){ var rr = j % 2 ? s * .45 : s, a = j * Math.PI / 5 - Math.PI / 2; x.lineTo(Math.cos(a) * rr, Math.sin(a) * rr); } }
+    else { x.moveTo(0, -s * 1.3); x.quadraticCurveTo(0, 0, s * 1.3, 0); x.quadraticCurveTo(0, 0, 0, s * 1.3); x.quadraticCurveTo(0, 0, -s * 1.3, 0); x.quadraticCurveTo(0, 0, 0, -s * 1.3); }
+    x.closePath(); x.fill();
   }
-  pop(cx, cy, 0, 70); setTimeout(function(){ pop(W*.12, cy + 20, 1, 55); }, 160); setTimeout(function(){ pop(W*.88, cy + 20, -1, 55); }, 300);
-  var last = 0;
+  var t0 = 0, last = 0;
   function tick(ts){
-    var dt = Math.min(.04, (ts - (last || ts))/1000); last = ts; x.setTransform(D,0,0,D,0,0); x.clearRect(0,0,W,H);
-    for(var i = bits.length - 1; i >= 0; i--){ var b = bits[i]; b.life += dt; if(b.life > b.max || b.y > H + 20){ bits.splice(i, 1); continue; }
-      var drag = b.spark ? .9 : .985; b.vx *= Math.pow(drag, dt*60); b.vy = b.vy*Math.pow(drag, dt*60) + (b.spark ? 300 : 600)*dt; if(!b.spark && b.vy > 140) b.vy = 140;
-      b.x += b.vx*dt + (b.spark ? 0 : Math.sin(b.life*5 + b.flip)*.7); b.y += b.vy*dt; b.r += b.vr; b.flip += dt*9;
-      var f = Math.min(1, (b.max - b.life)/.5); x.globalAlpha = f;
-      if(b.spark){ x.fillStyle = b.c; x.beginPath(); x.arc(b.x, b.y, 1.6, 0, 6.283); x.fill(); }
-      else { x.save(); x.translate(b.x, b.y); x.rotate(b.r); x.scale(1, Math.cos(b.flip)); x.fillStyle = b.c; x.fillRect(-b.w/2, -b.h/2, b.w, b.h); x.restore(); } }
-    x.globalAlpha = 1;
-    if(bits.length || ts - start < 400) requestAnimationFrame(tick); else cv.remove();
+    if(!t0){ t0 = ts; last = ts; } var t = ts - t0, dt = Math.min(.04, (ts - last) / 1000), alive = false; last = ts;
+    x.setTransform(D, 0, 0, D, 0, 0); x.clearRect(0, 0, W, H);
+    P.forEach(function(b){
+      if(t < b.at){ alive = true; return; }
+      b.life = (b.life || 0) + dt; if(b.life > b.max || b.y > H + 30) return; alive = true;
+      if(b.g){ b.vx *= Math.pow(.97, dt * 60); b.vy = b.vy * Math.pow(.97, dt * 60) + b.g * dt; if(b.vy > 120) b.vy = 120; }
+      b.x += (b.vx + (b.sway ? Math.sin(b.life * 2 + b.r) * b.sway : 0)) * dt; b.y += b.vy * dt; b.r += b.vr * dt;
+      var tw = .65 + .35 * Math.sin(b.life * 9 + b.r * 3), fade = Math.min(1, (b.max - b.life) / .6, b.life * 6);
+      x.save(); x.translate(b.x, b.y); x.rotate(b.r); x.globalAlpha = Math.max(0, fade) * tw;
+      x.shadowColor = "rgba(255,214,120,.9)"; x.shadowBlur = 8; x.fillStyle = b.c; star(b.k, b.s); x.restore();
+    });
+    if(alive) requestAnimationFrame(tick); else cv.remove();
   }
-  var start = performance.now(); requestAnimationFrame(tick);
+  requestAnimationFrame(tick);
 }
-/* after sending: crackers, the wish lifts off the form and flies up, then arrives in the chat */
+/* after sending: gold stars, the wish lifts off the form and flies up, then arrives in the chat */
 function wishSent(text, fromEl){
-  wishCrackers($("#wishSubmit"));
+  wishStars($("#wishSubmit"));
   if(reduced()){ renderWishes(); return; }
   var r = fromEl.getBoundingClientRect(), fly = document.createElement("div"); fly.className = "wfly"; fly.textContent = text;
   fly.style.left = Math.max(12, r.left) + "px"; fly.style.top = r.top + "px"; document.body.appendChild(fly);
@@ -3571,37 +3617,13 @@ $("#wPhoto").addEventListener("change", function(){
   };
   im.src = url;
 });
-/* ---------- Wishes: relation pick list ---------- */
-var REL_KEYS = ["bride_family", "groom_family", "grandparent", "sibling", "aunt", "uncle", "cousin", "best_friend", "friend", "family_friend", "colleague", "neighbour", "other"], relKey = "", relAct = -1;
+/* ---------- Wishes: relation chips (tap one; tap it again to clear) ---------- */
+var REL_KEYS = ["family", "friend", "colleague", "neighbour", "other"], relKey = "";
 function relRender(){
-  var btn = $("#wRel"), list = $("#wRelList"); if(!btn) return;
-  $("#wRelVal").textContent = relKey ? t("rel_" + relKey) : t("f_rel_ph");
-  btn.classList.toggle("empty", !relKey);
-  list.innerHTML = REL_KEYS.map(function(k, i){ return '<li role="option" id="wRelO' + i + '" data-k="' + k + '" aria-selected="' + (k === relKey) + '">' + esc(t("rel_" + k)) + '</li>'; }).join("");
+  var box = $("#wRelChips"); if(!box) return;
+  box.innerHTML = REL_KEYS.map(function(k){ return '<button type="button" class="wb-chip" data-k="' + k + '" aria-pressed="' + (k === relKey) + '">' + esc(t("rel_" + k)) + '</button>'; }).join("");
 }
-function relOpen(open){
-  var btn = $("#wRel"), list = $("#wRelList");
-  btn.setAttribute("aria-expanded", open ? "true" : "false"); list.hidden = !open;
-  if(open){ relAct = Math.max(0, REL_KEYS.indexOf(relKey)); relMark(); var a = list.children[relAct]; if(a) a.scrollIntoView({block:"nearest"}); }
-  else { relAct = -1; btn.removeAttribute("aria-activedescendant"); }
-}
-function relMark(){
-  var list = $("#wRelList"); $$("li", list).forEach(function(li, i){ li.classList.toggle("act", i === relAct); });
-  if(relAct > -1){ $("#wRel").setAttribute("aria-activedescendant", "wRelO" + relAct); var a = list.children[relAct]; if(a) a.scrollIntoView({block:"nearest"}); }
-}
-function relPick(k){ relKey = k; relRender(); relOpen(false); $("#wRel").focus(); }
-$("#wRel").addEventListener("click", function(){ relOpen(this.getAttribute("aria-expanded") !== "true"); });
-$("#wRel").addEventListener("keydown", function(e){
-  var open = this.getAttribute("aria-expanded") === "true", n = REL_KEYS.length;
-  if(e.key === "ArrowDown" || e.key === "ArrowUp"){ e.preventDefault(); if(!open){ relOpen(true); return; } relAct = (relAct + (e.key === "ArrowDown" ? 1 : n - 1)) % n; relMark(); }
-  else if(e.key === "Home" && open){ e.preventDefault(); relAct = 0; relMark(); }
-  else if(e.key === "End" && open){ e.preventDefault(); relAct = n - 1; relMark(); }
-  else if((e.key === "Enter" || e.key === " ") && open){ e.preventDefault(); if(relAct > -1) relPick(REL_KEYS[relAct]); }
-  else if(e.key === "Escape" && open){ e.preventDefault(); relOpen(false); }
-  else if(e.key === "Tab" && open){ relOpen(false); }
-});
-$("#wRelList").addEventListener("click", function(e){ var li = e.target.closest("li[data-k]"); if(li) relPick(li.getAttribute("data-k")); });
-document.addEventListener("pointerdown", function(e){ if(!$("#wRelList").hidden && !e.target.closest("#wRelBox")) relOpen(false); });
+$("#wRelChips").addEventListener("click", function(e){ var b = e.target.closest(".wb-chip"); if(!b) return; var k = b.getAttribute("data-k"); relKey = relKey === k ? "" : k; relRender(); var nb = $('.wb-chip[data-k="' + k + '"]', this); if(nb) nb.focus(); });
 relRender();
 $("#wMsg").addEventListener("input", function(){$("#wCount").textContent=this.value.length;});
 $("#wishForm").addEventListener("submit", function(e){
