@@ -858,6 +858,23 @@ html.rm .ty-pend,html.rm .ty-pend::after{animation:none!important}
 .sx::before{top:calc(var(--bl) * -1);height:calc(var(--bl) * 2);-webkit-backdrop-filter:blur(9px);backdrop-filter:blur(9px);
   -webkit-mask:linear-gradient(180deg,transparent,#000 40%,#000 60%,transparent);mask:linear-gradient(180deg,transparent,#000 40%,#000 60%,transparent)}
 
+/* Wishes: "How do you know the couple?" is a pick list (tap the box or its arrow, choose a relation) */
+.rel{position:relative}
+.rel-btn{width:100%;min-height:52px;display:flex;align-items:center;justify-content:space-between;gap:10px;padding:12px 14px;border-radius:6px;border:1.5px solid var(--silver-mute);
+  background:var(--ivory);color:var(--ink);font:inherit;font-size:17px;text-align:start;cursor:pointer;transition:border-color .2s ease,box-shadow .2s ease}
+.rel-btn.empty .rel-val{color:var(--ink-mute);opacity:.8}
+.rel-btn:focus-visible,.rel-btn[aria-expanded="true"]{outline:none;border-color:var(--gold-deep);box-shadow:0 0 0 3px rgba(214,176,98,.25)}
+.rel-chev{flex:none;width:22px;height:22px;padding:3px;border-radius:50%;color:#fff;background:var(--gold-deep);transition:transform .3s ease}
+.rel-btn[aria-expanded="true"] .rel-chev{transform:rotate(180deg)}
+.rel-list{position:absolute;z-index:30;top:calc(100% + 6px);inset-inline:0;margin:0;padding:6px;list-style:none;max-height:270px;overflow-y:auto;overscroll-behavior:contain;
+  background:#FFFDF8;border:1px solid rgba(122,92,36,.35);border-radius:12px;box-shadow:0 18px 36px rgba(16,26,51,.22);animation:relIn .22s ease-out}
+@keyframes relIn{from{opacity:0;transform:translateY(-6px)}to{opacity:1;transform:none}}
+html.rm .rel-list{animation:none}
+.rel-list li{display:flex;align-items:center;justify-content:space-between;gap:10px;min-height:44px;padding:8px 12px;border-radius:8px;cursor:pointer;color:var(--ink);font-size:16px}
+.rel-list li:hover,.rel-list li.act{background:rgba(214,176,98,.16)}
+.rel-list li[aria-selected="true"]{color:var(--gold-deep);font-weight:500}
+.rel-list li[aria-selected="true"]::after{content:"";flex:none;width:7px;height:12px;margin-inline-end:4px;border:solid currentColor;border-width:0 2px 2px 0;transform:rotate(45deg) translateY(-2px)}
+
 /* info cards (travel / dress / contact) */
 .cards{display:grid;gap:14px;width:100%}
 @media (min-width:700px){.cards{grid-template-columns:1fr 1fr}}
@@ -870,7 +887,7 @@ html.rm .ty-pend,html.rm .ty-pend::after{animation:none!important}
 /* forms */
 form{display:grid;gap:20px;width:100%;text-align:start}
 .field{display:grid;gap:6px}
-label,.legend{font-size:15px;font-weight:500;color:var(--silver)}
+label,.legend,.field > .label{font-size:15px;font-weight:500;color:var(--silver)}
 .req{color:var(--gold);font-weight:400;font-size:13px}
 .hint{font-size:14px;color:var(--silver-mute)}
 input[type=text],textarea{width:100%;min-height:52px;padding:12px 14px;border-radius:6px;border:1.5px solid var(--silver-mute);background:var(--ivory);color:var(--ink);font:inherit;font-size:17px}
@@ -911,7 +928,7 @@ legend{padding:0;margin-bottom:8px}
 .light .preview-note{color:var(--ink-mute);border-color:var(--gold-deep)}
 
 /* wishes */
-#wishes form label,#wishes .legend{color:var(--ink)}
+#wishes form label,#wishes .legend,#wishes .field > .label{color:var(--ink)}
 #wishes .hint{color:var(--ink-mute)}
 #wishes input,#wishes textarea{border-color:var(--ink-mute);background:#F6F9FE}
 #wishes [aria-invalid="true"]{border-color:var(--err-on-light)!important}
@@ -1072,8 +1089,10 @@ html.inframe::-webkit-scrollbar{display:none}
 .g-mean{left:calc(220 * var(--u));top:calc(186 * var(--u));font:italic 600 calc(15.2 * var(--u))/calc(25 * var(--u)) "Crimson Pro",Georgia,serif;color:#F2EEA6;letter-spacing:.012em}
 /* "Dear Guest" down to the walima line. The artboard is 883 high (scene + floor); on taller screens
    the block moves further down with a share of the extra height (--ty), staying clear of the couple. */
-.g-scene{--ty:clamp(0px, (100vh - 883 * var(--u)) * .35, 70 * var(--u))}
-@supports (height:100svh){.g-scene{--ty:clamp(0px, (100svh - 883 * var(--u)) * .35, 70 * var(--u))}}
+.g-scene{--ty:calc(56 * var(--u) + clamp(0px, (100vh - 883 * var(--u)) * .35, 70 * var(--u)))}
+html[lang="ur"] .g-scene{--ty:calc(34 * var(--u) + clamp(0px, (100vh - 883 * var(--u)) * .35, 70 * var(--u)))}   /* Urdu lines are taller: less shift */
+@supports (height:100svh){.g-scene{--ty:calc(56 * var(--u) + clamp(0px, (100svh - 883 * var(--u)) * .35, 70 * var(--u)))}}
+@supports (height:100svh){html[lang="ur"] .g-scene{--ty:calc(34 * var(--u) + clamp(0px, (100svh - 883 * var(--u)) * .35, 70 * var(--u)))}}
 .g-dear{left:calc(220 * var(--u));top:calc(266 * var(--u) + var(--ty));font:700 calc(35 * var(--u))/1 Merienda,serif;color:#fff;letter-spacing:.1em;text-shadow:0 2px calc(8 * var(--u)) rgba(28,16,38,.5)}
 .g-tog{left:calc(220 * var(--u));top:calc(315 * var(--u) + var(--ty));font:400 calc(12.5 * var(--u))/1 Merienda,serif;color:#F4EEF0;letter-spacing:.07em}
 .g-names{margin:0;font:inherit}
@@ -1087,23 +1106,22 @@ html.inframe::-webkit-scrollbar{display:none}
 .g-tog,.g-cord{text-shadow:0 1px calc(4 * var(--u)) rgba(28,16,38,.8)}
 .g-dear,.g-n1,.g-n2,.g-tog,.g-cord{text-shadow:0 2px calc(10 * var(--u)) rgba(36,18,48,.72),0 0 calc(3 * var(--u)) rgba(36,18,48,.55)}
 .g-mean{text-shadow:0 1px calc(5 * var(--u)) rgba(20,14,48,.7)}
+.g-tog,.g-cord{text-shadow:0 1px calc(2 * var(--u)) rgba(30,14,40,.9),0 0 calc(9 * var(--u)) rgba(36,18,48,.85),0 0 calc(18 * var(--u)) rgba(36,18,48,.55)}
 .g-wrap > *{--u:calc(100cqw / 440)}
-.g-tap{position:absolute;z-index:5;left:50%;bottom:calc(env(safe-area-inset-bottom,0px) + 30 * var(--u));transform:translateX(-50%);display:inline-flex;align-items:center;justify-content:center;
-  height:calc(46 * var(--u));padding:0 calc(30 * var(--u)) 0 calc(34 * var(--u));border-radius:999px;overflow:hidden;white-space:nowrap;text-decoration:none;-webkit-tap-highlight-color:transparent;
-  font:400 calc(12.5 * var(--u))/1 Marcellus,serif;letter-spacing:.34em;text-transform:uppercase;color:#FFF8EA;text-shadow:0 1px calc(3 * var(--u)) rgba(20,10,30,.55);
-  /* clear water-glass: no fill colour, only a gold stroke; the scene shows through, softly blurred */
-  background:linear-gradient(180deg,rgba(255,255,255,.14),rgba(255,255,255,.02) 55%,rgba(255,255,255,.07));
-  -webkit-backdrop-filter:blur(calc(4 * var(--u))) saturate(165%) brightness(1.06);backdrop-filter:blur(calc(4 * var(--u))) saturate(165%) brightness(1.06);
-  border:1.5px solid rgba(236,204,136,.95);
-  box-shadow:0 0 0 calc(4 * var(--u)) rgba(236,204,136,.12),inset 0 1px 1px rgba(255,255,255,.6),inset 0 -1px calc(3 * var(--u)) rgba(255,255,255,.22),0 calc(6 * var(--u)) calc(16 * var(--u)) rgba(8,4,14,.22);
-  transition:transform .25s ease;animation:gTapGlow 3.2s ease-in-out infinite}
-/* the water-drop highlight across the top of the glass */
-.g-tap::before{content:"";position:absolute;left:10%;right:10%;top:7%;height:40%;border-radius:999px;pointer-events:none;background:linear-gradient(180deg,rgba(255,255,255,.42),rgba(255,255,255,0))}
-.g-tap::after{content:"";position:absolute;top:0;bottom:0;left:-60%;width:45%;background:linear-gradient(100deg,transparent,rgba(255,236,190,.38),transparent);transform:skewX(-18deg);animation:gTapShine 3.6s ease-in-out 1s infinite}
+/* "Scroll down" with a little arrow that blinks below it (replaces the Tap here button) */
+.g-tap{position:absolute;z-index:5;left:50%;bottom:calc(env(safe-area-inset-bottom,0px) + 18 * var(--u));transform:translateX(-50%);display:flex;flex-direction:column;align-items:center;
+  gap:calc(4 * var(--u));padding:calc(8 * var(--u)) calc(16 * var(--u));white-space:nowrap;text-decoration:none;-webkit-tap-highlight-color:transparent;
+  font:400 calc(13 * var(--u))/1 Marcellus,serif;letter-spacing:.36em;text-transform:uppercase;color:#FFF8EA;
+  text-shadow:0 1px calc(2 * var(--u)) rgba(30,12,40,.9),0 0 calc(10 * var(--u)) rgba(36,18,48,.85),0 0 calc(16 * var(--u)) rgba(241,213,146,.45)}
+.g-tap::before{content:"";position:absolute;inset:-30% -20%;z-index:-1;border-radius:50%;pointer-events:none;
+  background:radial-gradient(closest-side,rgba(28,14,40,.5),rgba(28,14,40,.22) 55%,transparent)}
+.g-sd{padding-inline-start:.36em}
+.g-arrow{width:calc(22 * var(--u));height:calc(27 * var(--u));overflow:visible;filter:drop-shadow(0 0 calc(5 * var(--u)) rgba(241,213,146,.85)) drop-shadow(0 1px 2px rgba(30,12,40,.6))}
+.g-arrow path{fill:none;stroke:#F6DFA4;stroke-width:2.4;stroke-linecap:round;stroke-linejoin:round;animation:gBlink 1.6s ease-in-out infinite}
+.g-arrow .a2{animation-delay:.25s}
+@keyframes gBlink{0%,100%{opacity:.15;transform:translateY(-3px)}45%{opacity:1;transform:translateY(1px)}70%{opacity:.6}}
 .g-tap:active{transform:translateX(-50%) scale(.97)}
-@keyframes gTapGlow{0%,100%{box-shadow:0 0 0 calc(4 * var(--u)) rgba(236,204,136,.10),inset 0 1px 1px rgba(255,255,255,.6),inset 0 -1px calc(3 * var(--u)) rgba(255,255,255,.22),0 calc(6 * var(--u)) calc(16 * var(--u)) rgba(8,4,14,.22)}50%{box-shadow:0 0 0 calc(7 * var(--u)) rgba(236,204,136,.22),inset 0 1px 1px rgba(255,255,255,.6),inset 0 -1px calc(3 * var(--u)) rgba(255,255,255,.22),0 calc(6 * var(--u)) calc(16 * var(--u)) rgba(8,4,14,.22)}}
-@keyframes gTapShine{0%{left:-60%}55%,100%{left:130%}}
-html.rm .g-tap,html.rm .g-tap::after{animation:none}
+html.rm .g-arrow path{animation:none;opacity:1}
 /* the client's couple photo is a three-quarter shot (cut at the knees and on the right), so it stands in
    the bottom-right corner, cropped by the screen like a foreground portrait, right beside "Tap here" */
 .g-couple{position:absolute;z-index:2;right:0;bottom:0;width:calc(230 * var(--u));height:calc(302.5 * var(--u));pointer-events:none;
@@ -1135,7 +1153,7 @@ html[lang="ur"] .g-dear,html[lang="ur"] .g-n1,html[lang="ur"] .g-n2{font-family:
 html[lang="ur"] .g-dear{font-size:calc(34 * var(--u));top:calc(244 * var(--u) + var(--ty))}
 html[lang="ur"] .g-n1,html[lang="ur"] .g-n2{font-size:calc(42 * var(--u))}
 html[lang="ur"] .g-cap,html[lang="ur"] .g-count .u{text-transform:none}
-html[lang="ur"] .g-tog,html[lang="ur"] .g-cord,html[lang="ur"] .g-tap,html[lang="ur"] .g-cap,html[lang="ur"] .g-reveal,html[lang="ur"] .g-count .u,html[lang="ur"] .g-ht{font-family:var(--f-ur-head);font-style:normal;letter-spacing:0}
+html[lang="ur"] .g-tog,html[lang="ur"] .g-cord,html[lang="ur"] .g-tap,html[lang="ur"] .g-sd,html[lang="ur"] .g-cap,html[lang="ur"] .g-reveal,html[lang="ur"] .g-count .u,html[lang="ur"] .g-ht{font-family:var(--f-ur-head);font-style:normal;letter-spacing:0}
 html[lang="ur"] .g-tog{font-size:calc(15.5 * var(--u));top:calc(297 * var(--u) + var(--ty))}
 html[lang="ur"] .g-n1{top:calc(344 * var(--u) + var(--ty))} html[lang="ur"] .g-love{top:calc(392 * var(--u) + var(--ty))} html[lang="ur"] .g-n2{top:calc(444 * var(--u) + var(--ty))} html[lang="ur"] .g-cord{top:calc(492 * var(--u) + var(--ty))}
 html[lang="ur"] .g-cord{font-size:calc(15 * var(--u));line-height:calc(28 * var(--u));white-space:normal;width:calc(320 * var(--u))}
@@ -1158,7 +1176,7 @@ html[lang="hi"] .g-cord{font-size:calc(14 * var(--u));line-height:calc(20 * var(
 @keyframes gRevGlow{0%,100%{box-shadow:0 0 calc(3 * var(--u)) rgba(214,166,86,.35)}50%{box-shadow:0 0 calc(13 * var(--u)) rgba(214,166,86,.8),0 0 0 calc(1.5 * var(--u)) rgba(232,196,128,.35)}}
 .g-reveal:active{transform:translateX(-50%) scale(.97)}
 .g-reveal:focus-visible{outline-color:#8E2445}
-.g-reveal:focus-visible,.g-tap:focus-visible{outline:2px solid #fff;outline-offset:3px}
+.g-reveal:focus-visible,.g-tap:focus-visible{outline:2px solid #fff;outline-offset:3px;border-radius:12px}
 .g-reveal[aria-pressed="true"]{background:rgba(255,246,236,.9)}
 .g-cap{text-transform:uppercase;font:400 calc(12.6 * var(--u))/1 "Uncial Antiqua",serif;color:#7C1D2D;letter-spacing:.15em}
 .g-scratch{left:calc(220 * var(--u));top:calc(74 * var(--u))}
@@ -1368,7 +1386,7 @@ html[lang="hi"] .eyebrow,html[lang="hi"] .btn,html[lang="hi"] .badge,html[lang="
     </div>
     <div class="g-floor" aria-hidden="true"></div>
     <div class="g-couple" aria-hidden="true"><img alt="" src="assets/welcome/couple.webp"><div class="g-skirt" id="gSkirt"></div></div>
-    <a class="g-tap" href="#countdown" id="gTap" data-i18n="tab_here">Tap here</a>
+    <a class="g-tap" href="#countdown" id="gTap"><span class="g-sd" data-i18n="scroll_down">Scroll down</span><svg class="g-arrow" viewBox="0 0 24 30" aria-hidden="true"><path class="a1" d="M5 5l7 7 7-7"/><path class="a2" d="M5 15l7 7 7-7"/></svg></a>
     <canvas class="g-glitter" id="gGlitter" aria-hidden="true"></canvas>
    </div>
   </section>
@@ -1449,7 +1467,6 @@ html[lang="hi"] .eyebrow,html[lang="hi"] .btn,html[lang="hi"] .badge,html[lang="
       <p class="eyebrow rv" data-i18n="events_eyebrow">The Celebrations</p>
       <h2 id="eventsTitle" class="rv" data-i18n="events_title">Wedding Celebrations</h2>
       <svg class="divider rv"><use href="#i-divider"/></svg>
-      <p class="ev-note rv" data-i18n="events_note">Sample schedule · Please confirm details</p>
     </div>
     <div class="ev-list" id="eventList"></div>
     <div class="sec-orn rv" aria-hidden="true"></div>
@@ -1490,7 +1507,6 @@ html[lang="hi"] .eyebrow,html[lang="hi"] .btn,html[lang="hi"] .badge,html[lang="
             <button class="btn ghost" type="button" id="copyAddr"><svg><use href="#i-copy"/></svg><span data-i18n="copy_addr">Copy address</span></button>
           </div>
           <p class="copied" id="copied" aria-live="polite"></p>
-          <p class="note-sm rv"><span class="ph" data-tag="Placeholder" data-i18n="ph_parking">Parking and arrival note</span></p>
         </div>
       </div>
     </div>
@@ -1643,7 +1659,6 @@ html[lang="hi"] .eyebrow,html[lang="hi"] .btn,html[lang="hi"] .badge,html[lang="
         </div>
       </div>
       </div>
-      <p class="preview-note rv-note" data-i18n="rsvp_preview">Preview: replies are saved on this device only. They will go to your Google Sheet once it is connected.</p>
     </div>
     <div class="sec-orn rv" aria-hidden="true"></div>
   </section>
@@ -1662,7 +1677,7 @@ html[lang="hi"] .eyebrow,html[lang="hi"] .btn,html[lang="hi"] .badge,html[lang="
       <h3 style="text-align:center;color:var(--navy)" data-i18n="leave_wish">Leave a wish</h3>
       <form id="wishForm" novalidate>
         <div class="field"><label for="wName"><span data-i18n="f_name">Your name</span> <span class="req" data-i18n="required">(required)</span></label><input type="text" id="wName" name="name" autocomplete="name" maxlength="60"><p class="err" id="wNameErr"></p></div>
-        <div class="field"><label for="wRel"><span data-i18n="f_rel">How do you know the couple?</span> <span class="opt" data-i18n="optional">(optional)</span></label><input type="text" id="wRel" name="relation" maxlength="40" data-i18n-ph="f_rel_ph" placeholder="e.g. Aunt, best friend, colleague"></div>
+        <div class="field"><span class="label" id="wRelLab"><span data-i18n="f_rel">How do you know the couple?</span> <span class="opt" data-i18n="optional">(optional)</span></span><div class="rel" id="wRelBox"><button type="button" class="rel-btn" id="wRel" aria-haspopup="listbox" aria-expanded="false" aria-controls="wRelList" aria-labelledby="wRelLab wRelVal"><span class="rel-val" id="wRelVal">Select your relation</span><svg class="rel-chev" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 9l6 6 6-6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></button><ul class="rel-list" id="wRelList" role="listbox" aria-labelledby="wRelLab" hidden></ul></div></div>
         <div class="field"><label for="wMsg"><span data-i18n="f_wish">Your wish</span> <span class="req" data-i18n="required">(required)</span></label><textarea id="wMsg" name="message" maxlength="500" aria-describedby="wMsgHint"></textarea><p class="hint" id="wMsgHint"><span id="wCount">0</span> / 500</p><p class="err" id="wMsgErr"></p></div>
         <div class="field"><label for="wPhoto"><span data-i18n="f_photo">Your photo</span> <span class="opt" data-i18n="optional">(optional)</span></label>
           <div class="wv-file"><img id="wPhotoPrev" alt="" hidden><input type="file" id="wPhoto" accept="image/*" aria-describedby="wPhotoHint"></div><p class="hint" id="wPhotoHint" data-i18n="f_photo_hint">Shown on the front of your card.</p></div>
@@ -1670,7 +1685,6 @@ html[lang="hi"] .eyebrow,html[lang="hi"] .btn,html[lang="hi"] .badge,html[lang="
         <div id="wishStatus" aria-live="polite"></div>
         <button class="btn" type="submit" id="wishSubmit" style="justify-self:center"><span data-i18n="send_wish">Send wish</span></button>
       </form>
-      <p class="preview-note" data-i18n="wish_preview">Preview: the three wishes marked "Sample" are examples so you can see the layout. New wishes wait for your approval before anyone else sees them.</p>
     </div>
     <div class="sec-orn rv" aria-hidden="true"></div>
   </section>
@@ -1684,26 +1698,25 @@ html[lang="hi"] .eyebrow,html[lang="hi"] .btn,html[lang="hi"] .badge,html[lang="
       <div class="tr rv" id="trAcc">
         <div class="tr-pin"><div class="tr-stage">
         <figure class="tr-fig on" aria-hidden="false"><img src="assets/travel/airport.webp" alt="An Emirates plane at Dubai International Airport" data-i18n-alt="tr_air_alt" loading="lazy" decoding="async" width="1000" height="750">
-          <figcaption><span class="tr-g" data-i18n="tr_g_arrive">Arrive</span><span class="tr-cap" data-i18n="tr_air_t">Arriving by air</span><span class="tr-n" dir="ltr">01 / 07</span></figcaption></figure>
+          <figcaption><span class="tr-cap" data-i18n="tr_air_t">Arriving by air</span><span class="tr-n" dir="ltr">01 / 07</span></figcaption></figure>
         <figure class="tr-fig" aria-hidden="true"><img src="assets/travel/metro.webp" alt="A Dubai Metro train on the elevated line" data-i18n-alt="tr_metro_alt" loading="lazy" decoding="async" width="1000" height="750">
-          <figcaption><span class="tr-g" data-i18n="tr_g_arrive">Arrive</span><span class="tr-cap" data-i18n="tr_metro_t">Metro &amp; bus</span><span class="tr-n" dir="ltr">02 / 07</span></figcaption></figure>
+          <figcaption><span class="tr-cap" data-i18n="tr_metro_t">Metro &amp; bus</span><span class="tr-n" dir="ltr">02 / 07</span></figcaption></figure>
         <figure class="tr-fig" aria-hidden="true"><img src="assets/travel/taxi.webp" alt="An official Dubai taxi waiting at a hotel entrance" data-i18n-alt="tr_taxi_alt" loading="lazy" decoding="async" width="1000" height="750">
-          <figcaption><span class="tr-g" data-i18n="tr_g_arrive">Arrive</span><span class="tr-cap" data-i18n="tr_taxi_t">Taxis &amp; rides</span><span class="tr-n" dir="ltr">03 / 07</span></figcaption></figure>
+          <figcaption><span class="tr-cap" data-i18n="tr_taxi_t">Taxis &amp; rides</span><span class="tr-n" dir="ltr">03 / 07</span></figcaption></figure>
         <figure class="tr-fig" aria-hidden="true"><img src="assets/travel/hotel.webp" alt="Jumeirah Beach Hotel and its beach" data-i18n-alt="tr_stay_alt" loading="lazy" decoding="async" width="1000" height="750">
-          <figcaption><span class="tr-g" data-i18n="tr_g_stay">Stay</span><span class="tr-cap" data-i18n="tr_stay_t">Where to stay</span><span class="tr-n" dir="ltr">04 / 07</span></figcaption></figure>
+          <figcaption><span class="tr-cap" data-i18n="tr_stay_t">Where to stay</span><span class="tr-n" dir="ltr">04 / 07</span></figcaption></figure>
         <figure class="tr-fig" aria-hidden="true"><img src="assets/venue/venue.webp" alt="The palace venue at night, with a floral mandap and fountain" data-i18n-alt="venue_alt" loading="lazy" decoding="async" width="1000" height="750">
-          <figcaption><span class="tr-g" data-i18n="tr_g_venue">Celebrate</span><span class="tr-cap" data-i18n="tr_venue_t">The palace venue</span><span class="tr-n" dir="ltr">05 / 07</span></figcaption></figure>
+          <figcaption><span class="tr-cap" data-i18n="tr_venue_t">The palace venue</span><span class="tr-n" dir="ltr">05 / 07</span></figcaption></figure>
         <figure class="tr-fig" aria-hidden="true"><img src="assets/travel/desert.webp" alt="A camel caravan crossing golden dunes" data-i18n-alt="tr_desert_alt" loading="lazy" decoding="async" width="1000" height="750">
-          <figcaption><span class="tr-g" data-i18n="tr_g_explore">Explore Dubai</span><span class="tr-cap" data-i18n="tr_desert_t">Desert safari</span><span class="tr-n" dir="ltr">06 / 07</span></figcaption></figure>
+          <figcaption><span class="tr-cap" data-i18n="tr_desert_t">Desert safari</span><span class="tr-n" dir="ltr">06 / 07</span></figcaption></figure>
         <figure class="tr-fig" aria-hidden="true"><img src="assets/travel/village.webp" alt="A lit pavilion at Global Village at night" data-i18n-alt="tr_village_alt" loading="lazy" decoding="async" width="1000" height="750">
-          <figcaption><span class="tr-g" data-i18n="tr_g_explore">Explore Dubai</span><span class="tr-cap" data-i18n="tr_village_t">Global Village</span><span class="tr-n" dir="ltr">07 / 07</span></figcaption></figure>
+          <figcaption><span class="tr-cap" data-i18n="tr_village_t">Global Village</span><span class="tr-n" dir="ltr">07 / 07</span></figcaption></figure>
         </div></div>
         <ul class="tr-list">
         <li class="tr-item on">
           <button class="tr-head" type="button" id="trH0" aria-expanded="true" aria-controls="trP0"><span class="tr-num" dir="ltr">01</span><span class="tr-t" data-i18n="tr_air_t">Arriving by air</span><span class="tr-ic" aria-hidden="true"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h13M13 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"/></svg></span></button>
           <div class="tr-panel" id="trP0" role="region" aria-labelledby="trH0"><div class="tr-in"><div class="tr-body">
             <p class="tr-d" data-i18n="tr_air_d">Most flights land at Dubai International Airport (DXB), about 27 km from the palace, or 30 to 35 minutes by taxi. Some flights use Al Maktoum International (DWC), about 45 minutes away. Please check the visa rules for your passport before you travel.</p>
-            <p class="tr-chips"><span data-i18n="tr_air_c1">27 km to the palace</span><span data-i18n="tr_air_c2">30–35 min by taxi</span></p>
             <a class="tr-loc" href="https://www.google.com/maps/search/?api=1&amp;query=Dubai%20International%20Airport%20DXB" target="_blank" rel="noopener"><svg><use href="#i-pin"/></svg><span data-i18n="tr_loc">View location</span></a>
           </div></div></div>
         </li>
@@ -1711,7 +1724,6 @@ html[lang="hi"] .eyebrow,html[lang="hi"] .btn,html[lang="hi"] .badge,html[lang="
           <button class="tr-head" type="button" id="trH1" aria-expanded="false" aria-controls="trP1"><span class="tr-num" dir="ltr">02</span><span class="tr-t" data-i18n="tr_metro_t">Metro &amp; bus</span><span class="tr-ic" aria-hidden="true"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h13M13 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"/></svg></span></button>
           <div class="tr-panel" id="trP1" role="region" aria-labelledby="trH1"><div class="tr-in"><div class="tr-body">
             <p class="tr-d" data-i18n="tr_metro_d">The nearest Metro station is Mall of the Emirates on the Red Line, about 3 km from the palace; taxis wait outside for the 5 to 10 minute ride. Bus 81 runs from the bus station beside the Metro to the Burj Al Arab stop, a 12-minute walk away. Pay with a Nol card and plan trips in the RTA S'hail app.</p>
-            <p class="tr-chips"><span data-i18n="tr_metro_c1">Red Line · Mall of the Emirates</span><span data-i18n="tr_metro_c2">Bus 81</span></p>
             <a class="tr-loc" href="https://www.google.com/maps/search/?api=1&amp;query=Mall%20of%20the%20Emirates%20Metro%20Station%20Dubai" target="_blank" rel="noopener"><svg><use href="#i-pin"/></svg><span data-i18n="tr_loc">View location</span></a>
           </div></div></div>
         </li>
@@ -1719,7 +1731,6 @@ html[lang="hi"] .eyebrow,html[lang="hi"] .btn,html[lang="hi"] .badge,html[lang="
           <button class="tr-head" type="button" id="trH2" aria-expanded="false" aria-controls="trP2"><span class="tr-num" dir="ltr">03</span><span class="tr-t" data-i18n="tr_taxi_t">Taxis &amp; rides</span><span class="tr-ic" aria-hidden="true"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h13M13 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"/></svg></span></button>
           <div class="tr-panel" id="trP2" role="region" aria-labelledby="trH2"><div class="tr-in"><div class="tr-body">
             <p class="tr-d" data-i18n="tr_taxi_d">Official cream RTA taxis queue outside every arrivals hall, at the Metro station and at the palace entrance, day and night. Careem and Uber work across Dubai. Ask for “Jumeirah Al Qasr, Madinat Jumeirah”, or open the route below for your driver.</p>
-            <p class="tr-chips"><span data-i18n="tr_taxi_c1">Day &amp; night</span><span data-i18n="tr_taxi_c2">Careem · Uber</span></p>
             <a class="tr-loc" href="https://www.google.com/maps/dir/?api=1&amp;destination=Jumeirah%20Al%20Qasr%2C%20Madinat%20Jumeirah%2C%20Dubai&amp;travelmode=driving" target="_blank" rel="noopener"><svg><use href="#i-pin"/></svg><span data-i18n="tr_route">Route to the palace</span></a>
           </div></div></div>
         </li>
@@ -1727,7 +1738,6 @@ html[lang="hi"] .eyebrow,html[lang="hi"] .btn,html[lang="hi"] .badge,html[lang="
           <button class="tr-head" type="button" id="trH3" aria-expanded="false" aria-controls="trP3"><span class="tr-num" dir="ltr">04</span><span class="tr-t" data-i18n="tr_stay_t">Where to stay</span><span class="tr-ic" aria-hidden="true"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h13M13 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"/></svg></span></button>
           <div class="tr-panel" id="trP3" role="region" aria-labelledby="trH3"><div class="tr-in"><div class="tr-body">
             <p class="tr-d" data-i18n="tr_stay_d">We suggest Jumeirah Beach Hotel, the wave-shaped hotel on the same beach, about five minutes from the palace. Mina A'Salam and Dar Al Masyaf at Madinat Jumeirah are even closer.</p>
-            <p class="tr-chips"><span data-i18n="tr_stay_c1">5 min to the palace</span><span data-i18n="tr_stay_c2">Beachfront</span></p>
             <a class="tr-loc" href="https://www.google.com/maps/search/?api=1&amp;query=Jumeirah%20Beach%20Hotel%20Dubai" target="_blank" rel="noopener"><svg><use href="#i-pin"/></svg><span data-i18n="tr_loc">View location</span></a>
           </div></div></div>
         </li>
@@ -1735,7 +1745,6 @@ html[lang="hi"] .eyebrow,html[lang="hi"] .btn,html[lang="hi"] .badge,html[lang="
           <button class="tr-head" type="button" id="trH4" aria-expanded="false" aria-controls="trP4"><span class="tr-num" dir="ltr">05</span><span class="tr-t" data-i18n="tr_venue_t">The palace venue</span><span class="tr-ic" aria-hidden="true"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h13M13 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"/></svg></span></button>
           <div class="tr-panel" id="trP4" role="region" aria-labelledby="trH4"><div class="tr-in"><div class="tr-body">
             <p class="tr-d" data-i18n="tr_venue_d">Our celebrations are at the palace, Jumeirah Al Qasr at Madinat Jumeirah, beside the Burj Al Arab. Taxis drop guests at the main palace entrance, and valet parking is available.</p>
-            <p class="tr-chips"><span data-i18n="tr_venue_c1">Madinat Jumeirah</span><span data-i18n="tr_venue_c2">Valet parking</span></p>
             <a class="tr-loc" href="https://www.google.com/maps/search/?api=1&amp;query=Jumeirah%20Al%20Qasr%2C%20Madinat%20Jumeirah%2C%20Dubai" target="_blank" rel="noopener"><svg><use href="#i-pin"/></svg><span data-i18n="tr_loc">View location</span></a>
           </div></div></div>
         </li>
@@ -1743,7 +1752,6 @@ html[lang="hi"] .eyebrow,html[lang="hi"] .btn,html[lang="hi"] .badge,html[lang="
           <button class="tr-head" type="button" id="trH5" aria-expanded="false" aria-controls="trP5"><span class="tr-num" dir="ltr">06</span><span class="tr-t" data-i18n="tr_desert_t">Desert safari</span><span class="tr-ic" aria-hidden="true"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h13M13 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"/></svg></span></button>
           <div class="tr-panel" id="trP5" role="region" aria-labelledby="trH5"><div class="tr-in"><div class="tr-body">
             <p class="tr-d" data-i18n="tr_desert_d">An evening in the red dunes: a dune drive, camel rides, sandboarding and dinner under the stars. Most tours collect you from your hotel in the afternoon and bring you back after dinner.</p>
-            <p class="tr-chips"><span data-i18n="tr_desert_c1">Afternoon to night</span><span data-i18n="tr_desert_c2">Hotel pickup</span></p>
             <a class="tr-loc" href="https://www.google.com/maps/search/?api=1&amp;query=Dubai%20Desert%20Conservation%20Reserve" target="_blank" rel="noopener"><svg><use href="#i-pin"/></svg><span data-i18n="tr_loc">View location</span></a>
           </div></div></div>
         </li>
@@ -1751,7 +1759,6 @@ html[lang="hi"] .eyebrow,html[lang="hi"] .btn,html[lang="hi"] .badge,html[lang="
           <button class="tr-head" type="button" id="trH6" aria-expanded="false" aria-controls="trP6"><span class="tr-num" dir="ltr">07</span><span class="tr-t" data-i18n="tr_village_t">Global Village</span><span class="tr-ic" aria-hidden="true"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h13M13 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"/></svg></span></button>
           <div class="tr-panel" id="trP6" role="region" aria-labelledby="trH6"><div class="tr-in"><div class="tr-body">
             <p class="tr-d" data-i18n="tr_village_d">Pavilions from around the world, street food, shopping and shows. Open for the season from October to May, 4 pm to midnight (1 am at weekends), about 30 minutes from the palace.</p>
-            <p class="tr-chips"><span data-i18n="tr_village_c1">4 pm – midnight</span><span data-i18n="tr_village_c2">October – May</span></p>
             <a class="tr-loc" href="https://www.google.com/maps/search/?api=1&amp;query=Global%20Village%20Dubai" target="_blank" rel="noopener"><svg><use href="#i-pin"/></svg><span data-i18n="tr_loc">View location</span></a>
           </div></div></div>
         </li>
@@ -2047,19 +2054,19 @@ var SAMPLE_WISHES = [   /* samples until the live guest book is connected; the r
 var T = {
 en:{bism_tr:"Bismillāhir - Raḥmānir - Raḥīm",bism_mean_1:"In the name of Allah, the Most",bism_mean_2:"Gracious, the Most Merciful.",amp:"&",tap_seal:"Tap the seal to open",open_seal:"Open the invitation",dear_guest:"Dear Guest",invite_line:"With joy, we invite you to celebrate our wedding.",skip:"Skip",continue:"Continue",cover_eyebrow:"You are invited to the wedding of",bride:"Ayisha",groom:"Omar Sheikh",groom_short:"Omar",open:"Open Invitation",
 together:"Together with their families",wording:"request the pleasure of your company as they celebrate their marriage.",date_long:"Sunday, 15 November 2026",time_long:"6:30 in the evening",venue:"Jumeirah Al Qasr",venue_area:"Madinat Jumeirah, Dubai",venue_full:"Jumeirah Al Qasr, Madinat Jumeirah, Dubai",venue_alt:"The palace venue at night, with a floral mandap and fountain",add_cal:"Add to calendar",
-groom_first:"Omar",walima_1:"Cordially invite you to the joyous",walima_2:"walima celebration of their marriage",tab_here:"Tap here",reveal_date:"REVEAL DATE",scratch_cap:"SCRATCH TO DISCOVER THE DATE",h_day:"15th",h_month:"NOVEMBER",h_year:"2026",save_date:"SAVE THE DATE",
+groom_first:"Omar",walima_1:"Cordially invite you to the joyous",walima_2:"walima celebration of their marriage",scroll_down:"Scroll down",reveal_date:"REVEAL DATE",scratch_cap:"SCRATCH TO DISCOVER THE DATE",h_day:"15th",h_month:"NOVEMBER",h_year:"2026",save_date:"SAVE THE DATE",
 cd_eyebrow:"Counting down to our celebration",cd_title:"Countdown",days:"Days",hours:"Hours",minutes:"Minutes",seconds:"Seconds",tz:"Dubai time (GST, UTC+4)",today:"Today is the day",after:"Thank you for celebrating with us",
 couple_eyebrow:"The Families",couple_title:"Meet Our Families",fam_lead:"With joy, our families welcome you",fam_groom:"The Groom’s Family",fam_bride:"The Bride’s Family",fam_bless:"With love and blessings of",fam_parents_g:"Mr.\u00A0Abdullah &\u00A0Mrs.\u00A0Khadija\u00A0Sheikh",fam_parents_b:"Mr.\u00A0Yusuf &\u00A0Mrs.\u00A0Fatima\u00A0Al\u00A0Hashimi",fam_groom_alt:"The groom’s family",fam_bride_alt:"The bride’s family",ph_bride:"Photo coming soon · Bride portrait\ncouple-bride-portrait.jpg · 1200 × 1600",ph_groom:"Photo coming soon · Groom portrait\ncouple-groom-portrait.jpg · 1200 × 1600",ph_about_bride:"A few words about Ayisha",ph_about_groom:"A few words about Omar",families:"Our families",ph_fam_b:"Family of the bride",ph_fam_g:"Family of the groom",
-events_eyebrow:"The Celebrations",events_title:"Wedding Celebrations",confirmed:"Confirmed",pending:"Pending confirmation",ev_pending_detail:"Date, time and venue to be confirmed",events_note:"Sample schedule · Please confirm details",ev_map:"View location",ev_alt:"The couple at the {e}",
+events_eyebrow:"The Celebrations",events_title:"Wedding Celebrations",confirmed:"Confirmed",pending:"Pending confirmation",ev_pending_detail:"Date, time and venue to be confirmed",ev_map:"View location",ev_alt:"The couple at the {e}",
 gal_eyebrow:"Gallery",gal_title:"Moments",gal_alt:"Ayisha and Omar, moment {n}",story_ch:"Chapter {n} · {y}",
-venue_eyebrow:"The Venue",directions:"Get Directions",copy_addr:"Copy address",copied:"Address copied",copy_fail:"Select the address above to copy it",ph_venue:"Venue photograph coming soon\nvenue-01.jpg · 1600 × 1000",ph_parking:"Parking and arrival note",
-travel_eyebrow:"For our guests",travel_title:"Travel & Stay",tr_lede:"Everything you need to reach the palace, and a little of Dubai to enjoy between the celebrations.",tr_g_arrive:"Arrive",tr_g_stay:"Stay",tr_g_venue:"Celebrate",tr_g_explore:"Explore Dubai",tr_loc:"View location",tr_route:"Route to the palace",tr_air_t:"Arriving by air",tr_air_d:"Most flights land at Dubai International Airport (DXB), about 27 km from the palace, or 30 to 35 minutes by taxi. Some flights use Al Maktoum International (DWC), about 45 minutes away. Please check the visa rules for your passport before you travel.",tr_air_c1:"27 km to the palace",tr_air_c2:"30–35 min by taxi",tr_air_alt:"An Emirates plane at Dubai International Airport",tr_metro_t:"Metro & bus",tr_metro_d:"The nearest Metro station is Mall of the Emirates on the Red Line, about 3 km from the palace; taxis wait outside for the 5 to 10 minute ride. Bus 81 runs from the bus station beside the Metro to the Burj Al Arab stop, a 12-minute walk away. Pay with a Nol card and plan trips in the RTA S'hail app.",tr_metro_c1:"Red Line · Mall of the Emirates",tr_metro_c2:"Bus 81",tr_metro_alt:"A Dubai Metro train on the elevated line",tr_taxi_t:"Taxis & rides",tr_taxi_d:"Official cream RTA taxis queue outside every arrivals hall, at the Metro station and at the palace entrance, day and night. Careem and Uber work across Dubai. Ask for “Jumeirah Al Qasr, Madinat Jumeirah”, or open the route below for your driver.",tr_taxi_c1:"Day & night",tr_taxi_c2:"Careem · Uber",tr_taxi_alt:"An official Dubai taxi waiting at a hotel entrance",tr_stay_t:"Where to stay",tr_stay_d:"We suggest Jumeirah Beach Hotel, the wave-shaped hotel on the same beach, about five minutes from the palace. Mina A'Salam and Dar Al Masyaf at Madinat Jumeirah are even closer.",tr_stay_c1:"5 min to the palace",tr_stay_c2:"Beachfront",tr_stay_alt:"Jumeirah Beach Hotel and its beach",tr_venue_t:"The palace venue",tr_venue_d:"Our celebrations are at the palace, Jumeirah Al Qasr at Madinat Jumeirah, beside the Burj Al Arab. Taxis drop guests at the main palace entrance, and valet parking is available.",tr_venue_c1:"Madinat Jumeirah",tr_venue_c2:"Valet parking",tr_desert_t:"Desert safari",tr_desert_d:"An evening in the red dunes: a dune drive, camel rides, sandboarding and dinner under the stars. Most tours collect you from your hotel in the afternoon and bring you back after dinner.",tr_desert_c1:"Afternoon to night",tr_desert_c2:"Hotel pickup",tr_desert_alt:"A camel caravan crossing golden dunes",tr_village_t:"Global Village",tr_village_d:"Pavilions from around the world, street food, shopping and shows. Open for the season from October to May, 4 pm to midnight (1 am at weekends), about 30 minutes from the palace.",tr_village_c1:"4 pm – midnight",tr_village_c2:"October – May",tr_village_alt:"A lit pavilion at Global Village at night",
+venue_eyebrow:"The Venue",directions:"Get Directions",copy_addr:"Copy address",copied:"Address copied",copy_fail:"Select the address above to copy it",ph_venue:"Venue photograph coming soon\nvenue-01.jpg · 1600 × 1000",
+travel_eyebrow:"For our guests",travel_title:"Travel & Stay",tr_lede:"Everything you need to reach the palace, and a little of Dubai to enjoy between the celebrations.",tr_loc:"View location",tr_route:"Route to the palace",tr_air_t:"Arriving by air",tr_air_d:"Most flights land at Dubai International Airport (DXB), about 27 km from the palace, or 30 to 35 minutes by taxi. Some flights use Al Maktoum International (DWC), about 45 minutes away. Please check the visa rules for your passport before you travel.",tr_air_alt:"An Emirates plane at Dubai International Airport",tr_metro_t:"Metro & bus",tr_metro_d:"The nearest Metro station is Mall of the Emirates on the Red Line, about 3 km from the palace; taxis wait outside for the 5 to 10 minute ride. Bus 81 runs from the bus station beside the Metro to the Burj Al Arab stop, a 12-minute walk away. Pay with a Nol card and plan trips in the RTA S'hail app.",tr_metro_alt:"A Dubai Metro train on the elevated line",tr_taxi_t:"Taxis & rides",tr_taxi_d:"Official cream RTA taxis queue outside every arrivals hall, at the Metro station and at the palace entrance, day and night. Careem and Uber work across Dubai. Ask for “Jumeirah Al Qasr, Madinat Jumeirah”, or open the route below for your driver.",tr_taxi_alt:"An official Dubai taxi waiting at a hotel entrance",tr_stay_t:"Where to stay",tr_stay_d:"We suggest Jumeirah Beach Hotel, the wave-shaped hotel on the same beach, about five minutes from the palace. Mina A'Salam and Dar Al Masyaf at Madinat Jumeirah are even closer.",tr_stay_alt:"Jumeirah Beach Hotel and its beach",tr_venue_t:"The palace venue",tr_venue_d:"Our celebrations are at the palace, Jumeirah Al Qasr at Madinat Jumeirah, beside the Burj Al Arab. Taxis drop guests at the main palace entrance, and valet parking is available.",tr_desert_t:"Desert safari",tr_desert_d:"An evening in the red dunes: a dune drive, camel rides, sandboarding and dinner under the stars. Most tours collect you from your hotel in the afternoon and bring you back after dinner.",tr_desert_alt:"A camel caravan crossing golden dunes",tr_village_t:"Global Village",tr_village_d:"Pavilions from around the world, street food, shopping and shows. Open for the season from October to May, 4 pm to midnight (1 am at weekends), about 30 minutes from the palace.",tr_village_alt:"A lit pavilion at Global Village at night",
 dress_eyebrow:"What to wear",dress_title:"Dress Code",dress_intro:"We kindly invite you to dress in elegant traditional attire that reflects the grace and joy of our celebration.",dress_shades:"Colour of each day",shd_haldi:"Haldi",shd_mehendi:"Mehendi",shd_nikah:"Nikah",shd_walima:"Walima",shd_reception:"Reception",dc_men:"For Gentlemen",dc_men_txt:"Sherwani, achkan or kurta pajama with a waistcoat; a classic suit is welcome too.",dc_women:"For Ladies",dc_women_txt:"Lehenga, sharara, gharara or anarkali with a dupatta; an elegant saree is welcome too.",dc_kids:"For Little Ones",dc_kids_txt:"Mini sherwani or kurta pajama for boys; lehenga choli, sharara or a festive frock for girls.",dc_men_alt:"An ivory sherwani with a gold stole and mojaris",dc_women_alt:"A maroon lehenga choli with a blush dupatta",dc_kids_alt:"A little emerald kurta and a pink lehenga choli",ph_dress:"Dress code to be confirmed",
-rsvp_eyebrow:"RSVP",rsvp_title:"Kindly Reply",rsvp_kicker:"Kindly reply · Respond by 1 November",rsvp_quote:"“Your presence will complete our celebration at Jumeirah Al Qasr.”",rsvp_q:"Will you join us on our dream day?",rsvp_sub:"Your presence is our greatest joy",rsvp_when:"15 · 11 · 2026 · Jumeirah Al Qasr",rsvp_accept:"Lovingly accept & RSVP",rsvp_decline:"Regretfully unable to attend?",rsvp_replied:"Your reply is saved · view or change",rsvp_form_title:"Your RSVP",acc_title:"Invitation Accepted",acc_quote:"“We can't wait to welcome you to our celebration.”",acc_love:"With all our love,",acc_note:"Add your name and guests in Full RSVP details so we can keep your seat.",acc_change:"Change response",acc_details:"Full RSVP details →",rsvp_by:"Please reply by Sunday, 1 November 2026.",rsvp_btn:"RSVP",rsvp_preview:"Preview: replies are saved on this device only. They will go to your Google Sheet once it is connected.",
+rsvp_eyebrow:"RSVP",rsvp_title:"Kindly Reply",rsvp_kicker:"Kindly reply · Respond by 1 November",rsvp_quote:"“Your presence will complete our celebration at Jumeirah Al Qasr.”",rsvp_q:"Will you join us on our dream day?",rsvp_sub:"Your presence is our greatest joy",rsvp_when:"15 · 11 · 2026 · Jumeirah Al Qasr",rsvp_accept:"Lovingly accept & RSVP",rsvp_decline:"Regretfully unable to attend?",rsvp_replied:"Your reply is saved · view or change",rsvp_form_title:"Your RSVP",acc_title:"Invitation Accepted",acc_quote:"“We can't wait to welcome you to our celebration.”",acc_love:"With all our love,",acc_note:"Add your name and guests in Full RSVP details so we can keep your seat.",acc_change:"Change response",acc_details:"Full RSVP details →",rsvp_by:"Please reply by Sunday, 1 November 2026.",rsvp_btn:"RSVP",
 f_fullname:"Full name",f_attend:"Will you attend?",yes:"Joyfully attending",no:"Regretfully unable to attend",f_guests:"Number of guests, including you",guests_hint:"Up to {max} guests",f_events:"Which celebrations will you attend?",f_diet:"Dietary requirements",diet_hint:"Allergies or dietary needs (optional)",f_msg:"A private note to the couple",optional:"(optional)",required:"(required)",send_rsvp:"Send RSVP",sending:"Sending your reply…",
 e_name:"Please enter your full name.",e_name_short:"Please enter at least 2 characters.",e_attend:"Please choose whether you will attend.",e_events:"Please choose at least one celebration.",e_summary:"Please check the following:",e_save:"We couldn't save your reply. Please check your connection and try again. Your answers are still here.",try_again:"Try again",
 ok_yes:"Thank you, {name}. Your reply is saved. We look forward to celebrating with you.",ok_no:"Thank you, {name}. Your reply is saved. You will be missed.",ok_title:"Reply received",s_attend:"Attending",s_guests:"Guests",s_events:"Celebrations",s_diet:"Dietary",change:"Change my reply",closed:"RSVPs closed on 1 November 2026. Please contact the family if you need to change your reply.",
-wish_eyebrow:"Guest book",wish_title:"Wishes for the Couple",leave_wish:"Leave a wish",f_name:"Your name",f_wish:"Your wish",send_wish:"Send wish",e_wish:"Please write a short wish (at least 2 characters).",wish_ok:"Thank you! Your wish will appear once it has been approved.",wish_none:"Be the first to leave a wish.",sample:"Sample",pending_approval:"Pending approval",wish_from:"Wishes from our loved ones",view_all:"View all wishes",wish_typing:"{name} is writing a wish",wc_guest:"A dear guest",f_rel:"How do you know the couple?",f_rel_ph:"e.g. Aunt, best friend, colleague",f_photo:"Your photo",f_photo_hint:"Shown on the front of your card.",wish_preview:"Preview: the six wishes here are samples so you can see the cards. New wishes wait for your approval before anyone else sees them.",
+wish_eyebrow:"Guest book",wish_title:"Wishes for the Couple",leave_wish:"Leave a wish",f_name:"Your name",f_wish:"Your wish",send_wish:"Send wish",e_wish:"Please write a short wish (at least 2 characters).",wish_ok:"Thank you! Your wish will appear once it has been approved.",wish_none:"Be the first to leave a wish.",sample:"Sample",pending_approval:"Pending approval",wish_from:"Wishes from our loved ones",view_all:"View all wishes",wish_typing:"{name} is writing a wish",wc_guest:"A dear guest",f_rel:"How do you know the couple?",f_rel_ph:"Select your relation",rel_bride_family:"Bride's family",rel_groom_family:"Groom's family",rel_grandparent:"Grandparent",rel_sibling:"Brother or sister",rel_aunt:"Aunt",rel_uncle:"Uncle",rel_cousin:"Cousin",rel_best_friend:"Best friend",rel_friend:"Friend",rel_family_friend:"Family friend",rel_colleague:"Colleague",rel_neighbour:"Neighbour",rel_other:"Other",f_photo:"Your photo",f_photo_hint:"Shown on the front of your card.",
 contact_title:"Need help?",contact_lede:"For anything about the day, travel or your reply, please get in touch.",ct_title_a:"Contact",ct_title_b:"Us",ct_bf:"Bride's Father",ct_bf_name:"Mr. Yusuf Al Hashimi",ct_gf:"Groom's Father",ct_gf_name:"Mr. Abdullah Sheikh",ct_ec:"Event Coordinator",ct_ec_name:"Planning & on-the-day help",ct_tap:"Tap here",ct_hide:"Hide details",ct_mobile:"Mobile",ct_wa:"WhatsApp",
 thanks_title:"Thank you",ty_quote:"“Thank you for blessing our journey with your love and prayers. Your presence will make our day complete, and we can't wait to celebrate with you.”",ty_save:"Save the Date",ty_top:"Return to top",ty_couple_alt:"The bride and groom walking side by side",
 footer:"Preview build · details confirmed · photos and some text are placeholders",replay:"Replay opening",sim_err:"Test: simulate a failed save",reset:"Test: clear my RSVP and wishes",
@@ -2068,19 +2075,19 @@ nav_home:"Home",nav_couple:"Families",nav_events:"Events",nav_gallery:"Gallery",
 sr_count:"{d} days and {h} hours to go"},
 ur:{bism_tr:"",bism_mean_1:"شروع اللہ کے نام سے جو بڑا",bism_mean_2:"مہربان نہایت رحم والا ہے",amp:"و",tap_seal:"کھولنے کے لیے مہر پر ٹیپ کریں",open_seal:"دعوت نامہ کھولیں",dear_guest:"معزز مہمان",invite_line:"بڑی مسرت کے ساتھ ہم آپ کو اپنی شادی کی خوشیوں میں شرکت کی دعوت دیتے ہیں۔",skip:"چھوڑیں",continue:"آگے بڑھیں",cover_eyebrow:"تقریبِ شادی میں آپ مدعو ہیں",bride:"عائشہ",groom:"عمر شیخ",groom_short:"عمر",open:"دعوت نامہ کھولیں",
 together:"اپنے اہلِ خانہ کے ہمراہ",wording:"اپنی شادی کی پُرمسرت تقریب میں آپ کی شرکت کے متمنی ہیں۔",date_long:"اتوار، 15 نومبر 2026",time_long:"شام 6:30 بجے",venue:"جمیرا القصر",venue_area:"مدینت جمیرا، دبئی",venue_full:"جمیرا القصر، مدینت جمیرا، دبئی",venue_alt:"رات کو جگمگاتا محل، پھولوں سے سجا منڈپ اور فوارہ",add_cal:"کیلنڈر میں شامل کریں",
-groom_first:"عمر",walima_1:"بصد خلوص آپ کو مدعو کرتے ہیں",walima_2:"اپنی شادی کی پُرمسرت تقریبِ ولیمہ میں",tab_here:"یہاں ٹیپ کریں",reveal_date:"تاریخ دیکھیں",scratch_cap:"تاریخ جاننے کے لیے کھرچیں",h_day:"15",h_month:"نومبر",h_year:"2026",save_date:"تاریخ یاد رکھیں",
+groom_first:"عمر",walima_1:"بصد خلوص آپ کو مدعو کرتے ہیں",walima_2:"اپنی شادی کی پُرمسرت تقریبِ ولیمہ میں",scroll_down:"نیچے اسکرول کریں",reveal_date:"تاریخ دیکھیں",scratch_cap:"تاریخ جاننے کے لیے کھرچیں",h_day:"15",h_month:"نومبر",h_year:"2026",save_date:"تاریخ یاد رکھیں",
 cd_eyebrow:"ہماری خوشیوں کی گھڑی قریب ہے",cd_title:"الٹی گنتی",days:"دن",hours:"گھنٹے",minutes:"منٹ",seconds:"سیکنڈ",tz:"دبئی کا وقت (GST, UTC+4)",today:"آج وہ مبارک دن ہے",after:"ہماری خوشیوں میں شریک ہونے کا شکریہ",
 couple_eyebrow:"دونوں خاندان",couple_title:"ہمارے خاندانوں سے ملیے",fam_lead:"ہمارے خاندان بڑی مسرت سے آپ کو خوش آمدید کہتے ہیں",fam_groom:"دولہا کا خاندان",fam_bride:"دلہن کا خاندان",fam_bless:"محبتوں اور دعاؤں کے ساتھ",fam_parents_g:"جناب\u00A0عبداللہ و\u00A0محترمہ\u00A0خدیجہ\u00A0شیخ",fam_parents_b:"جناب\u00A0یوسف و\u00A0محترمہ\u00A0فاطمہ\u00A0الہاشمی",fam_groom_alt:"دولہا کا خاندان",fam_bride_alt:"دلہن کا خاندان",ph_bride:"تصویر جلد آ رہی ہے · دلہن کا پورٹریٹ\ncouple-bride-portrait.jpg · 1200 × 1600",ph_groom:"تصویر جلد آ رہی ہے · دولہا کا پورٹریٹ\ncouple-groom-portrait.jpg · 1200 × 1600",ph_about_bride:"عائشہ کے بارے میں چند الفاظ",ph_about_groom:"عمر کے بارے میں چند الفاظ",families:"ہمارے خاندان",ph_fam_b:"دلہن کا خاندان",ph_fam_g:"دولہا کا خاندان",
-events_eyebrow:"تقریبات",events_title:"شادی کی تقریبات",confirmed:"تصدیق شدہ",pending:"تصدیق باقی",ev_pending_detail:"تاریخ، وقت اور مقام کی تصدیق ابھی باقی ہے",events_note:"نمونہ پروگرام · براہِ کرم تفصیلات کی تصدیق کریں",ev_map:"مقام دیکھیں",ev_alt:"{e} میں دولہا دلہن",
+events_eyebrow:"تقریبات",events_title:"شادی کی تقریبات",confirmed:"تصدیق شدہ",pending:"تصدیق باقی",ev_pending_detail:"تاریخ، وقت اور مقام کی تصدیق ابھی باقی ہے",ev_map:"مقام دیکھیں",ev_alt:"{e} میں دولہا دلہن",
 gal_eyebrow:"گیلری",gal_title:"یادگار لمحات",gal_alt:"عائشہ اور عمر، یادگار لمحہ {n}",story_ch:"باب {n} · {y}",
-venue_eyebrow:"مقامِ تقریب",directions:"راستہ دیکھیں",copy_addr:"پتہ کاپی کریں",copied:"پتہ کاپی ہو گیا",copy_fail:"کاپی کرنے کے لیے اوپر دیا گیا پتہ منتخب کریں",ph_venue:"مقامِ تقریب کی تصویر جلد آ رہی ہے\nvenue-01.jpg · 1600 × 1000",ph_parking:"پارکنگ اور آمد سے متعلق معلومات",
-travel_eyebrow:"ہمارے مہمانوں کے لیے",travel_title:"سفر اور قیام",tr_lede:"محل تک پہنچنے کے لیے ضروری معلومات، اور تقریبات کے درمیان دبئی کی سیر کے لیے چند جگہیں۔",tr_g_arrive:"آمد",tr_g_stay:"قیام",tr_g_venue:"تقریب",tr_g_explore:"دبئی کی سیر",tr_loc:"مقام دیکھیں",tr_route:"محل کا راستہ",tr_air_t:"ہوائی سفر سے آمد",tr_air_d:"زیادہ تر پروازیں دبئی انٹرنیشنل ایئرپورٹ (DXB) پر اترتی ہیں، جو محل سے تقریباً 27 کلومیٹر یعنی ٹیکسی سے 30 سے 35 منٹ کی دوری پر ہے۔ کچھ پروازیں المکتوم انٹرنیشنل (DWC) پر اترتی ہیں، جو تقریباً 45 منٹ دور ہے۔ سفر سے پہلے اپنے پاسپورٹ کے لیے ویزا کے قواعد ضرور دیکھ لیں۔",tr_air_c1:"محل تک 27 کلومیٹر",tr_air_c2:"ٹیکسی سے 30–35 منٹ",tr_air_alt:"دبئی انٹرنیشنل ایئرپورٹ پر امارات کا طیارہ",tr_metro_t:"میٹرو اور بس",tr_metro_d:"قریب ترین میٹرو اسٹیشن ریڈ لائن پر مال آف دی ایمریٹس ہے، جو محل سے تقریباً 3 کلومیٹر دور ہے؛ باہر ٹیکسیاں ملتی ہیں اور سفر 5 سے 10 منٹ کا ہے۔ میٹرو کے ساتھ والے بس اسٹیشن سے بس 81 برج العرب اسٹاپ تک جاتی ہے، جہاں سے 12 منٹ پیدل ہے۔ کرایہ نول کارڈ سے ادا کریں اور RTA S'hail ایپ سے راستہ دیکھیں۔",tr_metro_c1:"ریڈ لائن · مال آف دی ایمریٹس",tr_metro_c2:"بس 81",tr_metro_alt:"بلند لائن پر دبئی میٹرو کی ٹرین",tr_taxi_t:"ٹیکسی اور رائیڈ",tr_taxi_d:"سرکاری کریم رنگ کی RTA ٹیکسیاں ہر آمد ہال کے باہر، میٹرو اسٹیشن پر اور محل کے دروازے پر دن رات دستیاب ہیں۔ کریم اور اوبر پورے دبئی میں چلتی ہیں۔ ڈرائیور سے “جمیرا القصر، مدینہ جمیرا” کہیں، یا نیچے دیا گیا راستہ کھول کر دکھا دیں۔",tr_taxi_c1:"دن رات",tr_taxi_c2:"کریم · اوبر",tr_taxi_alt:"ہوٹل کے دروازے پر کھڑی دبئی کی سرکاری ٹیکسی",tr_stay_t:"کہاں ٹھہریں",tr_stay_d:"ہمارا مشورہ جمیرا بیچ ہوٹل ہے، اسی ساحل پر لہر کی شکل والا ہوٹل، جو محل سے تقریباً پانچ منٹ کے فاصلے پر ہے۔ مدینہ جمیرا میں مینا السلام اور دار المصیف اس سے بھی قریب ہیں۔",tr_stay_c1:"محل تک 5 منٹ",tr_stay_c2:"ساحل کے کنارے",tr_stay_alt:"جمیرا بیچ ہوٹل اور اس کا ساحل",tr_venue_t:"تقریب کا محل",tr_venue_d:"ہماری تقریبات جمیرا القصر، مدینہ جمیرا کے محل میں ہوں گی، برج العرب کے قریب۔ ٹیکسیاں مہمانوں کو محل کے مرکزی دروازے پر اتارتی ہیں، اور ویلے پارکنگ بھی دستیاب ہے۔",tr_venue_c1:"مدینہ جمیرا",tr_venue_c2:"ویلے پارکنگ",tr_desert_t:"صحرائی سفاری",tr_desert_d:"سرخ ٹیلوں میں ایک شام: ٹیلوں پر ڈرائیو، اونٹ کی سواری، سینڈ بورڈنگ اور ستاروں تلے رات کا کھانا۔ زیادہ تر ٹور دوپہر کو ہوٹل سے لے جاتے ہیں اور کھانے کے بعد واپس چھوڑ دیتے ہیں۔",tr_desert_c1:"دوپہر سے رات تک",tr_desert_c2:"ہوٹل سے پک اپ",tr_desert_alt:"سنہری ٹیلوں سے گزرتا اونٹوں کا قافلہ",tr_village_t:"گلوبل ولیج",tr_village_d:"دنیا بھر کے پویلین، اسٹریٹ فوڈ، خریداری اور شوز۔ اکتوبر سے مئی تک سیزن میں کھلا رہتا ہے، شام 4 بجے سے آدھی رات تک (ویک اینڈ پر رات 1 بجے تک)، محل سے تقریباً 30 منٹ کی دوری پر۔",tr_village_c1:"شام 4 بجے سے آدھی رات",tr_village_c2:"اکتوبر – مئی",tr_village_alt:"رات کو گلوبل ولیج کا روشن پویلین",
+venue_eyebrow:"مقامِ تقریب",directions:"راستہ دیکھیں",copy_addr:"پتہ کاپی کریں",copied:"پتہ کاپی ہو گیا",copy_fail:"کاپی کرنے کے لیے اوپر دیا گیا پتہ منتخب کریں",ph_venue:"مقامِ تقریب کی تصویر جلد آ رہی ہے\nvenue-01.jpg · 1600 × 1000",
+travel_eyebrow:"ہمارے مہمانوں کے لیے",travel_title:"سفر اور قیام",tr_lede:"محل تک پہنچنے کے لیے ضروری معلومات، اور تقریبات کے درمیان دبئی کی سیر کے لیے چند جگہیں۔",tr_loc:"مقام دیکھیں",tr_route:"محل کا راستہ",tr_air_t:"ہوائی سفر سے آمد",tr_air_d:"زیادہ تر پروازیں دبئی انٹرنیشنل ایئرپورٹ (DXB) پر اترتی ہیں، جو محل سے تقریباً 27 کلومیٹر یعنی ٹیکسی سے 30 سے 35 منٹ کی دوری پر ہے۔ کچھ پروازیں المکتوم انٹرنیشنل (DWC) پر اترتی ہیں، جو تقریباً 45 منٹ دور ہے۔ سفر سے پہلے اپنے پاسپورٹ کے لیے ویزا کے قواعد ضرور دیکھ لیں۔",tr_air_alt:"دبئی انٹرنیشنل ایئرپورٹ پر امارات کا طیارہ",tr_metro_t:"میٹرو اور بس",tr_metro_d:"قریب ترین میٹرو اسٹیشن ریڈ لائن پر مال آف دی ایمریٹس ہے، جو محل سے تقریباً 3 کلومیٹر دور ہے؛ باہر ٹیکسیاں ملتی ہیں اور سفر 5 سے 10 منٹ کا ہے۔ میٹرو کے ساتھ والے بس اسٹیشن سے بس 81 برج العرب اسٹاپ تک جاتی ہے، جہاں سے 12 منٹ پیدل ہے۔ کرایہ نول کارڈ سے ادا کریں اور RTA S'hail ایپ سے راستہ دیکھیں۔",tr_metro_alt:"بلند لائن پر دبئی میٹرو کی ٹرین",tr_taxi_t:"ٹیکسی اور رائیڈ",tr_taxi_d:"سرکاری کریم رنگ کی RTA ٹیکسیاں ہر آمد ہال کے باہر، میٹرو اسٹیشن پر اور محل کے دروازے پر دن رات دستیاب ہیں۔ کریم اور اوبر پورے دبئی میں چلتی ہیں۔ ڈرائیور سے “جمیرا القصر، مدینہ جمیرا” کہیں، یا نیچے دیا گیا راستہ کھول کر دکھا دیں۔",tr_taxi_alt:"ہوٹل کے دروازے پر کھڑی دبئی کی سرکاری ٹیکسی",tr_stay_t:"کہاں ٹھہریں",tr_stay_d:"ہمارا مشورہ جمیرا بیچ ہوٹل ہے، اسی ساحل پر لہر کی شکل والا ہوٹل، جو محل سے تقریباً پانچ منٹ کے فاصلے پر ہے۔ مدینہ جمیرا میں مینا السلام اور دار المصیف اس سے بھی قریب ہیں۔",tr_stay_alt:"جمیرا بیچ ہوٹل اور اس کا ساحل",tr_venue_t:"تقریب کا محل",tr_venue_d:"ہماری تقریبات جمیرا القصر، مدینہ جمیرا کے محل میں ہوں گی، برج العرب کے قریب۔ ٹیکسیاں مہمانوں کو محل کے مرکزی دروازے پر اتارتی ہیں، اور ویلے پارکنگ بھی دستیاب ہے۔",tr_desert_t:"صحرائی سفاری",tr_desert_d:"سرخ ٹیلوں میں ایک شام: ٹیلوں پر ڈرائیو، اونٹ کی سواری، سینڈ بورڈنگ اور ستاروں تلے رات کا کھانا۔ زیادہ تر ٹور دوپہر کو ہوٹل سے لے جاتے ہیں اور کھانے کے بعد واپس چھوڑ دیتے ہیں۔",tr_desert_alt:"سنہری ٹیلوں سے گزرتا اونٹوں کا قافلہ",tr_village_t:"گلوبل ولیج",tr_village_d:"دنیا بھر کے پویلین، اسٹریٹ فوڈ، خریداری اور شوز۔ اکتوبر سے مئی تک سیزن میں کھلا رہتا ہے، شام 4 بجے سے آدھی رات تک (ویک اینڈ پر رات 1 بجے تک)، محل سے تقریباً 30 منٹ کی دوری پر۔",tr_village_alt:"رات کو گلوبل ولیج کا روشن پویلین",
 dress_eyebrow:"کیا پہنیں",dress_title:"ڈریس کوڈ",dress_intro:"براہِ کرم ایسا نفیس روایتی لباس زیبِ تن کریں جو ہماری تقریب کے وقار اور خوشی کی عکاسی کرے۔",dress_shades:"ہر دن کا رنگ",shd_haldi:"ہلدی",shd_mehendi:"مہندی",shd_nikah:"نکاح",shd_walima:"ولیمہ",shd_reception:"استقبالیہ",dc_men:"حضرات کے لیے",dc_men_txt:"شیروانی، اچکن یا واسکٹ کے ساتھ کُرتا پاجامہ؛ کلاسک سوٹ بھی خوش آمدید۔",dc_women:"خواتین کے لیے",dc_women_txt:"لہنگا، شرارہ، غرارہ یا انارکلی دوپٹے کے ساتھ؛ نفیس ساڑھی بھی خوش آمدید۔",dc_kids:"بچوں کے لیے",dc_kids_txt:"لڑکوں کے لیے چھوٹی شیروانی یا کُرتا پاجامہ؛ لڑکیوں کے لیے لہنگا چولی، شرارہ یا رنگین فراک۔",dc_men_alt:"سنہری شال اور کھسّے کے ساتھ ہاتھی دانت رنگ شیروانی",dc_women_alt:"ہلکے گلابی دوپٹے کے ساتھ میرون لہنگا چولی",dc_kids_alt:"بچوں کا زمردی کُرتا اور گلابی لہنگا چولی",ph_dress:"ڈریس کوڈ جلد بتایا جائے گا",
-rsvp_eyebrow:"شرکت کی تصدیق",rsvp_title:"براہِ کرم جواب دیجیے",rsvp_kicker:"براہِ کرم جواب دیجیے · 1 نومبر تک",rsvp_quote:"“آپ کی موجودگی جمیرا القصر میں ہماری تقریب کو مکمل کر دے گی۔”",rsvp_q:"کیا آپ ہمارے خوابوں کے دن ہمارے ساتھ ہوں گے؟",rsvp_sub:"آپ کی موجودگی ہماری سب سے بڑی خوشی ہے",rsvp_when:"15 · 11 · 2026 · جمیرا القصر",rsvp_accept:"محبت سے قبول کریں",rsvp_decline:"افسوس، شرکت نہیں کر سکیں گے؟",rsvp_replied:"آپ کا جواب محفوظ ہے · دیکھیں یا بدلیں",rsvp_form_title:"آپ کا جواب",acc_title:"دعوت قبول ہو گئی",acc_quote:"“ہم آپ کو اپنی تقریب میں خوش آمدید کہنے کے منتظر ہیں۔”",acc_love:"ڈھیر ساری محبت کے ساتھ،",acc_note:"اپنی جگہ محفوظ کرنے کے لیے مکمل تفصیلات میں اپنا نام اور مہمان شامل کریں۔",acc_change:"جواب بدلیں",acc_details:"مکمل تفصیلات ←",rsvp_by:"براہِ کرم اتوار، 1 نومبر 2026 تک جواب دیجیے۔",rsvp_btn:"شرکت کی تصدیق کریں",rsvp_preview:"پیش نظارہ: جوابات صرف اسی ڈیوائس پر محفوظ ہوتے ہیں۔ آپ کی Google Sheet منسلک ہوتے ہی جوابات وہاں پہنچ جائیں گے۔",
+rsvp_eyebrow:"شرکت کی تصدیق",rsvp_title:"براہِ کرم جواب دیجیے",rsvp_kicker:"براہِ کرم جواب دیجیے · 1 نومبر تک",rsvp_quote:"“آپ کی موجودگی جمیرا القصر میں ہماری تقریب کو مکمل کر دے گی۔”",rsvp_q:"کیا آپ ہمارے خوابوں کے دن ہمارے ساتھ ہوں گے؟",rsvp_sub:"آپ کی موجودگی ہماری سب سے بڑی خوشی ہے",rsvp_when:"15 · 11 · 2026 · جمیرا القصر",rsvp_accept:"محبت سے قبول کریں",rsvp_decline:"افسوس، شرکت نہیں کر سکیں گے؟",rsvp_replied:"آپ کا جواب محفوظ ہے · دیکھیں یا بدلیں",rsvp_form_title:"آپ کا جواب",acc_title:"دعوت قبول ہو گئی",acc_quote:"“ہم آپ کو اپنی تقریب میں خوش آمدید کہنے کے منتظر ہیں۔”",acc_love:"ڈھیر ساری محبت کے ساتھ،",acc_note:"اپنی جگہ محفوظ کرنے کے لیے مکمل تفصیلات میں اپنا نام اور مہمان شامل کریں۔",acc_change:"جواب بدلیں",acc_details:"مکمل تفصیلات ←",rsvp_by:"براہِ کرم اتوار، 1 نومبر 2026 تک جواب دیجیے۔",rsvp_btn:"شرکت کی تصدیق کریں",
 f_fullname:"پورا نام",f_attend:"کیا آپ تشریف لائیں گے؟",yes:"بڑی خوشی سے شرکت کریں گے",no:"معذرت، شرکت نہیں کر سکیں گے",f_guests:"مہمانوں کی تعداد، آپ سمیت",guests_hint:"زیادہ سے زیادہ {max} مہمان",f_events:"آپ کن تقریبات میں شرکت کریں گے؟",f_diet:"کھانے سے متعلق ضروریات",diet_hint:"الرجی یا کھانے سے متعلق کوئی خاص ضرورت (اختیاری)",f_msg:"دولہا دلہن کے نام ایک ذاتی پیغام",optional:"(اختیاری)",required:"(لازمی)",send_rsvp:"جواب بھیجیں",sending:"آپ کا جواب بھیجا جا رہا ہے…",
 e_name:"براہِ کرم اپنا پورا نام لکھیں۔",e_name_short:"براہِ کرم کم از کم 2 حروف لکھیں۔",e_attend:"براہِ کرم بتائیں کہ آپ شرکت کریں گے یا نہیں۔",e_events:"براہِ کرم کم از کم ایک تقریب منتخب کریں۔",e_summary:"براہِ کرم درج ذیل باتیں دیکھ لیں:",e_save:"ہم آپ کا جواب محفوظ نہیں کر سکے۔ براہِ کرم اپنا انٹرنیٹ کنکشن چیک کر کے دوبارہ کوشش کریں۔ آپ کے جوابات یہیں موجود ہیں۔",try_again:"دوبارہ کوشش کریں",
 ok_yes:"شکریہ، {name}۔ آپ کا جواب محفوظ ہو گیا ہے۔ ہم آپ کے ساتھ خوشیاں منانے کے منتظر ہیں۔",ok_no:"شکریہ، {name}۔ آپ کا جواب محفوظ ہو گیا ہے۔ ہمیں آپ کی کمی محسوس ہوگی۔",ok_title:"جواب موصول ہو گیا",s_attend:"شرکت",s_guests:"مہمان",s_events:"تقریبات",s_diet:"کھانے کی ضروریات",change:"اپنا جواب تبدیل کریں",closed:"شرکت کی تصدیق کی آخری تاریخ 1 نومبر 2026 تھی۔ اگر آپ اپنا جواب تبدیل کرنا چاہیں تو براہِ کرم اہلِ خانہ سے رابطہ کریں۔",
-wish_eyebrow:"مہمانوں کے پیغامات",wish_title:"دولہا دلہن کے لیے نیک تمنائیں",leave_wish:"اپنی نیک تمنا لکھیں",f_name:"آپ کا نام",f_wish:"آپ کی نیک تمنا",send_wish:"نیک تمنا بھیجیں",e_wish:"براہِ کرم ایک مختصر سی نیک تمنا لکھیں (کم از کم 2 حروف)۔",wish_ok:"شکریہ! آپ کی نیک تمنا منظوری کے بعد یہاں نظر آئے گی۔",wish_none:"سب سے پہلے نیک تمنا بھیجنے والے آپ بنیں۔",sample:"نمونہ",pending_approval:"منظوری کا انتظار",wish_from:"ہمارے پیاروں کی نیک تمنائیں",view_all:"تمام نیک تمنائیں دیکھیں",wish_typing:"{name} نیک تمنا لکھ رہے ہیں",wc_guest:"عزیز مہمان",f_rel:"آپ کا دولہا دلہن سے کیا رشتہ ہے؟",f_rel_ph:"مثلاً خالہ، پکی دوست، ساتھی",f_photo:"آپ کی تصویر",f_photo_hint:"آپ کے کارڈ کے سامنے دکھائی جائے گی۔",wish_preview:"پیش نظارہ: یہاں کی چھ نیک تمنائیں نمونہ ہیں تاکہ آپ کارڈ دیکھ سکیں۔ نئی نیک تمنائیں آپ کی منظوری کے بعد ہی دوسروں کو نظر آئیں گی۔",
+wish_eyebrow:"مہمانوں کے پیغامات",wish_title:"دولہا دلہن کے لیے نیک تمنائیں",leave_wish:"اپنی نیک تمنا لکھیں",f_name:"آپ کا نام",f_wish:"آپ کی نیک تمنا",send_wish:"نیک تمنا بھیجیں",e_wish:"براہِ کرم ایک مختصر سی نیک تمنا لکھیں (کم از کم 2 حروف)۔",wish_ok:"شکریہ! آپ کی نیک تمنا منظوری کے بعد یہاں نظر آئے گی۔",wish_none:"سب سے پہلے نیک تمنا بھیجنے والے آپ بنیں۔",sample:"نمونہ",pending_approval:"منظوری کا انتظار",wish_from:"ہمارے پیاروں کی نیک تمنائیں",view_all:"تمام نیک تمنائیں دیکھیں",wish_typing:"{name} نیک تمنا لکھ رہے ہیں",wc_guest:"عزیز مہمان",f_rel:"آپ کا دولہا دلہن سے کیا رشتہ ہے؟",f_rel_ph:"اپنا رشتہ منتخب کریں",rel_bride_family:"دلہن کا خاندان",rel_groom_family:"دولہا کا خاندان",rel_grandparent:"دادا دادی / نانا نانی",rel_sibling:"بہن بھائی",rel_aunt:"خالہ / پھوپھی / چچی",rel_uncle:"چچا / ماموں / خالو",rel_cousin:"کزن",rel_best_friend:"بہترین دوست",rel_friend:"دوست",rel_family_friend:"خاندانی دوست",rel_colleague:"ساتھی کارکن",rel_neighbour:"پڑوسی",rel_other:"دیگر",f_photo:"آپ کی تصویر",f_photo_hint:"آپ کے کارڈ کے سامنے دکھائی جائے گی۔",
 contact_title:"کیا آپ کو مدد چاہیے؟",contact_lede:"تقریب کے دن، سفر یا اپنے جواب سے متعلق کسی بھی بات کے لیے براہِ کرم ہم سے رابطہ کریں۔",ct_title_a:"رابطہ",ct_title_b:"کریں",ct_bf:"دلہن کے والد",ct_bf_name:"جناب یوسف الہاشمی",ct_gf:"دولہا کے والد",ct_gf_name:"جناب عبداللہ شیخ",ct_ec:"ایونٹ کوآرڈینیٹر",ct_ec_name:"انتظامات اور تقریب کے دن مدد",ct_tap:"یہاں ٹیپ کریں",ct_hide:"تفصیل چھپائیں",ct_mobile:"موبائل",ct_wa:"واٹس ایپ",
 thanks_title:"شکریہ",ty_quote:"“اپنی محبت اور دعاؤں سے ہمارے سفر کو بابرکت بنانے کا شکریہ۔ آپ کی موجودگی ہمارے دن کو مکمل کر دے گی، اور ہم آپ کے ساتھ خوشیاں منانے کے منتظر ہیں۔”",ty_save:"تاریخ یاد رکھیں",ty_top:"واپس اوپر",ty_couple_alt:"دولہا اور دلہن ساتھ ساتھ چلتے ہوئے",
 footer:"پیش نظارہ ورژن · تفصیلات کی تصدیق ہو چکی ہے · تصاویر اور کچھ متن عارضی ہیں · اردو متن نظرِ ثانی کے لیے",replay:"افتتاحی منظر دوبارہ دیکھیں",sim_err:"ٹیسٹ: جواب محفوظ نہ ہونے کی صورتِ حال آزمائیں",reset:"ٹیسٹ: میرا جواب اور نیک تمنائیں صاف کریں",
@@ -2089,19 +2096,19 @@ nav_home:"سرورق",nav_couple:"خاندان",nav_events:"تقریبات",nav_
 sr_count:"ابھی {d} دن اور {h} گھنٹے باقی ہیں"},
 hi:{bism_tr:"बिस्मिल्लाहिर रहमानिर रहीम",bism_mean_1:"शुरू अल्लाह के नाम से, जो बड़ा",bism_mean_2:"मेहरबान, निहायत रहम वाला है",amp:"&",tap_seal:"खोलने के लिए मुहर पर टैप करें",open_seal:"निमंत्रण खोलें",dear_guest:"प्रिय मेहमान",invite_line:"बड़ी ख़ुशी के साथ हम आपको अपनी शादी के जश्न में शामिल होने के लिए आमंत्रित करते हैं।",skip:"छोड़ें",continue:"आगे बढ़ें",cover_eyebrow:"आप शादी में सादर आमंत्रित हैं",bride:"आयशा",groom:"उमर शेख़",groom_short:"उमर",open:"निमंत्रण खोलें",
 together:"अपने परिवारों के साथ",wording:"अपनी शादी के मुबारक मौक़े पर आपकी शिरकत के ख़्वाहिशमंद हैं।",date_long:"रविवार, 15 नवंबर 2026",time_long:"शाम 6:30 बजे",venue:"जुमेराह अल क़स्र",venue_area:"मदीनत जुमेराह, दुबई",venue_full:"जुमेराह अल क़स्र, मदीनत जुमेराह, दुबई",venue_alt:"रात में जगमगाता महल, फूलों से सजा मंडप और फ़व्वारा",add_cal:"कैलेंडर में जोड़ें",
-groom_first:"उमर",walima_1:"आपको तहे दिल से आमंत्रित करते हैं",walima_2:"अपनी शादी के वलीमे की ख़ुशियों में",tab_here:"यहाँ टैप करें",reveal_date:"तारीख़ देखें",scratch_cap:"तारीख़ जानने के लिए स्क्रैच करें",h_day:"15",h_month:"नवंबर",h_year:"2026",save_date:"तारीख़ याद रखें",
+groom_first:"उमर",walima_1:"आपको तहे दिल से आमंत्रित करते हैं",walima_2:"अपनी शादी के वलीमे की ख़ुशियों में",scroll_down:"नीचे स्क्रॉल करें",reveal_date:"तारीख़ देखें",scratch_cap:"तारीख़ जानने के लिए स्क्रैच करें",h_day:"15",h_month:"नवंबर",h_year:"2026",save_date:"तारीख़ याद रखें",
 cd_eyebrow:"हमारी ख़ुशियों की घड़ी क़रीब है",cd_title:"उलटी गिनती",days:"दिन",hours:"घंटे",minutes:"मिनट",seconds:"सेकंड",tz:"दुबई का समय (GST, UTC+4)",today:"आज वो मुबारक दिन है",after:"हमारी ख़ुशियों में शरीक होने का शुक्रिया",
 couple_eyebrow:"दोनों परिवार",couple_title:"हमारे परिवारों से मिलिए",fam_lead:"हमारे परिवार बड़ी ख़ुशी से आपका स्वागत करते हैं",fam_groom:"दूल्हे का परिवार",fam_bride:"दुल्हन का परिवार",fam_bless:"प्यार और दुआओं के साथ",fam_parents_g:"जनाब\u00A0अब्दुल्लाह व\u00A0मोहतरमा\u00A0ख़दीजा\u00A0शेख़",fam_parents_b:"जनाब\u00A0यूसुफ़ व\u00A0मोहतरमा\u00A0फ़ातिमा\u00A0अल\u00A0हाशिमी",fam_groom_alt:"दूल्हे का परिवार",fam_bride_alt:"दुल्हन का परिवार",ph_bride:"फ़ोटो जल्द आ रही है · दुल्हन का पोर्ट्रेट\ncouple-bride-portrait.jpg · 1200 × 1600",ph_groom:"फ़ोटो जल्द आ रही है · दूल्हे का पोर्ट्रेट\ncouple-groom-portrait.jpg · 1200 × 1600",ph_about_bride:"आयशा के बारे में कुछ बातें",ph_about_groom:"उमर के बारे में कुछ बातें",families:"हमारे परिवार",ph_fam_b:"दुल्हन का परिवार",ph_fam_g:"दूल्हे का परिवार",
-events_eyebrow:"ख़ुशी के मौक़े",events_title:"शादी के समारोह",confirmed:"पुष्टि हो चुकी",pending:"पुष्टि बाक़ी",ev_pending_detail:"तारीख़, समय और जगह की पुष्टि अभी बाक़ी है",events_note:"नमूना कार्यक्रम · कृपया विवरण की पुष्टि करें",ev_map:"लोकेशन देखें",ev_alt:"{e} में दूल्हा-दुल्हन",
+events_eyebrow:"ख़ुशी के मौक़े",events_title:"शादी के समारोह",confirmed:"पुष्टि हो चुकी",pending:"पुष्टि बाक़ी",ev_pending_detail:"तारीख़, समय और जगह की पुष्टि अभी बाक़ी है",ev_map:"लोकेशन देखें",ev_alt:"{e} में दूल्हा-दुल्हन",
 gal_eyebrow:"गैलरी",gal_title:"यादगार लम्हे",gal_alt:"आयशा और उमर, यादगार लम्हा {n}",story_ch:"अध्याय {n} · {y}",
-venue_eyebrow:"समारोह स्थल",directions:"रास्ता देखें",copy_addr:"पता कॉपी करें",copied:"पता कॉपी हो गया",copy_fail:"कॉपी करने के लिए ऊपर दिया गया पता चुनें",ph_venue:"समारोह स्थल की फ़ोटो जल्द आ रही है\nvenue-01.jpg · 1600 × 1000",ph_parking:"पार्किंग और पहुँचने से जुड़ी जानकारी",
-travel_eyebrow:"हमारे मेहमानों के लिए",travel_title:"सफ़र और ठहरना",tr_lede:"महल तक पहुँचने की ज़रूरी जानकारी, और जश्न के बीच दुबई घूमने की कुछ जगहें।",tr_g_arrive:"आगमन",tr_g_stay:"ठहरना",tr_g_venue:"जश्न",tr_g_explore:"दुबई घूमें",tr_loc:"लोकेशन देखें",tr_route:"महल का रास्ता",tr_air_t:"हवाई सफ़र से आगमन",tr_air_d:"ज़्यादातर उड़ानें दुबई इंटरनेशनल एयरपोर्ट (DXB) पर उतरती हैं, जो महल से लगभग 27 किलोमीटर, यानी टैक्सी से 30 से 35 मिनट की दूरी पर है। कुछ उड़ानें अल मकतूम इंटरनेशनल (DWC) पर उतरती हैं, जो लगभग 45 मिनट दूर है। सफ़र से पहले अपने पासपोर्ट के लिए वीज़ा नियम ज़रूर देख लें।",tr_air_c1:"महल तक 27 किमी",tr_air_c2:"टैक्सी से 30–35 मिनट",tr_air_alt:"दुबई इंटरनेशनल एयरपोर्ट पर एमिरेट्स का विमान",tr_metro_t:"मेट्रो और बस",tr_metro_d:"सबसे नज़दीकी मेट्रो स्टेशन रेड लाइन पर मॉल ऑफ़ द एमिरेट्स है, जो महल से लगभग 3 किलोमीटर दूर है; बाहर टैक्सियाँ मिलती हैं और सफ़र 5 से 10 मिनट का है। मेट्रो के पास वाले बस स्टेशन से बस 81 बुर्ज अल अरब स्टॉप तक जाती है, वहाँ से 12 मिनट पैदल। किराया नोल कार्ड से दें और RTA S'hail ऐप से रास्ता देखें।",tr_metro_c1:"रेड लाइन · मॉल ऑफ़ द एमिरेट्स",tr_metro_c2:"बस 81",tr_metro_alt:"ऊँची लाइन पर दुबई मेट्रो की ट्रेन",tr_taxi_t:"टैक्सी और राइड",tr_taxi_d:"सरकारी क्रीम रंग की RTA टैक्सियाँ हर अराइवल हॉल के बाहर, मेट्रो स्टेशन पर और महल के गेट पर दिन-रात मिलती हैं। करीम और उबर पूरे दुबई में चलती हैं। ड्राइवर से “जुमेराह अल क़स्र, मदीनत जुमेराह” कहें, या नीचे दिया रास्ता खोलकर दिखा दें।",tr_taxi_c1:"दिन-रात",tr_taxi_c2:"करीम · उबर",tr_taxi_alt:"होटल के गेट पर खड़ी दुबई की सरकारी टैक्सी",tr_stay_t:"कहाँ ठहरें",tr_stay_d:"हमारा सुझाव जुमेराह बीच होटल है, उसी समुद्र तट पर लहर के आकार वाला होटल, जो महल से लगभग पाँच मिनट की दूरी पर है। मदीनत जुमेराह में मीना अस-सलाम और दार अल मसीफ़ इससे भी पास हैं।",tr_stay_c1:"महल तक 5 मिनट",tr_stay_c2:"समुद्र किनारे",tr_stay_alt:"जुमेराह बीच होटल और उसका समुद्र तट",tr_venue_t:"जश्न का महल",tr_venue_d:"हमारे समारोह जुमेराह अल क़स्र, मदीनत जुमेराह के महल में होंगे, बुर्ज अल अरब के पास। टैक्सियाँ मेहमानों को महल के मुख्य द्वार पर उतारती हैं, और वैले पार्किंग भी उपलब्ध है।",tr_venue_c1:"मदीनत जुमेराह",tr_venue_c2:"वैले पार्किंग",tr_desert_t:"डेज़र्ट सफ़ारी",tr_desert_d:"लाल टीलों में एक शाम: टीलों पर ड्राइव, ऊँट की सवारी, सैंडबोर्डिंग और तारों के नीचे डिनर। ज़्यादातर टूर दोपहर में होटल से ले जाते हैं और डिनर के बाद वापस छोड़ देते हैं।",tr_desert_c1:"दोपहर से रात तक",tr_desert_c2:"होटल से पिक-अप",tr_desert_alt:"सुनहरे टीलों से गुज़रता ऊँटों का काफ़िला",tr_village_t:"ग्लोबल विलेज",tr_village_d:"दुनिया भर के पवेलियन, स्ट्रीट फ़ूड, ख़रीदारी और शो। अक्टूबर से मई तक सीज़न में खुला रहता है, शाम 4 बजे से आधी रात तक (वीकेंड पर रात 1 बजे तक), महल से लगभग 30 मिनट की दूरी पर।",tr_village_c1:"शाम 4 बजे से आधी रात",tr_village_c2:"अक्टूबर – मई",tr_village_alt:"रात में ग्लोबल विलेज का रोशन पवेलियन",
+venue_eyebrow:"समारोह स्थल",directions:"रास्ता देखें",copy_addr:"पता कॉपी करें",copied:"पता कॉपी हो गया",copy_fail:"कॉपी करने के लिए ऊपर दिया गया पता चुनें",ph_venue:"समारोह स्थल की फ़ोटो जल्द आ रही है\nvenue-01.jpg · 1600 × 1000",
+travel_eyebrow:"हमारे मेहमानों के लिए",travel_title:"सफ़र और ठहरना",tr_lede:"महल तक पहुँचने की ज़रूरी जानकारी, और जश्न के बीच दुबई घूमने की कुछ जगहें।",tr_loc:"लोकेशन देखें",tr_route:"महल का रास्ता",tr_air_t:"हवाई सफ़र से आगमन",tr_air_d:"ज़्यादातर उड़ानें दुबई इंटरनेशनल एयरपोर्ट (DXB) पर उतरती हैं, जो महल से लगभग 27 किलोमीटर, यानी टैक्सी से 30 से 35 मिनट की दूरी पर है। कुछ उड़ानें अल मकतूम इंटरनेशनल (DWC) पर उतरती हैं, जो लगभग 45 मिनट दूर है। सफ़र से पहले अपने पासपोर्ट के लिए वीज़ा नियम ज़रूर देख लें।",tr_air_alt:"दुबई इंटरनेशनल एयरपोर्ट पर एमिरेट्स का विमान",tr_metro_t:"मेट्रो और बस",tr_metro_d:"सबसे नज़दीकी मेट्रो स्टेशन रेड लाइन पर मॉल ऑफ़ द एमिरेट्स है, जो महल से लगभग 3 किलोमीटर दूर है; बाहर टैक्सियाँ मिलती हैं और सफ़र 5 से 10 मिनट का है। मेट्रो के पास वाले बस स्टेशन से बस 81 बुर्ज अल अरब स्टॉप तक जाती है, वहाँ से 12 मिनट पैदल। किराया नोल कार्ड से दें और RTA S'hail ऐप से रास्ता देखें।",tr_metro_alt:"ऊँची लाइन पर दुबई मेट्रो की ट्रेन",tr_taxi_t:"टैक्सी और राइड",tr_taxi_d:"सरकारी क्रीम रंग की RTA टैक्सियाँ हर अराइवल हॉल के बाहर, मेट्रो स्टेशन पर और महल के गेट पर दिन-रात मिलती हैं। करीम और उबर पूरे दुबई में चलती हैं। ड्राइवर से “जुमेराह अल क़स्र, मदीनत जुमेराह” कहें, या नीचे दिया रास्ता खोलकर दिखा दें।",tr_taxi_alt:"होटल के गेट पर खड़ी दुबई की सरकारी टैक्सी",tr_stay_t:"कहाँ ठहरें",tr_stay_d:"हमारा सुझाव जुमेराह बीच होटल है, उसी समुद्र तट पर लहर के आकार वाला होटल, जो महल से लगभग पाँच मिनट की दूरी पर है। मदीनत जुमेराह में मीना अस-सलाम और दार अल मसीफ़ इससे भी पास हैं।",tr_stay_alt:"जुमेराह बीच होटल और उसका समुद्र तट",tr_venue_t:"जश्न का महल",tr_venue_d:"हमारे समारोह जुमेराह अल क़स्र, मदीनत जुमेराह के महल में होंगे, बुर्ज अल अरब के पास। टैक्सियाँ मेहमानों को महल के मुख्य द्वार पर उतारती हैं, और वैले पार्किंग भी उपलब्ध है।",tr_desert_t:"डेज़र्ट सफ़ारी",tr_desert_d:"लाल टीलों में एक शाम: टीलों पर ड्राइव, ऊँट की सवारी, सैंडबोर्डिंग और तारों के नीचे डिनर। ज़्यादातर टूर दोपहर में होटल से ले जाते हैं और डिनर के बाद वापस छोड़ देते हैं।",tr_desert_alt:"सुनहरे टीलों से गुज़रता ऊँटों का काफ़िला",tr_village_t:"ग्लोबल विलेज",tr_village_d:"दुनिया भर के पवेलियन, स्ट्रीट फ़ूड, ख़रीदारी और शो। अक्टूबर से मई तक सीज़न में खुला रहता है, शाम 4 बजे से आधी रात तक (वीकेंड पर रात 1 बजे तक), महल से लगभग 30 मिनट की दूरी पर।",tr_village_alt:"रात में ग्लोबल विलेज का रोशन पवेलियन",
 dress_eyebrow:"क्या पहनें",dress_title:"ड्रेस कोड",dress_intro:"कृपया ऐसी शानदार पारंपरिक पोशाक पहनें जो हमारे जश्न की शान और ख़ुशी को दर्शाए।",dress_shades:"हर दिन का रंग",shd_haldi:"हल्दी",shd_mehendi:"मेहंदी",shd_nikah:"निकाह",shd_walima:"वलीमा",shd_reception:"रिसेप्शन",dc_men:"सज्जनों के लिए",dc_men_txt:"शेरवानी, अचकन या वास्कट के साथ कुर्ता पजामा; क्लासिक सूट भी स्वागत है।",dc_women:"महिलाओं के लिए",dc_women_txt:"लहंगा, शरारा, ग़रारा या अनारकली दुपट्टे के साथ; ख़ूबसूरत साड़ी भी स्वागत है।",dc_kids:"बच्चों के लिए",dc_kids_txt:"लड़कों के लिए छोटी शेरवानी या कुर्ता पजामा; लड़कियों के लिए लहंगा चोली, शरारा या रंगीन फ़्रॉक।",dc_men_alt:"सुनहरे दुशाले और मोजड़ी के साथ आइवरी शेरवानी",dc_women_alt:"हल्के गुलाबी दुपट्टे के साथ मैरून लहंगा चोली",dc_kids_alt:"बच्चों का ज़मुर्रदी कुर्ता और गुलाबी लहंगा चोली",ph_dress:"ड्रेस कोड जल्द बताया जाएगा",
-rsvp_eyebrow:"आने की पुष्टि",rsvp_title:"कृपया जवाब दीजिए",rsvp_kicker:"कृपया जवाब दें · 1 नवंबर तक",rsvp_quote:"“आपकी मौजूदगी जुमेराह अल क़स्र में हमारे जश्न को मुकम्मल कर देगी।”",rsvp_q:"क्या आप हमारे ख़्वाबों के दिन हमारे साथ होंगे?",rsvp_sub:"आपकी मौजूदगी हमारी सबसे बड़ी ख़ुशी है",rsvp_when:"15 · 11 · 2026 · जुमेराह अल क़स्र",rsvp_accept:"मोहब्बत से स्वीकार करें",rsvp_decline:"अफ़सोस, नहीं आ पाएँगे?",rsvp_replied:"आपका जवाब सहेजा गया · देखें या बदलें",rsvp_form_title:"आपका जवाब",acc_title:"न्योता स्वीकार",acc_quote:"“हम आपको अपने जश्न में ख़ुशआमदीद कहने का इंतज़ार कर रहे हैं।”",acc_love:"ढेर सारी मोहब्बत के साथ,",acc_note:"अपनी जगह पक्की करने के लिए पूरी जानकारी में अपना नाम और मेहमान जोड़ें।",acc_change:"जवाब बदलें",acc_details:"पूरी जानकारी →",rsvp_by:"कृपया रविवार, 1 नवंबर 2026 तक जवाब दीजिए।",rsvp_btn:"आने की पुष्टि करें",rsvp_preview:"प्रीव्यू: जवाब सिर्फ़ इसी डिवाइस पर सेव होते हैं। आपकी Google Sheet जुड़ते ही जवाब वहाँ पहुँचने लगेंगे।",
+rsvp_eyebrow:"आने की पुष्टि",rsvp_title:"कृपया जवाब दीजिए",rsvp_kicker:"कृपया जवाब दें · 1 नवंबर तक",rsvp_quote:"“आपकी मौजूदगी जुमेराह अल क़स्र में हमारे जश्न को मुकम्मल कर देगी।”",rsvp_q:"क्या आप हमारे ख़्वाबों के दिन हमारे साथ होंगे?",rsvp_sub:"आपकी मौजूदगी हमारी सबसे बड़ी ख़ुशी है",rsvp_when:"15 · 11 · 2026 · जुमेराह अल क़स्र",rsvp_accept:"मोहब्बत से स्वीकार करें",rsvp_decline:"अफ़सोस, नहीं आ पाएँगे?",rsvp_replied:"आपका जवाब सहेजा गया · देखें या बदलें",rsvp_form_title:"आपका जवाब",acc_title:"न्योता स्वीकार",acc_quote:"“हम आपको अपने जश्न में ख़ुशआमदीद कहने का इंतज़ार कर रहे हैं।”",acc_love:"ढेर सारी मोहब्बत के साथ,",acc_note:"अपनी जगह पक्की करने के लिए पूरी जानकारी में अपना नाम और मेहमान जोड़ें।",acc_change:"जवाब बदलें",acc_details:"पूरी जानकारी →",rsvp_by:"कृपया रविवार, 1 नवंबर 2026 तक जवाब दीजिए।",rsvp_btn:"आने की पुष्टि करें",
 f_fullname:"पूरा नाम",f_attend:"क्या आप तशरीफ़ लाएँगे?",yes:"बड़ी ख़ुशी से शामिल होंगे",no:"माफ़ी चाहते हैं, शामिल नहीं हो पाएँगे",f_guests:"मेहमानों की संख्या, आपको मिलाकर",guests_hint:"ज़्यादा से ज़्यादा {max} मेहमान",f_events:"आप किन समारोहों में शामिल होंगे?",f_diet:"खाने से जुड़ी ज़रूरतें",diet_hint:"एलर्जी या खाने से जुड़ी कोई ख़ास ज़रूरत (वैकल्पिक)",f_msg:"दूल्हा-दुल्हन के लिए एक निजी संदेश",optional:"(वैकल्पिक)",required:"(ज़रूरी)",send_rsvp:"जवाब भेजें",sending:"आपका जवाब भेजा जा रहा है…",
 e_name:"कृपया अपना पूरा नाम लिखें।",e_name_short:"कृपया कम से कम 2 अक्षर लिखें।",e_attend:"कृपया बताएँ कि आप शामिल होंगे या नहीं।",e_events:"कृपया कम से कम एक समारोह चुनें।",e_summary:"कृपया नीचे दी गई बातें देख लें:",e_save:"हम आपका जवाब सेव नहीं कर सके। कृपया अपना इंटरनेट कनेक्शन जाँचकर फिर से कोशिश करें। आपके जवाब यहीं मौजूद हैं।",try_again:"फिर से कोशिश करें",
 ok_yes:"शुक्रिया, {name}। आपका जवाब सेव हो गया है। हमें आपके साथ ख़ुशियाँ मनाने का इंतज़ार रहेगा।",ok_no:"शुक्रिया, {name}। आपका जवाब सेव हो गया है। हमें आपकी कमी महसूस होगी।",ok_title:"जवाब मिल गया",s_attend:"हाज़िरी",s_guests:"मेहमान",s_events:"समारोह",s_diet:"खान-पान",change:"अपना जवाब बदलें",closed:"आने की पुष्टि की आख़िरी तारीख़ 1 नवंबर 2026 थी। अगर आपको अपना जवाब बदलना हो, तो कृपया परिवार से संपर्क करें।",
-wish_eyebrow:"मेहमानों के संदेश",wish_title:"दूल्हा-दुल्हन के लिए दुआएँ",leave_wish:"अपनी दुआ लिखें",f_name:"आपका नाम",f_wish:"आपकी दुआ",send_wish:"दुआ भेजें",e_wish:"कृपया एक छोटी-सी दुआ लिखें (कम से कम 2 अक्षर)।",wish_ok:"शुक्रिया! आपकी दुआ मंज़ूरी के बाद यहाँ दिखेगी।",wish_none:"सबसे पहले दुआ भेजने वाले आप बनें।",sample:"नमूना",pending_approval:"मंज़ूरी बाक़ी",wish_from:"हमारे अपनों की दुआएँ",view_all:"सारी दुआएँ देखें",wish_typing:"{name} दुआ लिख रहे हैं",wc_guest:"प्यारे मेहमान",f_rel:"आपका दूल्हा-दुल्हन से क्या रिश्ता है?",f_rel_ph:"जैसे ख़ाला, पक्की दोस्त, सहकर्मी",f_photo:"आपकी फ़ोटो",f_photo_hint:"आपके कार्ड के सामने दिखेगी।",wish_preview:"प्रीव्यू: यहाँ की छह दुआएँ नमूना हैं, ताकि आप कार्ड देख सकें। नई दुआएँ आपकी मंज़ूरी के बाद ही दूसरों को दिखेंगी।",
+wish_eyebrow:"मेहमानों के संदेश",wish_title:"दूल्हा-दुल्हन के लिए दुआएँ",leave_wish:"अपनी दुआ लिखें",f_name:"आपका नाम",f_wish:"आपकी दुआ",send_wish:"दुआ भेजें",e_wish:"कृपया एक छोटी-सी दुआ लिखें (कम से कम 2 अक्षर)।",wish_ok:"शुक्रिया! आपकी दुआ मंज़ूरी के बाद यहाँ दिखेगी।",wish_none:"सबसे पहले दुआ भेजने वाले आप बनें।",sample:"नमूना",pending_approval:"मंज़ूरी बाक़ी",wish_from:"हमारे अपनों की दुआएँ",view_all:"सारी दुआएँ देखें",wish_typing:"{name} दुआ लिख रहे हैं",wc_guest:"प्यारे मेहमान",f_rel:"आपका दूल्हा-दुल्हन से क्या रिश्ता है?",f_rel_ph:"अपना रिश्ता चुनें",rel_bride_family:"दुल्हन का परिवार",rel_groom_family:"दूल्हे का परिवार",rel_grandparent:"दादा-दादी / नाना-नानी",rel_sibling:"भाई-बहन",rel_aunt:"ख़ाला / बुआ / चाची",rel_uncle:"चाचा / मामा / ख़ालू",rel_cousin:"कज़िन",rel_best_friend:"सबसे अच्छे दोस्त",rel_friend:"दोस्त",rel_family_friend:"पारिवारिक दोस्त",rel_colleague:"सहकर्मी",rel_neighbour:"पड़ोसी",rel_other:"अन्य",f_photo:"आपकी फ़ोटो",f_photo_hint:"आपके कार्ड के सामने दिखेगी।",
 contact_title:"क्या आपको मदद चाहिए?",contact_lede:"शादी के दिन, सफ़र या अपने जवाब से जुड़ी किसी भी बात के लिए कृपया हमसे संपर्क करें।",ct_title_a:"संपर्क",ct_title_b:"करें",ct_bf:"दुल्हन के पिता",ct_bf_name:"जनाब यूसुफ़ अल हाशिमी",ct_gf:"दूल्हे के पिता",ct_gf_name:"जनाब अब्दुल्लाह शेख़",ct_ec:"इवेंट कोऑर्डिनेटर",ct_ec_name:"इंतज़ाम और समारोह के दिन मदद",ct_tap:"यहाँ टैप करें",ct_hide:"जानकारी छिपाएँ",ct_mobile:"मोबाइल",ct_wa:"व्हाट्सऐप",
 thanks_title:"शुक्रिया",ty_quote:"“अपनी मोहब्बत और दुआओं से हमारे सफ़र को मुबारक बनाने का शुक्रिया। आपकी मौजूदगी हमारे दिन को मुकम्मल कर देगी, और हम आपके साथ जश्न मनाने का इंतज़ार कर रहे हैं।”",ty_save:"तारीख़ याद रखें",ty_top:"वापस ऊपर",ty_couple_alt:"साथ-साथ चलते दूल्हा और दुल्हन",
 footer:"प्रीव्यू वर्ज़न · जानकारी की पुष्टि हो चुकी है · फ़ोटो और कुछ टेक्स्ट अस्थायी हैं · हिंदी टेक्स्ट समीक्षा के लिए",replay:"शुरुआती दृश्य फिर से देखें",sim_err:"टेस्ट: सेव फ़ेल होने की स्थिति आज़माएँ",reset:"टेस्ट: मेरा जवाब और दुआएँ मिटाएँ",
@@ -2135,7 +2142,7 @@ function setLang(l){
   $$("[data-i18n-ph]").forEach(function(el){el.placeholder=t(el.getAttribute("data-i18n-ph"));});
   $$("[data-setlang]").forEach(function(b){b.setAttribute("aria-pressed", String(b.getAttribute("data-setlang")===l));});
   $$(".ph[data-tag]").forEach(function(el){el.setAttribute("data-tag", ({ur:"عارضی",hi:"अस्थायी"})[l] || "Placeholder");});
-  renderEvents(); renderGallery(); renderRsvp(); rvState(); renderWishes(); tickCount(true);
+  renderEvents(); renderGallery(); renderRsvp(); rvState(); renderWishes(); relRender(); tickCount(true);
   try{store("lang", l);}catch(e){}
 }
 $$("[data-setlang]").forEach(function(b){b.addEventListener("click", function(){
@@ -2448,16 +2455,46 @@ setInterval(tickCount, 1000);
       x.lineWidth=c.width*.2; x.beginPath(); x.moveTo((lastP||p).x,(lastP||p).y); x.lineTo(p.x,p.y); x.stroke(); lastP=p;
       if(++strokes%6===0 && cleared(c)>.5) openHeart(h);
     }
-    c.addEventListener("pointerdown", function(e){ if(h.classList.contains("open")) return; down=true; lastP=null; try{c.setPointerCapture(e.pointerId);}catch(_){} scratch(pos(e)); e.preventDefault(); });
+    c.addEventListener("pointerdown", function(e){ clearTimeout(idleT); if(h.classList.contains("open")) return; down=true; lastP=null; try{c.setPointerCapture(e.pointerId);}catch(_){} scratch(pos(e)); e.preventDefault(); });
     c.addEventListener("pointermove", function(e){ if(down) scratch(pos(e)); });
-    ["pointerup","pointercancel","lostpointercapture"].forEach(function(ev){ c.addEventListener(ev, function(){ if(down && cleared(c)>.5) openHeart(h); down=false; lastP=null; }); });
+    ["pointerup","pointercancel","lostpointercapture"].forEach(function(ev){ c.addEventListener(ev, function(){ if(down && cleared(c)>.5) openHeart(h); down=false; lastP=null; arm(); }); });
   });
   function paintAll(){ hearts.forEach(function(h){ if(!h.classList.contains("open")) paintFoil($(".g-foil",h)); }); }
-  btn.addEventListener("click", function(){ hearts.forEach(function(h,i){ setTimeout(function(){openHeart(h);}, reduced()?0:i*180); }); });
+  btn.addEventListener("click", function(){ clearTimeout(idleT); hearts.forEach(function(h,i){ setTimeout(function(){openHeart(h);}, reduced()?0:i*180); }); });
+
+  /* if the guest has not scratched within 5 seconds of the hearts being on screen, each heart scratches itself open,
+     one after another (a quick stroke across the foil shows what scratching does), ending in the celebration.
+     Scratching restarts the 5 seconds; scrolling away stops it. */
+  var idleT=null, autoRun=false, vis=false, IDLE=5000;
+  function arm(){ clearTimeout(idleT); if(vis && !autoRun && !allOpen()) idleT=setTimeout(autoReveal, IDLE); }
+  function autoScratch(h, done){
+    var c=$(".g-foil",h); if(reduced() || !c.width){ done(); return; }
+    var x=c.getContext("2d"), w=c.width, ht=c.height, t0=0, prev=null, DUR=750;
+    x.globalCompositeOperation="destination-out"; x.lineCap="round"; x.lineJoin="round"; x.lineWidth=w*.22;
+    function at(s){ return {x:w*(.5+.34*Math.sin(s*Math.PI*6)), y:ht*(.16+.62*s)}; }
+    function step(ts){
+      if(h.classList.contains("open")){ done(); return; }
+      if(!t0) t0=ts; var k=Math.min(1,(ts-t0)/DUR), s=k*(2-k), p=at(s);
+      x.beginPath(); x.moveTo((prev||p).x,(prev||p).y); x.lineTo(p.x,p.y); x.stroke(); prev=p;
+      if(k<1) requestAnimationFrame(step); else done();
+    }
+    requestAnimationFrame(step);
+  }
+  function autoReveal(){
+    if(!vis || allOpen()) return; autoRun=true;
+    var rest=hearts.filter(function(h){ return !h.classList.contains("open"); }), i=0;
+    (function next(){
+      if(i>=rest.length || !vis){ autoRun=false; if(!allOpen()) arm(); return; }
+      var h=rest[i++]; autoScratch(h, function(){ openHeart(h); setTimeout(next, 450); });
+    })();
+  }
+  if(window.IntersectionObserver){
+    new IntersectionObserver(function(es){ es.forEach(function(e){ vis=e.isIntersecting; if(vis) arm(); else clearTimeout(idleT); }); }, {threshold:.6}).observe(hearts[0].parentNode);
+  }
   addEventListener("resize", paintAll);
   if(document.fonts && document.fonts.ready) document.fonts.ready.then(paintAll);
   paintAll();
-  window.__resetDateReveal=function(){ hearts.forEach(function(h){h.classList.remove("open");}); pink.classList.remove("revealed"); btn.setAttribute("aria-pressed","false"); paintAll(); };
+  window.__resetDateReveal=function(){ hearts.forEach(function(h){h.classList.remove("open");}); pink.classList.remove("revealed"); btn.setAttribute("aria-pressed","false"); paintAll(); autoRun=false; arm(); };
 })();
 /* ---------- welcome: breeze strips, glitter shower, and the "tab here" gate ---------- */
 root.classList.add("gated");
@@ -2503,10 +2540,21 @@ root.classList.add("gated");
   window.__gIntroReset=function(){ introT.forEach(clearTimeout); scene.classList.remove("g-play"); scene.classList.add("g-hold"); };
   if(reduced()) scene.classList.remove("g-hold");
 
-  /* "tab here" opens the rest of the invitation, starting with Reveal Date */
-  $("#gTap").addEventListener("click", function(e){
-    e.preventDefault(); root.classList.remove("gated"); updateBars();
+  /* "Scroll down" opens the rest of the invitation, starting with Reveal Date: a scroll of the wheel, a swipe up,
+     the down keys, or a tap on the words and arrow */
+  function openRest(){
+    root.classList.remove("gated"); updateBars();
     var cd=$("#countdown"); requestAnimationFrame(function(){ cd.scrollIntoView({behavior: reduced()?"auto":"smooth", block:"start"}); });
+  }
+  function waiting(){ return root.classList.contains("gated") && !root.classList.contains("locked") && !document.querySelector("dialog[open]"); }
+  $("#gTap").addEventListener("click", function(e){ e.preventDefault(); openRest(); });
+  window.addEventListener("wheel", function(e){ if(e.deltaY > 6 && waiting()) openRest(); }, {passive:true});
+  var ty = null;
+  window.addEventListener("touchstart", function(e){ ty = e.touches.length === 1 ? e.touches[0].clientY : null; }, {passive:true});
+  window.addEventListener("touchmove", function(e){ if(ty !== null && ty - e.touches[0].clientY > 36 && waiting()){ ty = null; openRest(); } }, {passive:true});
+  window.addEventListener("keydown", function(e){
+    if(!waiting() || /^(INPUT|TEXTAREA|SELECT)$/.test((e.target && e.target.tagName) || "")) return;
+    if(e.key === "ArrowDown" || e.key === "PageDown" || e.key === "End" || (e.key === " " && e.target === document.body)){ e.preventDefault(); openRest(); }
   });
 })();
 
@@ -3393,6 +3441,38 @@ $("#wPhoto").addEventListener("change", function(){
   };
   im.src = url;
 });
+/* ---------- Wishes: relation pick list ---------- */
+var REL_KEYS = ["bride_family", "groom_family", "grandparent", "sibling", "aunt", "uncle", "cousin", "best_friend", "friend", "family_friend", "colleague", "neighbour", "other"], relKey = "", relAct = -1;
+function relRender(){
+  var btn = $("#wRel"), list = $("#wRelList"); if(!btn) return;
+  $("#wRelVal").textContent = relKey ? t("rel_" + relKey) : t("f_rel_ph");
+  btn.classList.toggle("empty", !relKey);
+  list.innerHTML = REL_KEYS.map(function(k, i){ return '<li role="option" id="wRelO' + i + '" data-k="' + k + '" aria-selected="' + (k === relKey) + '">' + esc(t("rel_" + k)) + '</li>'; }).join("");
+}
+function relOpen(open){
+  var btn = $("#wRel"), list = $("#wRelList");
+  btn.setAttribute("aria-expanded", open ? "true" : "false"); list.hidden = !open;
+  if(open){ relAct = Math.max(0, REL_KEYS.indexOf(relKey)); relMark(); var a = list.children[relAct]; if(a) a.scrollIntoView({block:"nearest"}); }
+  else { relAct = -1; btn.removeAttribute("aria-activedescendant"); }
+}
+function relMark(){
+  var list = $("#wRelList"); $$("li", list).forEach(function(li, i){ li.classList.toggle("act", i === relAct); });
+  if(relAct > -1){ $("#wRel").setAttribute("aria-activedescendant", "wRelO" + relAct); var a = list.children[relAct]; if(a) a.scrollIntoView({block:"nearest"}); }
+}
+function relPick(k){ relKey = k; relRender(); relOpen(false); $("#wRel").focus(); }
+$("#wRel").addEventListener("click", function(){ relOpen(this.getAttribute("aria-expanded") !== "true"); });
+$("#wRel").addEventListener("keydown", function(e){
+  var open = this.getAttribute("aria-expanded") === "true", n = REL_KEYS.length;
+  if(e.key === "ArrowDown" || e.key === "ArrowUp"){ e.preventDefault(); if(!open){ relOpen(true); return; } relAct = (relAct + (e.key === "ArrowDown" ? 1 : n - 1)) % n; relMark(); }
+  else if(e.key === "Home" && open){ e.preventDefault(); relAct = 0; relMark(); }
+  else if(e.key === "End" && open){ e.preventDefault(); relAct = n - 1; relMark(); }
+  else if((e.key === "Enter" || e.key === " ") && open){ e.preventDefault(); if(relAct > -1) relPick(REL_KEYS[relAct]); }
+  else if(e.key === "Escape" && open){ e.preventDefault(); relOpen(false); }
+  else if(e.key === "Tab" && open){ relOpen(false); }
+});
+$("#wRelList").addEventListener("click", function(e){ var li = e.target.closest("li[data-k]"); if(li) relPick(li.getAttribute("data-k")); });
+document.addEventListener("pointerdown", function(e){ if(!$("#wRelList").hidden && !e.target.closest("#wRelBox")) relOpen(false); });
+relRender();
 $("#wMsg").addEventListener("input", function(){$("#wCount").textContent=this.value.length;});
 $("#wishForm").addEventListener("submit", function(e){
   e.preventDefault(); if($("#wWeb").value) return;
@@ -3404,14 +3484,14 @@ $("#wishForm").addEventListener("submit", function(e){
   me ? $("#wMsg").setAttribute("aria-invalid","true") : $("#wMsg").removeAttribute("aria-invalid");
   if(ne){ $("#wName").focus(); return; } if(me){ $("#wMsg").focus(); return; }
   var btn=$("#wishSubmit"), st=$("#wishStatus"); btn.disabled=true; btn.innerHTML='<span class="spinner" aria-hidden="true"></span>'+esc(t("sending")); st.innerHTML="";
-  var rec = {name:name, message:msg}, rel = $("#wRel").value.trim(); if(rel) rec.rel = rel; if(wishPhoto) rec.photo = wishPhoto;
+  var rec = {name:name, message:msg}; if(relKey) rec.rel = {en:T.en["rel_" + relKey], ur:T.ur["rel_" + relKey], hi:T.hi["rel_" + relKey]}; if(wishPhoto) rec.photo = wishPhoto;
   var msgBox = $("#wMsg");
   save("wish", rec).then(function(){
     wishSent(msg, msgBox);
-    $("#wName").value=""; $("#wMsg").value=""; $("#wRel").value=""; $("#wPhoto").value=""; $("#wPhotoPrev").hidden=true; wishPhoto=null; $("#wCount").textContent="0";
+    $("#wName").value=""; $("#wMsg").value=""; relKey=""; relRender(); $("#wPhoto").value=""; $("#wPhotoPrev").hidden=true; wishPhoto=null; $("#wCount").textContent="0";
     st.innerHTML='<div class="ok-msg">'+esc(t("wish_ok"))+'</div>';
   }, function(){ st.innerHTML='<div class="form-error" role="alert">'+esc(t("e_save"))+'</div>'; })
-  .then(function(){ btn.disabled=false; btn.innerHTML='<span>'+esc(t("send_wish"))+'</span>'; });
+  .then(function(){ btn.disabled=false; btn.innerHTML='<span data-i18n="send_wish">'+esc(t("send_wish"))+'</span>'; });
 });
 
 /* ---------- misc ---------- */
