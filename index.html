@@ -3278,6 +3278,37 @@ function rvShower(){
   }
   requestAnimationFrame(frame);
 }
+/* music for the opening scroll (from Agrim's flower-shower video): it starts as the scroll opens and fades out once the
+   guest scrolls away from the card, taps Change response, or leaves the page. Web Audio, unlocked by the tap on accept. */
+var rvMusic = {ctx:null, loading:null, src:null, gain:null, t0:0, watch:false};
+function rvMusicPrep(){
+  var m = rvMusic;
+  try{ var C = window.AudioContext || window.webkitAudioContext; if(!C) return; m.ctx = m.ctx || new C(); if(m.ctx.state === "suspended") m.ctx.resume(); }catch(e){ m.ctx = null; return; }
+  if(!m.loading) m.loading = fetch("assets/rsvp/shower-music.m4a").then(function(r){ return r.arrayBuffer(); })
+    .then(function(ab){ return new Promise(function(res, rej){ m.ctx.decodeAudioData(ab, res, rej); }); }).catch(function(){ return null; });
+}
+function rvMusicPlay(){
+  var m = rvMusic; if(!m.ctx || !m.loading) return;
+  m.loading.then(function(buf){
+    if(!buf || m.src) return;
+    var c = m.ctx, g = c.createGain(), s = c.createBufferSource(); s.buffer = buf;
+    g.gain.setValueAtTime(.0001, c.currentTime); g.gain.exponentialRampToValueAtTime(.85, c.currentTime + .6);
+    s.connect(g); g.connect(c.destination);
+    s.onended = function(){ if(m.src === s){ m.src = null; rvMusicWatch(false); } };
+    s.start(); m.src = s; m.gain = g; m.t0 = Date.now(); rvMusicWatch(true);
+  });
+}
+function rvMusicStop(){
+  var m = rvMusic, s = m.src; if(!s) return; m.src = null; rvMusicWatch(false);
+  try{ var c = m.ctx, g = m.gain.gain; g.cancelScheduledValues(c.currentTime); g.setValueAtTime(Math.max(.0001, g.value), c.currentTime); g.exponentialRampToValueAtTime(.0001, c.currentTime + .7); s.stop(c.currentTime + .75); }catch(e){}
+}
+function rvMusicCheck(){
+  if(!rvMusic.src || Date.now() - rvMusic.t0 < 1600) return;      /* let the page settle on the card first */
+  var r = $("#rvDone").getBoundingClientRect(), seen = Math.max(0, Math.min(r.bottom, innerHeight) - Math.max(r.top, 0));
+  if(seen < Math.min(r.height, innerHeight) * .3) rvMusicStop();
+}
+function rvMusicWatch(on){ if(on === rvMusic.watch) return; rvMusic.watch = on; (on ? window.addEventListener : window.removeEventListener).call(window, "scroll", rvMusicCheck, {passive:true}); }
+document.addEventListener("visibilitychange", function(){ if(document.hidden) rvMusicStop(); });
 /* bring the card fully into view under the top bar */
 function rvReveal(el){
   var r = el.getBoundingClientRect(), top = ($("#topbar") ? $("#topbar").offsetHeight : 64) + 16;
@@ -3288,9 +3319,10 @@ $("#rvAccept").addEventListener("click", function(){
   if(st === "no"){ openRsvpForm(btn); return; }
   if(st === "yes") return;
   try{ store("rsvpAccept", {at:new Date().toISOString()}); }catch(e){}
+  rvMusicPrep();
   btn.classList.add("done"); btn.disabled = true; $("#rvDecline").style.visibility = "hidden";
   rvBloom(false, function(){
-    function swap(){ rvState(true); updateBars(); $("#accTitle").focus({preventScroll:true}); rvReveal($("#rvDone")); rvUnroll(); setTimeout(rvShower, 1250); }
+    function swap(){ rvState(true); updateBars(); $("#accTitle").focus({preventScroll:true}); rvReveal($("#rvDone")); rvUnroll(); rvMusicPlay(); setTimeout(rvShower, 1250); }
     if(reduced()){ swap(); return; }
     setTimeout(function(){ $("#rvInvite").classList.add("leaving"); setTimeout(swap, 420); }, 450);
   });
@@ -3303,6 +3335,7 @@ function openRsvpForm(opener, attending){
 $("#rvDecline").addEventListener("click", function(){ openRsvpForm(this, "no"); });
 $("#accDetails").addEventListener("click", function(){ openRsvpForm(this, "yes"); });
 $("#accChange").addEventListener("click", function(){
+  rvMusicStop();
   try{ store("rsvpAccept", null); store("rsvp", null); }catch(e){}
   editing = false; draft = {name:"", attending:"", guests:1, events:[], diet:"", msg:""};
   renderRsvp();
