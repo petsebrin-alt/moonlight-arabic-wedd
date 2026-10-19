@@ -897,10 +897,12 @@ html.rm .ty-sec .ty-step,html.rm .ty-sec .ty-word{transition:none!important}
 .wb-front{position:absolute;inset:0 0 60px;z-index:2;pointer-events:none}
 .wb-lan.far{opacity:.85;filter:drop-shadow(0 0 5px rgba(255,180,80,.8)) blur(.3px)}
 /* the carved ivory crescent with Agrim's bouquet resting on its lower curve */
-.wb-moon{position:absolute;z-index:0;left:-7%;top:5%;bottom:9%;aspect-ratio:602/1044;pointer-events:none}
+/* the moon sits further back in the sky: sized from the width (not the tall phone form), set to the left, slightly hazy */
+.wb-moon{position:absolute;z-index:0;left:-11%;top:46px;width:clamp(150px,50%,262px);aspect-ratio:602/1044;pointer-events:none;opacity:.93;filter:blur(.4px) saturate(.92)}
 .wb-moon-img{position:absolute;inset:0;width:100%;height:100%;filter:drop-shadow(0 0 22px rgba(255,240,205,.5)) drop-shadow(0 0 70px rgba(150,180,255,.3))}
-.wb-bq{position:absolute;left:4%;top:56%;width:82%;height:auto;filter:drop-shadow(0 10px 14px rgba(3,8,30,.5));
-  -webkit-mask:linear-gradient(90deg,#000 66%,transparent 92%);mask:linear-gradient(90deg,#000 66%,transparent 92%)}
+.wb-bq{position:absolute;z-index:0;left:-4%;bottom:118px;width:min(80%,320px);height:auto;pointer-events:none;filter:drop-shadow(0 10px 14px rgba(3,8,30,.5));
+  -webkit-mask:linear-gradient(90deg,#000 66%,transparent 92%),linear-gradient(180deg,#000 80%,transparent);-webkit-mask-composite:source-in;
+  mask:linear-gradient(90deg,#000 66%,transparent 92%),linear-gradient(180deg,#000 80%,transparent);mask-composite:intersect}
 html.rm .wb::before,html.rm .wb-lan,html.rm .wb-tw{animation:none}
 /* the form sits to the right of the moon */
 .wb-form{position:relative;z-index:1;display:grid;grid-template-columns:minmax(0,1fr);gap:12px;padding:44px 16px 30px 31%}
@@ -1760,7 +1762,7 @@ html[lang="hi"] .eyebrow,html[lang="hi"] .btn,html[lang="hi"] .badge,html[lang="
       <div class="wb" id="wishBless">
         <div class="wb-scene" aria-hidden="true"><span class="wb-tw"></span><img class="wb-lan far" src="assets/wishes/lamp-float.webp" alt="" loading="lazy" decoding="async" style="left:84%;bottom:13.5%;width:12px;--d:-1.3s"><img class="wb-lan far" src="assets/wishes/lamp-float.webp" alt="" loading="lazy" decoding="async" style="left:66%;bottom:14.5%;width:10px;--d:-2.8s"></div>
         <div class="wb-in">
-        <div class="wb-moon" aria-hidden="true"><img class="wb-moon-img" src="assets/wishes/moon.webp" width="602" height="1044" alt="" loading="lazy" decoding="async"><img class="wb-bq" src="assets/wishes/bouquet.webp" width="760" height="728" alt="" loading="lazy" decoding="async"></div>
+        <div class="wb-moon" aria-hidden="true"><img class="wb-moon-img" src="assets/wishes/moon.webp" width="602" height="1044" alt="" loading="lazy" decoding="async"></div><img class="wb-bq" src="assets/wishes/bouquet.webp" width="760" height="728" alt="" loading="lazy" decoding="async" aria-hidden="true">
         <form id="wishForm" class="wb-form" novalidate>
           <h3 class="wb-title" data-i18n="leave_wish">Leave a Blessing</h3>
           <p class="wb-sub" data-i18n="wish_sub">Share your love and best wishes for our new chapter.</p>
