@@ -366,7 +366,7 @@ html.rm .ev-cl{display:none}
   radial-gradient(circle at 100% 100%,#0000 9.6px,var(--c) 10.1px,var(--c) 11px,#0000 11.5px) 100% 100%/12px 12px no-repeat}
 /* the boards: white, inside Agrim's gold ornamental frame (top and bottom halves keep the corners whole; the side lines
    and dots between them repeat, so a board can be any height without stretching the ornaments) */
-.ev-plate{isolation:isolate;min-height:72cqw;padding:15cqw 12.5cqw 13.5cqw;border-radius:14px;
+.ev-plate{isolation:isolate;min-height:72cqw;padding:15cqw 12.5cqw 17.5cqw;border-radius:14px;
   background:url("assets/events/frame/top.webp") top/100% auto no-repeat,url("assets/events/frame/bottom.webp") bottom/100% auto no-repeat,#FFFFFF;
   -webkit-mask:none;mask:none;display:flex;flex-direction:column;justify-content:center;align-items:center}
 .ev-plate::before{inset:32.3cqw 0 32.4cqw;z-index:-1;border:0;-webkit-mask:none;mask:none;background:url("assets/events/frame/side.webp") top/100% auto repeat-y}
@@ -383,12 +383,28 @@ html.rm .ev-cl{display:none}
   radial-gradient(circle,rgba(138,100,36,.8) 2.4px,#0000 3px) 50% 50%/9px 9px no-repeat}
 .ev-desc{text-wrap:balance;font:italic 500 clamp(11px,2.9vw,15.5px)/1.35 var(--f-display);color:#3A4370}
 /* Google Maps button with a softly glowing border */
-.ev-map{display:inline-flex;align-items:center;gap:5px;margin-top:10px;padding:clamp(5px,1.4vw,7px) clamp(9px,2.6vw,13px) clamp(5px,1.4vw,7px) clamp(7px,2vw,10px);border-radius:999px;border:1px solid rgba(150,108,38,.85);
+.ev-map{display:inline-flex;align-items:center;justify-content:center;gap:5px;padding:clamp(5px,1.4vw,7px) clamp(9px,2.6vw,13px) clamp(5px,1.4vw,7px) clamp(7px,2vw,10px);border-radius:999px;border:1px solid rgba(150,108,38,.85);
   background:rgba(255,252,242,.6);color:#14214A;font:500 clamp(10px,2.7vw,12px)/1 var(--f-body);letter-spacing:.05em;text-decoration:none;white-space:nowrap;animation:evMapGlow 2.6s ease-in-out infinite}
 .ev-map svg{width:clamp(12px,3.2vw,15px);height:clamp(12px,3.2vw,15px);color:#A36F1E;flex:none}
 .ev-map:active{transform:scale(.97)}
 .ev-map:focus-visible{outline:2px solid #14214A;outline-offset:3px}
 @keyframes evMapGlow{0%,100%{box-shadow:0 0 3px rgba(214,166,86,.35)}50%{box-shadow:0 0 0 2px rgba(222,178,98,.25),0 0 12px rgba(214,166,86,.8)}}
+/* the two buttons on each board, stacked on phones and side by side on wide screens, plus the calendar menu */
+.ev-acts{position:relative;display:flex;flex-direction:column;align-items:center;gap:7px;margin-top:10px;width:100%}
+.ev-acts .ev-map{min-width:min(100%,9.6em);cursor:pointer}
+button.ev-map{font:500 clamp(10px,2.7vw,12px)/1 var(--f-body);letter-spacing:.05em}
+.ev-cal[aria-expanded="true"]{background:#14214A;color:#FFF1D2;border-color:#14214A}
+.ev-cal[aria-expanded="true"] svg{color:#F1D592}
+.ev-calmenu{display:flex;flex-direction:column;gap:5px;width:min(100%,11em);padding:7px;border-radius:14px;background:#FFFDF6;border:1px solid rgba(150,108,38,.55);
+  box-shadow:0 8px 18px rgba(16,26,51,.18);animation:evCalIn .2s ease-out}
+.ev-calmenu[hidden]{display:none}
+@keyframes evCalIn{from{opacity:0;transform:translateY(-4px)}to{opacity:1;transform:none}}
+.ev-calmenu a{display:block;padding:7px 8px;border-radius:9px;color:#14214A;text-decoration:none;font:500 clamp(10px,2.7vw,12.5px)/1.2 var(--f-body);text-align:center}
+.ev-calmenu a:hover,.ev-calmenu a:focus-visible{background:rgba(214,176,98,.2);outline:none}
+html.rm .ev-calmenu{animation:none}
+html[lang="ur"] button.ev-map,html[lang="ur"] .ev-calmenu a{font-family:var(--f-ur-body);letter-spacing:0;font-size:clamp(11px,2.9vw,13px)}
+html[lang="hi"] button.ev-map,html[lang="hi"] .ev-calmenu a{font-family:var(--f-hi-body);letter-spacing:0;font-size:clamp(11px,2.9vw,13px)}
+@media (min-width:700px){.ev-acts{flex-direction:row;flex-wrap:wrap;justify-content:center}.ev-calmenu{flex-basis:100%;flex-direction:row;justify-content:center;width:auto}}
 /* a glint of light passes over the board once it has arrived */
 .ev-shine{position:absolute;top:-20%;bottom:-20%;left:-60%;width:40%;background:linear-gradient(100deg,#0000,rgba(255,255,255,.55),#0000);transform:skewX(-16deg);pointer-events:none;opacity:0}
 .ev-row.in .ev-shine{animation:evShine 1.6s ease 1.15s both}
@@ -2166,7 +2182,7 @@ together:"Together with their families",wording:"request the pleasure of your co
 groom_first:"Omar",walima_1:"Cordially invite you to the joyous",walima_2:"walima celebration of their marriage",scroll_down:"Scroll down",reveal_date:"REVEAL DATE",scratch_cap:"SCRATCH TO DISCOVER THE DATE",h_day:"15th",h_month:"NOVEMBER",h_year:"2026",save_date:"SAVE THE DATE",
 cd_eyebrow:"Counting down to our celebration",cd_title:"Countdown",days:"Days",hours:"Hours",minutes:"Minutes",seconds:"Seconds",tz:"Dubai time (GST, UTC+4)",today:"Today is the day",after:"Thank you for celebrating with us",
 couple_eyebrow:"The Families",couple_title:"Meet Our Families",fam_lead:"With joy, our families welcome you",fam_groom:"The Groom’s Family",fam_bride:"The Bride’s Family",fam_bless:"With love and blessings of",fam_parents_g:"Mr.\u00A0Abdullah &\u00A0Mrs.\u00A0Khadija\u00A0Sheikh",fam_parents_b:"Mr.\u00A0Yusuf &\u00A0Mrs.\u00A0Fatima\u00A0Al\u00A0Hashimi",fam_groom_alt:"The groom’s family",fam_bride_alt:"The bride’s family",ph_bride:"Photo coming soon · Bride portrait\ncouple-bride-portrait.jpg · 1200 × 1600",ph_groom:"Photo coming soon · Groom portrait\ncouple-groom-portrait.jpg · 1200 × 1600",ph_about_bride:"A few words about Ayisha",ph_about_groom:"A few words about Omar",families:"Our families",ph_fam_b:"Family of the bride",ph_fam_g:"Family of the groom",
-events_eyebrow:"The Celebrations",events_title:"Wedding Celebrations",confirmed:"Confirmed",pending:"Pending confirmation",ev_pending_detail:"Date, time and venue to be confirmed",ev_map:"View location",ev_alt:"The couple at the {e}",
+events_eyebrow:"The Celebrations",events_title:"Wedding Celebrations",confirmed:"Confirmed",pending:"Pending confirmation",ev_pending_detail:"Date, time and venue to be confirmed",ev_map:"View location",ev_cal:"Save to calendar",ev_cal_g:"Google Calendar",ev_cal_a:"Apple / Outlook",ev_alt:"The couple at the {e}",
 gal_eyebrow:"Gallery",gal_title:"Moments",gal_alt:"Ayisha and Omar, moment {n}",story_ch:"Chapter {n} · {y}",
 venue_eyebrow:"The Venue",directions:"Get Directions",copy_addr:"Copy address",copied:"Address copied",copy_fail:"Select the address above to copy it",ph_venue:"Venue photograph coming soon\nvenue-01.jpg · 1600 × 1000",
 travel_eyebrow:"For our guests",travel_title:"Travel & Stay",tr_lede:"Everything you need to reach the palace, and a little of Dubai to enjoy between the celebrations.",tr_loc:"View location",tr_route:"Route to the palace",tr_air_t:"Arriving by air",tr_air_d:"Most flights land at Dubai International Airport (DXB), about 27 km from the palace, or 30 to 35 minutes by taxi. Some flights use Al Maktoum International (DWC), about 45 minutes away. Please check the visa rules for your passport before you travel.",tr_air_alt:"An Emirates plane at Dubai International Airport",tr_metro_t:"Metro & bus",tr_metro_d:"The nearest Metro station is Mall of the Emirates on the Red Line, about 3 km from the palace; taxis wait outside for the 5 to 10 minute ride. Bus 81 runs from the bus station beside the Metro to the Burj Al Arab stop, a 12-minute walk away. Pay with a Nol card and plan trips in the RTA S'hail app.",tr_metro_alt:"A Dubai Metro train on the elevated line",tr_taxi_t:"Taxis & rides",tr_taxi_d:"Official cream RTA taxis queue outside every arrivals hall, at the Metro station and at the palace entrance, day and night. Careem and Uber work across Dubai. Ask for “Jumeirah Al Qasr, Madinat Jumeirah”, or open the route below for your driver.",tr_taxi_alt:"An official Dubai taxi waiting at a hotel entrance",tr_stay_t:"Where to stay",tr_stay_d:"We suggest Jumeirah Beach Hotel, the wave-shaped hotel on the same beach, about five minutes from the palace. Mina A'Salam and Dar Al Masyaf at Madinat Jumeirah are even closer.",tr_stay_alt:"Jumeirah Beach Hotel and its beach",tr_venue_t:"The palace venue",tr_venue_d:"Our celebrations are at the palace, Jumeirah Al Qasr at Madinat Jumeirah, beside the Burj Al Arab. Taxis drop guests at the main palace entrance, and valet parking is available.",tr_desert_t:"Desert safari",tr_desert_d:"An evening in the red dunes: a dune drive, camel rides, sandboarding and dinner under the stars. Most tours collect you from your hotel in the afternoon and bring you back after dinner.",tr_desert_alt:"A camel caravan crossing golden dunes",tr_village_t:"Global Village",tr_village_d:"Pavilions from around the world, street food, shopping and shows. Open for the season from October to May, 4 pm to midnight (1 am at weekends), about 30 minutes from the palace.",tr_village_alt:"A lit pavilion at Global Village at night",
@@ -2187,7 +2203,7 @@ together:"اپنے اہلِ خانہ کے ہمراہ",wording:"اپنی شادی
 groom_first:"عمر",walima_1:"بصد خلوص آپ کو مدعو کرتے ہیں",walima_2:"اپنی شادی کی پُرمسرت تقریبِ ولیمہ میں",scroll_down:"نیچے اسکرول کریں",reveal_date:"تاریخ دیکھیں",scratch_cap:"تاریخ جاننے کے لیے کھرچیں",h_day:"15",h_month:"نومبر",h_year:"2026",save_date:"تاریخ یاد رکھیں",
 cd_eyebrow:"ہماری خوشیوں کی گھڑی قریب ہے",cd_title:"الٹی گنتی",days:"دن",hours:"گھنٹے",minutes:"منٹ",seconds:"سیکنڈ",tz:"دبئی کا وقت (GST, UTC+4)",today:"آج وہ مبارک دن ہے",after:"ہماری خوشیوں میں شریک ہونے کا شکریہ",
 couple_eyebrow:"دونوں خاندان",couple_title:"ہمارے خاندانوں سے ملیے",fam_lead:"ہمارے خاندان بڑی مسرت سے آپ کو خوش آمدید کہتے ہیں",fam_groom:"دولہا کا خاندان",fam_bride:"دلہن کا خاندان",fam_bless:"محبتوں اور دعاؤں کے ساتھ",fam_parents_g:"جناب\u00A0عبداللہ و\u00A0محترمہ\u00A0خدیجہ\u00A0شیخ",fam_parents_b:"جناب\u00A0یوسف و\u00A0محترمہ\u00A0فاطمہ\u00A0الہاشمی",fam_groom_alt:"دولہا کا خاندان",fam_bride_alt:"دلہن کا خاندان",ph_bride:"تصویر جلد آ رہی ہے · دلہن کا پورٹریٹ\ncouple-bride-portrait.jpg · 1200 × 1600",ph_groom:"تصویر جلد آ رہی ہے · دولہا کا پورٹریٹ\ncouple-groom-portrait.jpg · 1200 × 1600",ph_about_bride:"عائشہ کے بارے میں چند الفاظ",ph_about_groom:"عمر کے بارے میں چند الفاظ",families:"ہمارے خاندان",ph_fam_b:"دلہن کا خاندان",ph_fam_g:"دولہا کا خاندان",
-events_eyebrow:"تقریبات",events_title:"شادی کی تقریبات",confirmed:"تصدیق شدہ",pending:"تصدیق باقی",ev_pending_detail:"تاریخ، وقت اور مقام کی تصدیق ابھی باقی ہے",ev_map:"مقام دیکھیں",ev_alt:"{e} میں دولہا دلہن",
+events_eyebrow:"تقریبات",events_title:"شادی کی تقریبات",confirmed:"تصدیق شدہ",pending:"تصدیق باقی",ev_pending_detail:"تاریخ، وقت اور مقام کی تصدیق ابھی باقی ہے",ev_map:"مقام دیکھیں",ev_cal:"کیلنڈر میں محفوظ کریں",ev_cal_g:"گوگل کیلنڈر",ev_cal_a:"ایپل / آؤٹ لک",ev_alt:"{e} میں دولہا دلہن",
 gal_eyebrow:"گیلری",gal_title:"یادگار لمحات",gal_alt:"عائشہ اور عمر، یادگار لمحہ {n}",story_ch:"باب {n} · {y}",
 venue_eyebrow:"مقامِ تقریب",directions:"راستہ دیکھیں",copy_addr:"پتہ کاپی کریں",copied:"پتہ کاپی ہو گیا",copy_fail:"کاپی کرنے کے لیے اوپر دیا گیا پتہ منتخب کریں",ph_venue:"مقامِ تقریب کی تصویر جلد آ رہی ہے\nvenue-01.jpg · 1600 × 1000",
 travel_eyebrow:"ہمارے مہمانوں کے لیے",travel_title:"سفر اور قیام",tr_lede:"محل تک پہنچنے کے لیے ضروری معلومات، اور تقریبات کے درمیان دبئی کی سیر کے لیے چند جگہیں۔",tr_loc:"مقام دیکھیں",tr_route:"محل کا راستہ",tr_air_t:"ہوائی سفر سے آمد",tr_air_d:"زیادہ تر پروازیں دبئی انٹرنیشنل ایئرپورٹ (DXB) پر اترتی ہیں، جو محل سے تقریباً 27 کلومیٹر یعنی ٹیکسی سے 30 سے 35 منٹ کی دوری پر ہے۔ کچھ پروازیں المکتوم انٹرنیشنل (DWC) پر اترتی ہیں، جو تقریباً 45 منٹ دور ہے۔ سفر سے پہلے اپنے پاسپورٹ کے لیے ویزا کے قواعد ضرور دیکھ لیں۔",tr_air_alt:"دبئی انٹرنیشنل ایئرپورٹ پر امارات کا طیارہ",tr_metro_t:"میٹرو اور بس",tr_metro_d:"قریب ترین میٹرو اسٹیشن ریڈ لائن پر مال آف دی ایمریٹس ہے، جو محل سے تقریباً 3 کلومیٹر دور ہے؛ باہر ٹیکسیاں ملتی ہیں اور سفر 5 سے 10 منٹ کا ہے۔ میٹرو کے ساتھ والے بس اسٹیشن سے بس 81 برج العرب اسٹاپ تک جاتی ہے، جہاں سے 12 منٹ پیدل ہے۔ کرایہ نول کارڈ سے ادا کریں اور RTA S'hail ایپ سے راستہ دیکھیں۔",tr_metro_alt:"بلند لائن پر دبئی میٹرو کی ٹرین",tr_taxi_t:"ٹیکسی اور رائیڈ",tr_taxi_d:"سرکاری کریم رنگ کی RTA ٹیکسیاں ہر آمد ہال کے باہر، میٹرو اسٹیشن پر اور محل کے دروازے پر دن رات دستیاب ہیں۔ کریم اور اوبر پورے دبئی میں چلتی ہیں۔ ڈرائیور سے “جمیرا القصر، مدینہ جمیرا” کہیں، یا نیچے دیا گیا راستہ کھول کر دکھا دیں۔",tr_taxi_alt:"ہوٹل کے دروازے پر کھڑی دبئی کی سرکاری ٹیکسی",tr_stay_t:"کہاں ٹھہریں",tr_stay_d:"ہمارا مشورہ جمیرا بیچ ہوٹل ہے، اسی ساحل پر لہر کی شکل والا ہوٹل، جو محل سے تقریباً پانچ منٹ کے فاصلے پر ہے۔ مدینہ جمیرا میں مینا السلام اور دار المصیف اس سے بھی قریب ہیں۔",tr_stay_alt:"جمیرا بیچ ہوٹل اور اس کا ساحل",tr_venue_t:"تقریب کا محل",tr_venue_d:"ہماری تقریبات جمیرا القصر، مدینہ جمیرا کے محل میں ہوں گی، برج العرب کے قریب۔ ٹیکسیاں مہمانوں کو محل کے مرکزی دروازے پر اتارتی ہیں، اور ویلے پارکنگ بھی دستیاب ہے۔",tr_desert_t:"صحرائی سفاری",tr_desert_d:"سرخ ٹیلوں میں ایک شام: ٹیلوں پر ڈرائیو، اونٹ کی سواری، سینڈ بورڈنگ اور ستاروں تلے رات کا کھانا۔ زیادہ تر ٹور دوپہر کو ہوٹل سے لے جاتے ہیں اور کھانے کے بعد واپس چھوڑ دیتے ہیں۔",tr_desert_alt:"سنہری ٹیلوں سے گزرتا اونٹوں کا قافلہ",tr_village_t:"گلوبل ولیج",tr_village_d:"دنیا بھر کے پویلین، اسٹریٹ فوڈ، خریداری اور شوز۔ اکتوبر سے مئی تک سیزن میں کھلا رہتا ہے، شام 4 بجے سے آدھی رات تک (ویک اینڈ پر رات 1 بجے تک)، محل سے تقریباً 30 منٹ کی دوری پر۔",tr_village_alt:"رات کو گلوبل ولیج کا روشن پویلین",
@@ -2208,7 +2224,7 @@ together:"अपने परिवारों के साथ",wording:"अ�
 groom_first:"उमर",walima_1:"आपको तहे दिल से आमंत्रित करते हैं",walima_2:"अपनी शादी के वलीमे की ख़ुशियों में",scroll_down:"नीचे स्क्रॉल करें",reveal_date:"तारीख़ देखें",scratch_cap:"तारीख़ जानने के लिए स्क्रैच करें",h_day:"15",h_month:"नवंबर",h_year:"2026",save_date:"तारीख़ याद रखें",
 cd_eyebrow:"हमारी ख़ुशियों की घड़ी क़रीब है",cd_title:"उलटी गिनती",days:"दिन",hours:"घंटे",minutes:"मिनट",seconds:"सेकंड",tz:"दुबई का समय (GST, UTC+4)",today:"आज वो मुबारक दिन है",after:"हमारी ख़ुशियों में शरीक होने का शुक्रिया",
 couple_eyebrow:"दोनों परिवार",couple_title:"हमारे परिवारों से मिलिए",fam_lead:"हमारे परिवार बड़ी ख़ुशी से आपका स्वागत करते हैं",fam_groom:"दूल्हे का परिवार",fam_bride:"दुल्हन का परिवार",fam_bless:"प्यार और दुआओं के साथ",fam_parents_g:"जनाब\u00A0अब्दुल्लाह व\u00A0मोहतरमा\u00A0ख़दीजा\u00A0शेख़",fam_parents_b:"जनाब\u00A0यूसुफ़ व\u00A0मोहतरमा\u00A0फ़ातिमा\u00A0अल\u00A0हाशिमी",fam_groom_alt:"दूल्हे का परिवार",fam_bride_alt:"दुल्हन का परिवार",ph_bride:"फ़ोटो जल्द आ रही है · दुल्हन का पोर्ट्रेट\ncouple-bride-portrait.jpg · 1200 × 1600",ph_groom:"फ़ोटो जल्द आ रही है · दूल्हे का पोर्ट्रेट\ncouple-groom-portrait.jpg · 1200 × 1600",ph_about_bride:"आयशा के बारे में कुछ बातें",ph_about_groom:"उमर के बारे में कुछ बातें",families:"हमारे परिवार",ph_fam_b:"दुल्हन का परिवार",ph_fam_g:"दूल्हे का परिवार",
-events_eyebrow:"ख़ुशी के मौक़े",events_title:"शादी के समारोह",confirmed:"पुष्टि हो चुकी",pending:"पुष्टि बाक़ी",ev_pending_detail:"तारीख़, समय और जगह की पुष्टि अभी बाक़ी है",ev_map:"लोकेशन देखें",ev_alt:"{e} में दूल्हा-दुल्हन",
+events_eyebrow:"ख़ुशी के मौक़े",events_title:"शादी के समारोह",confirmed:"पुष्टि हो चुकी",pending:"पुष्टि बाक़ी",ev_pending_detail:"तारीख़, समय और जगह की पुष्टि अभी बाक़ी है",ev_map:"लोकेशन देखें",ev_cal:"कैलेंडर में सेव करें",ev_cal_g:"गूगल कैलेंडर",ev_cal_a:"ऐपल / आउटलुक",ev_alt:"{e} में दूल्हा-दुल्हन",
 gal_eyebrow:"गैलरी",gal_title:"यादगार लम्हे",gal_alt:"आयशा और उमर, यादगार लम्हा {n}",story_ch:"अध्याय {n} · {y}",
 venue_eyebrow:"समारोह स्थल",directions:"रास्ता देखें",copy_addr:"पता कॉपी करें",copied:"पता कॉपी हो गया",copy_fail:"कॉपी करने के लिए ऊपर दिया गया पता चुनें",ph_venue:"समारोह स्थल की फ़ोटो जल्द आ रही है\nvenue-01.jpg · 1600 × 1000",
 travel_eyebrow:"हमारे मेहमानों के लिए",travel_title:"सफ़र और ठहरना",tr_lede:"महल तक पहुँचने की ज़रूरी जानकारी, और जश्न के बीच दुबई घूमने की कुछ जगहें।",tr_loc:"लोकेशन देखें",tr_route:"महल का रास्ता",tr_air_t:"हवाई सफ़र से आगमन",tr_air_d:"ज़्यादातर उड़ानें दुबई इंटरनेशनल एयरपोर्ट (DXB) पर उतरती हैं, जो महल से लगभग 27 किलोमीटर, यानी टैक्सी से 30 से 35 मिनट की दूरी पर है। कुछ उड़ानें अल मकतूम इंटरनेशनल (DWC) पर उतरती हैं, जो लगभग 45 मिनट दूर है। सफ़र से पहले अपने पासपोर्ट के लिए वीज़ा नियम ज़रूर देख लें।",tr_air_alt:"दुबई इंटरनेशनल एयरपोर्ट पर एमिरेट्स का विमान",tr_metro_t:"मेट्रो और बस",tr_metro_d:"सबसे नज़दीकी मेट्रो स्टेशन रेड लाइन पर मॉल ऑफ़ द एमिरेट्स है, जो महल से लगभग 3 किलोमीटर दूर है; बाहर टैक्सियाँ मिलती हैं और सफ़र 5 से 10 मिनट का है। मेट्रो के पास वाले बस स्टेशन से बस 81 बुर्ज अल अरब स्टॉप तक जाती है, वहाँ से 12 मिनट पैदल। किराया नोल कार्ड से दें और RTA S'hail ऐप से रास्ता देखें।",tr_metro_alt:"ऊँची लाइन पर दुबई मेट्रो की ट्रेन",tr_taxi_t:"टैक्सी और राइड",tr_taxi_d:"सरकारी क्रीम रंग की RTA टैक्सियाँ हर अराइवल हॉल के बाहर, मेट्रो स्टेशन पर और महल के गेट पर दिन-रात मिलती हैं। करीम और उबर पूरे दुबई में चलती हैं। ड्राइवर से “जुमेराह अल क़स्र, मदीनत जुमेराह” कहें, या नीचे दिया रास्ता खोलकर दिखा दें।",tr_taxi_alt:"होटल के गेट पर खड़ी दुबई की सरकारी टैक्सी",tr_stay_t:"कहाँ ठहरें",tr_stay_d:"हमारा सुझाव जुमेराह बीच होटल है, उसी समुद्र तट पर लहर के आकार वाला होटल, जो महल से लगभग पाँच मिनट की दूरी पर है। मदीनत जुमेराह में मीना अस-सलाम और दार अल मसीफ़ इससे भी पास हैं।",tr_stay_alt:"जुमेराह बीच होटल और उसका समुद्र तट",tr_venue_t:"जश्न का महल",tr_venue_d:"हमारे समारोह जुमेराह अल क़स्र, मदीनत जुमेराह के महल में होंगे, बुर्ज अल अरब के पास। टैक्सियाँ मेहमानों को महल के मुख्य द्वार पर उतारती हैं, और वैले पार्किंग भी उपलब्ध है।",tr_desert_t:"डेज़र्ट सफ़ारी",tr_desert_d:"लाल टीलों में एक शाम: टीलों पर ड्राइव, ऊँट की सवारी, सैंडबोर्डिंग और तारों के नीचे डिनर। ज़्यादातर टूर दोपहर में होटल से ले जाते हैं और डिनर के बाद वापस छोड़ देते हैं।",tr_desert_alt:"सुनहरे टीलों से गुज़रता ऊँटों का काफ़िला",tr_village_t:"ग्लोबल विलेज",tr_village_d:"दुनिया भर के पवेलियन, स्ट्रीट फ़ूड, ख़रीदारी और शो। अक्टूबर से मई तक सीज़न में खुला रहता है, शाम 4 बजे से आधी रात तक (वीकेंड पर रात 1 बजे तक), महल से लगभग 30 मिनट की दूरी पर।",tr_village_alt:"रात में ग्लोबल विलेज का रोशन पवेलियन",
@@ -2807,6 +2823,14 @@ root.classList.add("gated");
   new MutationObserver(function(){ if(started && paths.length && !sec.classList.contains("writing")) inkAll(true); }).observe(document.documentElement, {attributes:true, attributeFilter:["lang"]});
 })();
 
+/* "Save to calendar" on each celebration: a small menu with Google Calendar and Apple / Outlook (.ics) */
+document.addEventListener("click", function(e){
+  var b = e.target.closest(".ev-cal");
+  $$(".ev-calmenu").forEach(function(m){ if(!b || m.id !== b.getAttribute("aria-controls")){ m.hidden = true; var o = $('[aria-controls="' + m.id + '"]'); if(o) o.setAttribute("aria-expanded", "false"); } });
+  if(b){ var m = document.getElementById(b.getAttribute("aria-controls")), open = m.hidden; m.hidden = !open; b.setAttribute("aria-expanded", open ? "true" : "false"); }
+  else if(e.target.closest(".ev-calmenu a")){ var mm = e.target.closest(".ev-calmenu"); setTimeout(function(){ mm.hidden = true; var o = $('[aria-controls="' + mm.id + '"]'); if(o) o.setAttribute("aria-expanded", "false"); }, 300); }
+});
+
 /* ---------- venue: a few small fireworks over the palace as it comes into view ----------
    Rockets rise from behind the roofline and burst above the side domes, left and right, then now and then
    another while the photo stays on screen. Spots are fractions of the photo; none with reduced motion. */
@@ -3091,6 +3115,23 @@ $$(".bloom").forEach(function(band){
 /* ---------- events ---------- */
 /* each celebration: gold board + photo, alternating sides, under two clouds that part as it scrolls into view */
 var EV_OP = {};
+/* start (Dubai time, UTC+4) and length in hours of each celebration, for "Save to calendar" */
+var EV_CAL = {haldi:["2026-11-13T16:00",3], mehendi:["2026-11-14T18:00",4], nikah:["2026-11-15T11:00",2], walima:["2026-11-15T18:30",4], reception:["2026-11-16T19:30",4]};
+function evUtc(e, endH){ var c = EV_CAL[e.id] || EV_CAL.walima, d = new Date(c[0] + ":00+04:00"); if(endH) d = new Date(d.getTime() + c[1]*3600000); return d.toISOString().replace(/[-:]/g, "").replace(/\.\d{3}/, ""); }
+function evCalTitle(e){ return e[lang] + " · " + t("bride") + " " + t("amp") + " " + t("groom_first"); }
+function evGcal(e){
+  return "https://calendar.google.com/calendar/render?action=TEMPLATE&text=" + encodeURIComponent(evCalTitle(e)) + "&dates=" + evUtc(e) + "/" + evUtc(e, 1) +
+    "&details=" + encodeURIComponent(e["desc_" + lang] || e.desc_en) + "&location=" + encodeURIComponent(e.where_en) + "&ctz=Asia/Dubai";
+}
+function evIcs(e){
+  function x(v){ return String(v).replace(/\\/g, "\\\\").replace(/([,;])/g, "\\$1").replace(/\n/g, "\\n"); }
+  var now = new Date().toISOString().replace(/[-:]/g, "").replace(/\.\d{3}/, "");
+  var ics = ["BEGIN:VCALENDAR", "VERSION:2.0", "PRODID:-//Ayisha & Omar//Wedding//EN", "CALSCALE:GREGORIAN", "METHOD:PUBLISH", "BEGIN:VEVENT",
+    "UID:" + e.id + "-20261115@ayisha-omar-wedding", "DTSTAMP:" + now, "DTSTART:" + evUtc(e), "DTEND:" + evUtc(e, 1),
+    "SUMMARY:" + x(evCalTitle(e)), "LOCATION:" + x(e.where_en), "DESCRIPTION:" + x(e["desc_" + lang] || e.desc_en),
+    "BEGIN:VALARM", "TRIGGER:-P1D", "ACTION:DISPLAY", "DESCRIPTION:" + x(evCalTitle(e)), "END:VALARM", "END:VEVENT", "END:VCALENDAR"].join("\r\n");
+  return "data:text/calendar;charset=utf-8," + encodeURIComponent(ics);
+}
 /* each celebration's couple illustration (Agrim's art, cut out) stands in a gold Islamic arch drawn in SVG, on a soft
    ground in that day's colour; the Nikah keeps its own ivory stage scene */
 var EV_ILL = {
@@ -3126,7 +3167,9 @@ function renderEvents(){
         '<svg class="ev-orn l" aria-hidden="true"><use href="#i-fleur"/></svg><svg class="ev-orn r" aria-hidden="true"><use href="#i-fleur"/></svg>'+
         '<h3>'+esc(e[lang])+'</h3><p class="ev-when">'+esc(when)+'</p><p class="ev-where">'+esc(where)+'</p>'+
         '<span class="ev-rule" aria-hidden="true"></span><p class="ev-desc">'+esc(e["desc_"+lang]||e.desc_en)+'</p>'+
-        '<a class="ev-map" href="'+map+'" target="_blank" rel="noopener" aria-label="'+esc(t("ev_map")+": "+where)+'"><svg aria-hidden="true"><use href="#i-pin"/></svg><span>'+esc(t("ev_map"))+'</span></a>'+
+        '<div class="ev-acts"><a class="ev-map" href="'+map+'" target="_blank" rel="noopener" aria-label="'+esc(t("ev_map")+": "+where)+'"><svg aria-hidden="true"><use href="#i-pin"/></svg><span>'+esc(t("ev_map"))+'</span></a>'+
+        '<button type="button" class="ev-map ev-cal" aria-expanded="false" aria-controls="evcal-'+e.id+'"><svg aria-hidden="true"><use href="#i-cal"/></svg><span>'+esc(t("ev_cal"))+'</span></button>'+
+        '<div class="ev-calmenu" id="evcal-'+e.id+'" hidden><a href="'+esc(evGcal(e))+'" target="_blank" rel="noopener">'+esc(t("ev_cal_g"))+'</a><a href="'+esc(evIcs(e))+'" download="'+e.id+'-ayisha-omar.ics">'+esc(t("ev_cal_a"))+'</a></div></div>'+
       '</div></div>'+
       '<div class="ev-pic">'+evIll(e)+'</div>'+
       '<div class="ev-cl l" aria-hidden="true"><img src="assets/events/cloud-'+(i%3+1)+'.webp" alt=""></div>'+
