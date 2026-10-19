@@ -334,7 +334,8 @@ html[lang="hi"] .fam-names{font-family:var(--f-hi-head);font-size:20px}
   background:linear-gradient(90deg,#0000,rgba(214,176,98,.8) 18%,rgba(214,176,98,.8) 46%,#0000 46.5%,#0000 53.5%,rgba(214,176,98,.8) 54%,rgba(214,176,98,.8) 82%,#0000) 0 50%/100% 1px no-repeat}
 .ev-sep svg{position:absolute;left:50%;top:0;width:14px;height:14px;margin-left:-7px}
 /* the photo, cropped to a tall frame on phones (landscape on wide screens), melting into the navy on its inner side */
-.ev-pic{position:relative;z-index:1}
+.ev-pic{position:relative;z-index:1;display:grid;place-items:center;padding:6px 4px}
+.ev-ill{display:block;width:min(92%,280px);height:auto;overflow:visible;filter:drop-shadow(0 0 10px rgba(241,213,146,.35)) drop-shadow(0 14px 22px rgba(0,0,0,.4))}
 .ev-pic img{display:block;width:100%;aspect-ratio:4/5;object-fit:cover;object-position:var(--op,50%) 50%;
   -webkit-mask:linear-gradient(90deg,#0000,#000 16%);mask:linear-gradient(90deg,#0000,#000 16%)}
 .ev-row.flip .ev-pic img,html[dir="rtl"] .ev-row .ev-pic img{-webkit-mask:linear-gradient(270deg,#0000,#000 16%);mask:linear-gradient(270deg,#0000,#000 16%)}
@@ -922,12 +923,27 @@ html.rm .wb::before,html.rm .wb-lan,html.rm .wb-tw{animation:none}
 .wb-msg .err ~ .wb-count{bottom:auto}
 #wishes .wb .err{margin:6px 6px 0;color:#FFB9B1;font-size:13.5px}
 #wishes .wb .err:empty{display:none}
-.wb-lab{margin:2px 0 0;font:400 16px/1.3 var(--f-display);color:#F6F0E2;text-shadow:0 0 3px rgba(8,18,60,.95),0 0 10px rgba(8,18,60,.8)}
-.wb-chips{display:flex;flex-wrap:wrap;gap:8px;margin-top:8px}
-.wb-chip{min-height:38px;padding:0 16px;border-radius:999px;cursor:pointer;border:1px solid rgba(255,255,255,.7);background:linear-gradient(180deg,#FBF7EE,#EFE7D7);
-  color:#14214A;font:500 15px/1 var(--f-display);box-shadow:0 6px 12px rgba(3,8,30,.28);transition:background .25s ease,color .25s ease,box-shadow .25s ease}
-.wb-chip[aria-pressed="true"]{background:linear-gradient(180deg,#1C2E6C,#0C1840);color:#FFF6E0;border:1.5px solid #D9B262;box-shadow:0 0 0 2px rgba(217,178,98,.3),0 0 14px rgba(241,213,146,.4),0 6px 12px rgba(3,8,30,.3)}
-.wb-chip:focus-visible{outline:2px solid #F1D592;outline-offset:2px}
+/* "How do you know the couple?" is one pill-shaped select box; tapping it opens the list of categories */
+.wb-sel{z-index:3}
+.wb-sel.open{z-index:6}
+.wb-selbtn{width:100%;min-height:50px;display:flex;align-items:center;gap:10px;padding:0 8px 0 46px;padding-inline:46px 8px;border-radius:30px;cursor:pointer;
+  border:1px solid rgba(255,255,255,.65);background:linear-gradient(180deg,#FBF7EE,#F1EADC);color:#14214A;font:400 16px/1.3 var(--f-body);text-align:start;
+  box-shadow:inset 0 2px 5px rgba(60,40,10,.12),0 8px 18px rgba(3,8,30,.3);transition:box-shadow .25s ease}
+.wb-selbtn.empty .wb-selval{color:#5B6178}
+.wb-selval{flex:1;min-width:0;padding-block:6px;line-height:1.25;text-wrap:balance}
+.wb-chev{flex:none;display:grid;place-items:center;width:34px;height:34px;border-radius:50%;background:linear-gradient(180deg,#1E3170,#0B173F);color:#F1D592;
+  box-shadow:0 0 0 1.5px rgba(217,178,98,.8);transition:transform .3s ease}
+.wb-chev svg{width:18px;height:18px}
+.wb-selbtn[aria-expanded="true"] .wb-chev{transform:rotate(180deg)}
+.wb-selbtn:focus-visible,.wb-selbtn[aria-expanded="true"]{outline:none;box-shadow:inset 0 2px 5px rgba(60,40,10,.12),0 0 0 3px rgba(241,213,146,.7),0 8px 18px rgba(3,8,30,.3)}
+.wb-list{position:absolute;z-index:6;top:calc(100% + 8px);inset-inline:0;margin:0;padding:6px;list-style:none;max-height:264px;overflow-y:auto;overscroll-behavior:contain;
+  border-radius:20px;border:1px solid rgba(217,178,98,.7);background:linear-gradient(180deg,#FFFDF7,#F4EDDE);box-shadow:0 18px 36px rgba(3,8,30,.45);animation:wbListIn .22s ease-out}
+@keyframes wbListIn{from{opacity:0;transform:translateY(-6px)}to{opacity:1;transform:none}}
+html.rm .wb-list{animation:none}
+.wb-list li{display:flex;align-items:center;justify-content:space-between;gap:10px;min-height:44px;padding:8px 14px;border-radius:14px;cursor:pointer;color:#14214A;font:500 16px/1.25 var(--f-display)}
+.wb-list li:hover,.wb-list li.act{background:rgba(214,176,98,.18)}
+.wb-list li[aria-selected="true"]{background:linear-gradient(180deg,#1E3170,#0B173F);color:#FFF1D2}
+.wb-list li[aria-selected="true"]::after{content:"";flex:none;width:7px;height:12px;margin-inline-end:4px;border:solid #F1D592;border-width:0 2px 2px 0;transform:rotate(45deg) translateY(-2px)}
 .wb-photo{display:grid;gap:4px}
 .wb-pbtn{position:relative;justify-self:start;display:inline-flex;align-items:center;gap:10px;min-height:42px;padding:0 16px 0 44px;padding-inline:44px 16px;border-radius:999px;cursor:pointer;
   border:1px dashed rgba(241,213,146,.8);background:rgba(10,22,68,.72);-webkit-backdrop-filter:blur(4px);backdrop-filter:blur(4px);color:#F3EEE2;font:400 14px/1 var(--f-body)}
@@ -952,8 +968,8 @@ html.rm .wb::before,html.rm .wb-lan,html.rm .wb-tw{animation:none}
 @media (hover:hover){.wb-send:hover{box-shadow:0 0 0 3px #0B173F,0 0 0 4.5px rgba(241,213,146,.95),0 0 30px rgba(241,213,146,.55),0 12px 24px rgba(3,8,30,.45)}}
 html[lang="ur"] .wb-title{font:400 34px/1.7 var(--f-ur-display);margin-inline:0}
 html[lang="hi"] .wb-title{font:400 32px/1.4 var(--f-hi-display);margin-inline:0}
-html[lang="ur"] .wb-sub,html[lang="ur"] .wb-lab,html[lang="ur"] .wb-chip,html[lang="ur"] .wb-pbtn,html[lang="ur"] .wb-send{font-family:var(--f-ur-head);line-height:1.6}
-html[lang="hi"] .wb-sub,html[lang="hi"] .wb-lab,html[lang="hi"] .wb-chip,html[lang="hi"] .wb-pbtn,html[lang="hi"] .wb-send{font-family:var(--f-hi-body)}
+html[lang="ur"] .wb-sub,html[lang="ur"] .wb-selbtn,html[lang="ur"] .wb-list li,html[lang="ur"] .wb-pbtn,html[lang="ur"] .wb-send{font-family:var(--f-ur-head);line-height:1.6}
+html[lang="hi"] .wb-sub,html[lang="hi"] .wb-selbtn,html[lang="hi"] .wb-list li,html[lang="hi"] .wb-pbtn,html[lang="hi"] .wb-send{font-family:var(--f-hi-body)}
 html[lang="ur"] .wb-send,html[lang="hi"] .wb-send{font-size:18px}
 @media (min-width:700px){.wb-form{padding:40px 30px 36px 40%}}
 
@@ -1766,8 +1782,8 @@ html[lang="hi"] .eyebrow,html[lang="hi"] .btn,html[lang="hi"] .badge,html[lang="
         <form id="wishForm" class="wb-form" novalidate>
           <h3 class="wb-title" data-i18n="leave_wish">Leave a Blessing</h3>
           <p class="wb-sub" data-i18n="wish_sub">Share your love and best wishes for our new chapter.</p>
-          <div class="wb-field"><label class="vh" for="wName"><span data-i18n="f_name">Your name</span> <span data-i18n="required">(required)</span></label><span class="wb-ic"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="8" r="4.2"/><path d="M3.8 21c.6-4.6 4-7.2 8.2-7.2s7.6 2.6 8.2 7.2z"/></svg></span><input type="text" id="wName" name="name" autocomplete="name" maxlength="60" data-i18n-ph="ph_name" placeholder="Your name *"><p class="err" id="wNameErr"></p></div>
-          <div class="wb-rel"><p class="wb-lab" id="wRelLab" data-i18n="f_rel">How do you know the couple?</p><div class="wb-chips" id="wRelChips" role="group" aria-labelledby="wRelLab"></div></div>
+          <div class="wb-field"><label class="vh" for="wName"><span data-i18n="f_name">Guest name</span> <span data-i18n="required">(required)</span></label><span class="wb-ic"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="8" r="4.2"/><path d="M3.8 21c.6-4.6 4-7.2 8.2-7.2s7.6 2.6 8.2 7.2z"/></svg></span><input type="text" id="wName" name="name" autocomplete="name" maxlength="60" data-i18n-ph="ph_name" placeholder="Guest name *"><p class="err" id="wNameErr"></p></div>
+          <div class="wb-field wb-sel" id="wRelBox"><span class="vh" id="wRelLab" data-i18n="f_rel">How do you know the couple?</span><span class="wb-ic"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8.6 20.2C4.3 17 1.5 14.4 1.5 11.2c0-2.3 1.8-4.1 4-4.1 1.3 0 2.4.6 3.1 1.6.7-1 1.8-1.6 3.1-1.6 2.2 0 4 1.8 4 4.1 0 3.2-2.8 5.8-7.1 9z"/><path d="M17.6 13.3c2.9-2.1 4.9-4 4.9-6.3 0-1.7-1.3-3-2.9-3-.9 0-1.8.5-2.3 1.2-.5-.7-1.3-1.2-2.3-1.2-.8 0-1.5.3-2 .8" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg></span><button type="button" class="wb-selbtn empty" id="wRel" aria-haspopup="listbox" aria-expanded="false" aria-controls="wRelList" aria-labelledby="wRelLab wRelVal"><span class="wb-selval" id="wRelVal">How do you know the couple?</span><span class="wb-chev" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M6 9l6 6 6-6" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></span></button><ul class="wb-list" id="wRelList" role="listbox" aria-labelledby="wRelLab" hidden></ul></div>
           <div class="wb-field wb-msg"><label class="vh" for="wMsg"><span data-i18n="f_wish">Your wish</span> <span data-i18n="required">(required)</span></label><span class="wb-ic"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20.6 3.2c-6.8.6-11.6 4.6-13.3 11.2l-1.3 5 1.4.4.9-2.9c6.2-1 10.3-5.4 12.3-13.7zM9.3 15.1c1-3.8 3.6-6.8 7.4-8.6-2.3 2.6-4.5 5.6-7.4 8.6z"/><path d="M3 21.2h7" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" fill="none"/></svg></span><textarea id="wMsg" name="message" maxlength="500" aria-describedby="wMsgHint" data-i18n-ph="ph_wish" placeholder="Your wish *"></textarea><p class="wb-count" id="wMsgHint" dir="ltr"><span id="wCount">0</span> / 500</p><p class="err" id="wMsgErr"></p></div>
           <div class="wb-photo"><input class="vh" type="file" id="wPhoto" accept="image/*" aria-describedby="wPhotoHint"><label class="wb-pbtn" for="wPhoto"><img id="wPhotoPrev" alt="" hidden><span class="wb-ic"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8.5 5.5 10 3.6h4l1.5 1.9H19a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-10a2 2 0 0 1 2-2z" fill="none" stroke="currentColor" stroke-width="1.6"/><circle cx="12" cy="12.4" r="3.6" fill="none" stroke="currentColor" stroke-width="1.6"/></svg></span><span data-i18n="f_photo_add">Add your photo (optional)</span></label><p class="wb-hint" id="wPhotoHint" data-i18n="f_photo_hint">Shown on the front of your card.</p></div>
           <div class="hp" aria-hidden="true"><label for="wWeb">Website</label><input type="text" id="wWeb" tabindex="-1" autocomplete="off"></div>
@@ -2159,7 +2175,7 @@ rsvp_eyebrow:"RSVP",rsvp_title:"Kindly Reply",rsvp_kicker:"Kindly reply · Respo
 f_fullname:"Full name",f_attend:"Will you attend?",yes:"Joyfully attending",no:"Regretfully unable to attend",f_guests:"Number of guests, including you",guests_hint:"Up to {max} guests",f_events:"Which celebrations will you attend?",f_diet:"Dietary requirements",diet_hint:"Allergies or dietary needs (optional)",f_msg:"A private note to the couple",optional:"(optional)",required:"(required)",send_rsvp:"Send RSVP",sending:"Sending your reply…",
 e_name:"Please enter your full name.",e_name_short:"Please enter at least 2 characters.",e_attend:"Please choose whether you will attend.",e_events:"Please choose at least one celebration.",e_summary:"Please check the following:",e_save:"We couldn't save your reply. Please check your connection and try again. Your answers are still here.",try_again:"Try again",
 ok_yes:"Thank you, {name}. Your reply is saved. We look forward to celebrating with you.",ok_no:"Thank you, {name}. Your reply is saved. You will be missed.",ok_title:"Reply received",s_attend:"Attending",s_guests:"Guests",s_events:"Celebrations",s_diet:"Dietary",change:"Change my reply",closed:"RSVPs closed on 1 November 2026. Please contact the family if you need to change your reply.",
-wish_eyebrow:"Guest book",wish_title:"Wishes for the Couple",leave_wish:"Leave a Blessing",f_name:"Your name",f_wish:"Your wish",send_wish:"Send Your Blessings",e_wish:"Please write a short wish (at least 2 characters).",wish_ok:"Thank you! Your wish will appear once it has been approved.",wish_none:"Be the first to leave a wish.",sample:"Sample",pending_approval:"Pending approval",wish_from:"Wishes from our loved ones",view_all:"View all wishes",wish_typing:"{name} is writing a wish",wc_guest:"A dear guest",f_rel:"How do you know the couple?",wish_sub:"Share your love and best wishes for our new chapter.",ph_name:"Your name *",ph_wish:"Your wish *",f_photo_add:"Add your photo (optional)",rel_family:"Family",rel_friend:"Friend",rel_colleague:"Colleague",rel_neighbour:"Neighbour",rel_other:"Other",f_photo_hint:"Shown on the front of your card.",
+wish_eyebrow:"Guest book",wish_title:"Wishes for the Couple",leave_wish:"Leave a Blessing",f_name:"Guest name",f_wish:"Your wish",send_wish:"Send Your Blessings",e_wish:"Please write a short wish (at least 2 characters).",wish_ok:"Thank you! Your wish will appear once it has been approved.",wish_none:"Be the first to leave a wish.",sample:"Sample",pending_approval:"Pending approval",wish_from:"Wishes from our loved ones",view_all:"View all wishes",wish_typing:"{name} is writing a wish",wc_guest:"A dear guest",f_rel:"How do you know the couple?",wish_sub:"Share your love and best wishes for our new chapter.",ph_name:"Guest name *",ph_wish:"Your wish *",f_photo_add:"Add your photo (optional)",rel_bride_family:"Bride's family",rel_groom_family:"Groom's family",rel_relative:"Relative",rel_friend:"Friend",rel_colleague:"Colleague",rel_neighbour:"Neighbour",rel_other:"Other",f_photo_hint:"Shown on the front of your card.",
 contact_title:"Need help?",contact_lede:"For anything about the day, travel or your reply, please get in touch.",ct_title_a:"Contact",ct_title_b:"Us",ct_bf:"Bride's Father",ct_bf_name:"Mr. Yusuf Al Hashimi",ct_gf:"Groom's Father",ct_gf_name:"Mr. Abdullah Sheikh",ct_ec:"Event Coordinator",ct_ec_name:"Planning & on-the-day help",ct_tap:"Tap here",ct_hide:"Hide details",ct_mobile:"Mobile",ct_wa:"WhatsApp",
 thanks_title:"Thank you",ty_quote:"“Thank you for blessing our journey with your love and prayers. Your presence will make our day complete, and we can't wait to celebrate with you.”",ty_verse_tr:"“And We created you in pairs” (78:8)",ty_save:"Save the Date",ty_top:"Return to top",ty_couple_alt:"The bride and groom walking side by side",
 footer:"Preview build · details confirmed · photos and some text are placeholders",replay:"Replay opening",sim_err:"Test: simulate a failed save",reset:"Test: clear my RSVP and wishes",
@@ -2180,7 +2196,7 @@ rsvp_eyebrow:"شرکت کی تصدیق",rsvp_title:"براہِ کرم جواب �
 f_fullname:"پورا نام",f_attend:"کیا آپ تشریف لائیں گے؟",yes:"بڑی خوشی سے شرکت کریں گے",no:"معذرت، شرکت نہیں کر سکیں گے",f_guests:"مہمانوں کی تعداد، آپ سمیت",guests_hint:"زیادہ سے زیادہ {max} مہمان",f_events:"آپ کن تقریبات میں شرکت کریں گے؟",f_diet:"کھانے سے متعلق ضروریات",diet_hint:"الرجی یا کھانے سے متعلق کوئی خاص ضرورت (اختیاری)",f_msg:"دولہا دلہن کے نام ایک ذاتی پیغام",optional:"(اختیاری)",required:"(لازمی)",send_rsvp:"جواب بھیجیں",sending:"آپ کا جواب بھیجا جا رہا ہے…",
 e_name:"براہِ کرم اپنا پورا نام لکھیں۔",e_name_short:"براہِ کرم کم از کم 2 حروف لکھیں۔",e_attend:"براہِ کرم بتائیں کہ آپ شرکت کریں گے یا نہیں۔",e_events:"براہِ کرم کم از کم ایک تقریب منتخب کریں۔",e_summary:"براہِ کرم درج ذیل باتیں دیکھ لیں:",e_save:"ہم آپ کا جواب محفوظ نہیں کر سکے۔ براہِ کرم اپنا انٹرنیٹ کنکشن چیک کر کے دوبارہ کوشش کریں۔ آپ کے جوابات یہیں موجود ہیں۔",try_again:"دوبارہ کوشش کریں",
 ok_yes:"شکریہ، {name}۔ آپ کا جواب محفوظ ہو گیا ہے۔ ہم آپ کے ساتھ خوشیاں منانے کے منتظر ہیں۔",ok_no:"شکریہ، {name}۔ آپ کا جواب محفوظ ہو گیا ہے۔ ہمیں آپ کی کمی محسوس ہوگی۔",ok_title:"جواب موصول ہو گیا",s_attend:"شرکت",s_guests:"مہمان",s_events:"تقریبات",s_diet:"کھانے کی ضروریات",change:"اپنا جواب تبدیل کریں",closed:"شرکت کی تصدیق کی آخری تاریخ 1 نومبر 2026 تھی۔ اگر آپ اپنا جواب تبدیل کرنا چاہیں تو براہِ کرم اہلِ خانہ سے رابطہ کریں۔",
-wish_eyebrow:"مہمانوں کے پیغامات",wish_title:"دولہا دلہن کے لیے نیک تمنائیں",leave_wish:"دعا دیجیے",f_name:"آپ کا نام",f_wish:"آپ کی نیک تمنا",send_wish:"اپنی دعائیں بھیجیں",e_wish:"براہِ کرم ایک مختصر سی نیک تمنا لکھیں (کم از کم 2 حروف)۔",wish_ok:"شکریہ! آپ کی نیک تمنا منظوری کے بعد یہاں نظر آئے گی۔",wish_none:"سب سے پہلے نیک تمنا بھیجنے والے آپ بنیں۔",sample:"نمونہ",pending_approval:"منظوری کا انتظار",wish_from:"ہمارے پیاروں کی نیک تمنائیں",view_all:"تمام نیک تمنائیں دیکھیں",wish_typing:"{name} نیک تمنا لکھ رہے ہیں",wc_guest:"عزیز مہمان",f_rel:"آپ کا دولہا دلہن سے کیا رشتہ ہے؟",wish_sub:"ہماری نئی زندگی کے لیے اپنی محبت اور نیک تمنائیں لکھیے۔",ph_name:"آپ کا نام *",ph_wish:"آپ کی نیک تمنا *",f_photo_add:"اپنی تصویر لگائیں (اختیاری)",rel_family:"خاندان",rel_friend:"دوست",rel_colleague:"ساتھی کارکن",rel_neighbour:"پڑوسی",rel_other:"دیگر",f_photo_hint:"آپ کے کارڈ کے سامنے دکھائی جائے گی۔",
+wish_eyebrow:"مہمانوں کے پیغامات",wish_title:"دولہا دلہن کے لیے نیک تمنائیں",leave_wish:"دعا دیجیے",f_name:"مہمان کا نام",f_wish:"آپ کی نیک تمنا",send_wish:"اپنی دعائیں بھیجیں",e_wish:"براہِ کرم ایک مختصر سی نیک تمنا لکھیں (کم از کم 2 حروف)۔",wish_ok:"شکریہ! آپ کی نیک تمنا منظوری کے بعد یہاں نظر آئے گی۔",wish_none:"سب سے پہلے نیک تمنا بھیجنے والے آپ بنیں۔",sample:"نمونہ",pending_approval:"منظوری کا انتظار",wish_from:"ہمارے پیاروں کی نیک تمنائیں",view_all:"تمام نیک تمنائیں دیکھیں",wish_typing:"{name} نیک تمنا لکھ رہے ہیں",wc_guest:"عزیز مہمان",f_rel:"آپ کا دولہا دلہن سے کیا رشتہ ہے؟",wish_sub:"ہماری نئی زندگی کے لیے اپنی محبت اور نیک تمنائیں لکھیے۔",ph_name:"مہمان کا نام *",ph_wish:"آپ کی نیک تمنا *",f_photo_add:"اپنی تصویر لگائیں (اختیاری)",rel_bride_family:"دلہن کا خاندان",rel_groom_family:"دولہا کا خاندان",rel_relative:"رشتہ دار",rel_friend:"دوست",rel_colleague:"ساتھی کارکن",rel_neighbour:"پڑوسی",rel_other:"دیگر",f_photo_hint:"آپ کے کارڈ کے سامنے دکھائی جائے گی۔",
 contact_title:"کیا آپ کو مدد چاہیے؟",contact_lede:"تقریب کے دن، سفر یا اپنے جواب سے متعلق کسی بھی بات کے لیے براہِ کرم ہم سے رابطہ کریں۔",ct_title_a:"رابطہ",ct_title_b:"کریں",ct_bf:"دلہن کے والد",ct_bf_name:"جناب یوسف الہاشمی",ct_gf:"دولہا کے والد",ct_gf_name:"جناب عبداللہ شیخ",ct_ec:"ایونٹ کوآرڈینیٹر",ct_ec_name:"انتظامات اور تقریب کے دن مدد",ct_tap:"یہاں ٹیپ کریں",ct_hide:"تفصیل چھپائیں",ct_mobile:"موبائل",ct_wa:"واٹس ایپ",
 thanks_title:"شکریہ",ty_quote:"“اپنی محبت اور دعاؤں سے ہمارے سفر کو بابرکت بنانے کا شکریہ۔ آپ کی موجودگی ہمارے دن کو مکمل کر دے گی، اور ہم آپ کے ساتھ خوشیاں منانے کے منتظر ہیں۔”",ty_verse_tr:"“اور ہم نے تمہیں جوڑے جوڑے پیدا کیا” (النبا: ۸)",ty_save:"تاریخ یاد رکھیں",ty_top:"واپس اوپر",ty_couple_alt:"دولہا اور دلہن ساتھ ساتھ چلتے ہوئے",
 footer:"پیش نظارہ ورژن · تفصیلات کی تصدیق ہو چکی ہے · تصاویر اور کچھ متن عارضی ہیں · اردو متن نظرِ ثانی کے لیے",replay:"افتتاحی منظر دوبارہ دیکھیں",sim_err:"ٹیسٹ: جواب محفوظ نہ ہونے کی صورتِ حال آزمائیں",reset:"ٹیسٹ: میرا جواب اور نیک تمنائیں صاف کریں",
@@ -2201,7 +2217,7 @@ rsvp_eyebrow:"आने की पुष्टि",rsvp_title:"कृपया �
 f_fullname:"पूरा नाम",f_attend:"क्या आप तशरीफ़ लाएँगे?",yes:"बड़ी ख़ुशी से शामिल होंगे",no:"माफ़ी चाहते हैं, शामिल नहीं हो पाएँगे",f_guests:"मेहमानों की संख्या, आपको मिलाकर",guests_hint:"ज़्यादा से ज़्यादा {max} मेहमान",f_events:"आप किन समारोहों में शामिल होंगे?",f_diet:"खाने से जुड़ी ज़रूरतें",diet_hint:"एलर्जी या खाने से जुड़ी कोई ख़ास ज़रूरत (वैकल्पिक)",f_msg:"दूल्हा-दुल्हन के लिए एक निजी संदेश",optional:"(वैकल्पिक)",required:"(ज़रूरी)",send_rsvp:"जवाब भेजें",sending:"आपका जवाब भेजा जा रहा है…",
 e_name:"कृपया अपना पूरा नाम लिखें।",e_name_short:"कृपया कम से कम 2 अक्षर लिखें।",e_attend:"कृपया बताएँ कि आप शामिल होंगे या नहीं।",e_events:"कृपया कम से कम एक समारोह चुनें।",e_summary:"कृपया नीचे दी गई बातें देख लें:",e_save:"हम आपका जवाब सेव नहीं कर सके। कृपया अपना इंटरनेट कनेक्शन जाँचकर फिर से कोशिश करें। आपके जवाब यहीं मौजूद हैं।",try_again:"फिर से कोशिश करें",
 ok_yes:"शुक्रिया, {name}। आपका जवाब सेव हो गया है। हमें आपके साथ ख़ुशियाँ मनाने का इंतज़ार रहेगा।",ok_no:"शुक्रिया, {name}। आपका जवाब सेव हो गया है। हमें आपकी कमी महसूस होगी।",ok_title:"जवाब मिल गया",s_attend:"हाज़िरी",s_guests:"मेहमान",s_events:"समारोह",s_diet:"खान-पान",change:"अपना जवाब बदलें",closed:"आने की पुष्टि की आख़िरी तारीख़ 1 नवंबर 2026 थी। अगर आपको अपना जवाब बदलना हो, तो कृपया परिवार से संपर्क करें।",
-wish_eyebrow:"मेहमानों के संदेश",wish_title:"दूल्हा-दुल्हन के लिए दुआएँ",leave_wish:"दुआ दीजिए",f_name:"आपका नाम",f_wish:"आपकी दुआ",send_wish:"अपनी दुआएँ भेजें",e_wish:"कृपया एक छोटी-सी दुआ लिखें (कम से कम 2 अक्षर)।",wish_ok:"शुक्रिया! आपकी दुआ मंज़ूरी के बाद यहाँ दिखेगी।",wish_none:"सबसे पहले दुआ भेजने वाले आप बनें।",sample:"नमूना",pending_approval:"मंज़ूरी बाक़ी",wish_from:"हमारे अपनों की दुआएँ",view_all:"सारी दुआएँ देखें",wish_typing:"{name} दुआ लिख रहे हैं",wc_guest:"प्यारे मेहमान",f_rel:"आपका दूल्हा-दुल्हन से क्या रिश्ता है?",wish_sub:"हमारी नई ज़िंदगी के लिए अपना प्यार और शुभकामनाएँ लिखिए।",ph_name:"आपका नाम *",ph_wish:"आपकी दुआ *",f_photo_add:"अपनी फ़ोटो जोड़ें (वैकल्पिक)",rel_family:"परिवार",rel_friend:"दोस्त",rel_colleague:"सहकर्मी",rel_neighbour:"पड़ोसी",rel_other:"अन्य",f_photo_hint:"आपके कार्ड के सामने दिखेगी।",
+wish_eyebrow:"मेहमानों के संदेश",wish_title:"दूल्हा-दुल्हन के लिए दुआएँ",leave_wish:"दुआ दीजिए",f_name:"मेहमान का नाम",f_wish:"आपकी दुआ",send_wish:"अपनी दुआएँ भेजें",e_wish:"कृपया एक छोटी-सी दुआ लिखें (कम से कम 2 अक्षर)।",wish_ok:"शुक्रिया! आपकी दुआ मंज़ूरी के बाद यहाँ दिखेगी।",wish_none:"सबसे पहले दुआ भेजने वाले आप बनें।",sample:"नमूना",pending_approval:"मंज़ूरी बाक़ी",wish_from:"हमारे अपनों की दुआएँ",view_all:"सारी दुआएँ देखें",wish_typing:"{name} दुआ लिख रहे हैं",wc_guest:"प्यारे मेहमान",f_rel:"आपका दूल्हा-दुल्हन से क्या रिश्ता है?",wish_sub:"हमारी नई ज़िंदगी के लिए अपना प्यार और शुभकामनाएँ लिखिए।",ph_name:"मेहमान का नाम *",ph_wish:"आपकी दुआ *",f_photo_add:"अपनी फ़ोटो जोड़ें (वैकल्पिक)",rel_bride_family:"दुल्हन का परिवार",rel_groom_family:"दूल्हे का परिवार",rel_relative:"रिश्तेदार",rel_friend:"दोस्त",rel_colleague:"सहकर्मी",rel_neighbour:"पड़ोसी",rel_other:"अन्य",f_photo_hint:"आपके कार्ड के सामने दिखेगी।",
 contact_title:"क्या आपको मदद चाहिए?",contact_lede:"शादी के दिन, सफ़र या अपने जवाब से जुड़ी किसी भी बात के लिए कृपया हमसे संपर्क करें।",ct_title_a:"संपर्क",ct_title_b:"करें",ct_bf:"दुल्हन के पिता",ct_bf_name:"जनाब यूसुफ़ अल हाशिमी",ct_gf:"दूल्हे के पिता",ct_gf_name:"जनाब अब्दुल्लाह शेख़",ct_ec:"इवेंट कोऑर्डिनेटर",ct_ec_name:"इंतज़ाम और समारोह के दिन मदद",ct_tap:"यहाँ टैप करें",ct_hide:"जानकारी छिपाएँ",ct_mobile:"मोबाइल",ct_wa:"व्हाट्सऐप",
 thanks_title:"शुक्रिया",ty_quote:"“अपनी मोहब्बत और दुआओं से हमारे सफ़र को मुबारक बनाने का शुक्रिया। आपकी मौजूदगी हमारे दिन को मुकम्मल कर देगी, और हम आपके साथ जश्न मनाने का इंतज़ार कर रहे हैं।”",ty_verse_tr:"“और हमने तुम्हें जोड़ों में पैदा किया” (अन-नबा 78:8)",ty_save:"तारीख़ याद रखें",ty_top:"वापस ऊपर",ty_couple_alt:"साथ-साथ चलते दूल्हा और दुल्हन",
 footer:"प्रीव्यू वर्ज़न · जानकारी की पुष्टि हो चुकी है · फ़ोटो और कुछ टेक्स्ट अस्थायी हैं · हिंदी टेक्स्ट समीक्षा के लिए",replay:"शुरुआती दृश्य फिर से देखें",sim_err:"टेस्ट: सेव फ़ेल होने की स्थिति आज़माएँ",reset:"टेस्ट: मेरा जवाब और दुआएँ मिटाएँ",
@@ -2293,6 +2309,12 @@ function leave(){
   setTimeout(function(){ if(phase==="done"){ cover.hidden=true; updateBars(); } }, reduced()?250:FADE_MS);
 }
 sealBtn.addEventListener("click", openInvite);
+/* if nobody taps the seal, the envelope opens by itself about 5.5 s after the opening screen appears
+   (the wait only runs while the page is actually on screen; replaying the opening starts it again) */
+var autoOpenT=null, AUTO_OPEN=5500;
+function armAutoOpen(){ clearTimeout(autoOpenT); if(phase!=="idle" || cover.hidden || document.hidden) return; autoOpenT=setTimeout(function(){ if(phase==="idle" && !cover.hidden && !document.hidden) openInvite(); }, AUTO_OPEN); }
+document.addEventListener("visibilitychange", function(){ if(document.hidden) clearTimeout(autoOpenT); else armAutoOpen(); });
+armAutoOpen();
 function revealMain(){
   root.classList.remove("locked");
   main.inert = false; main.removeAttribute("inert"); main.removeAttribute("aria-hidden");
@@ -2308,7 +2330,7 @@ function resetCover(){
   if(window.__resetDateReveal) window.__resetDateReveal();
   root.classList.add("gated"); if(window.__gIntroReset) window.__gIntroReset();
   if(window.__bqBloom) window.__bqBloom();
-  sealBtn.focus();
+  sealBtn.focus(); armAutoOpen();
 }
 $("#replay").addEventListener("click", resetCover);
 
@@ -3068,7 +3090,32 @@ $$(".bloom").forEach(function(band){
 
 /* ---------- events ---------- */
 /* each celebration: gold board + photo, alternating sides, under two clouds that part as it scrolls into view */
-var EV_OP = {haldi:"22%", mehendi:"52%", nikah:"50%", walima:"20%", reception:"50%"};   /* keep the couple in the crop */
+var EV_OP = {};
+/* each celebration's couple illustration (Agrim's art, cut out) stands in a gold Islamic arch drawn in SVG, on a soft
+   ground in that day's colour; the Nikah keeps its own ivory stage scene */
+var EV_ILL = {
+  haldi:    {bg:["#FFF7DA","#F7DB7E","#E9B530"], fit:"meet"},
+  mehendi:  {bg:["#F1F8EA","#B9D7A4","#6E9F57"], fit:"meet"},
+  nikah:    {bg:["#FBF6EC","#EBDDC2","#D9C29A"], fit:"slice"},
+  walima:   {bg:["#FFFDF7","#F1E5CC","#D8BE8C"], fit:"meet", box:[2,62,196,200]},
+  reception:{bg:["#FDF3F5","#F3D3DA","#DDA7B4"], fit:"meet"}
+};
+var EV_ARCH = "M12 266V104C12 58 52 30 100 8C148 30 188 58 188 104V266Z";
+function evIll(e){
+  var c = EV_ILL[e.id] || EV_ILL.walima, id = "evi-" + e.id, slice = c.fit === "slice";
+  var img = slice ? '<image href="assets/events/ill-' + e.id + '.webp" x="12" y="8" width="176" height="258" preserveAspectRatio="xMidYMid slice"/>'
+                  : '<image href="assets/events/ill-' + e.id + '.webp" x="' + (c.box ? c.box[0] : 20) + '" y="' + (c.box ? c.box[1] : 44) + '" width="' + (c.box ? c.box[2] : 160) + '" height="' + (c.box ? c.box[3] : 214) + '" preserveAspectRatio="xMidYMax meet"/>';
+  return '<svg class="ev-ill" viewBox="0 0 200 274" role="img" aria-label="' + esc(t("ev_alt", {e:e[lang]})) + '">' +
+    '<defs><linearGradient id="' + id + '-g" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="' + c.bg[0] + '"/><stop offset=".62" stop-color="' + c.bg[1] + '"/><stop offset="1" stop-color="' + c.bg[2] + '"/></linearGradient>' +
+    '<radialGradient id="' + id + '-l" cx=".5" cy=".38" r=".55"><stop offset="0" stop-color="#fff" stop-opacity=".85"/><stop offset="1" stop-color="#fff" stop-opacity="0"/></radialGradient>' +
+    '<linearGradient id="' + id + '-au" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#FFE9A8"/><stop offset=".45" stop-color="#C99A3E"/><stop offset="1" stop-color="#F2D287"/></linearGradient>' +
+    '<clipPath id="' + id + '-c"><path d="' + EV_ARCH + '"/></clipPath></defs>' +
+    '<path d="' + EV_ARCH + '" fill="url(#' + id + '-g)"/>' +
+    '<g clip-path="url(#' + id + '-c)">' + (slice ? '' : '<ellipse cx="100" cy="112" rx="96" ry="110" fill="url(#' + id + '-l)"/><ellipse cx="100" cy="259" rx="70" ry="7" fill="#000" opacity=".16"/>') + img + '</g>' +
+    '<path d="' + EV_ARCH + '" fill="none" stroke="url(#' + id + '-au)" stroke-width="4.5"/>' +
+    '<path d="M20 262V106C20 64 56 39 100 18C144 39 180 64 180 106V262" fill="none" stroke="#E3C277" stroke-width="1" opacity=".8"/>' +
+    '<path d="M100 0l3 5-3 5-3-5z" fill="#E9C77A"/><circle cx="100" cy="2" r="1.6" fill="#FFF1C2"/></svg>';
+}
 function renderEvents(){
   $("#eventList").innerHTML = EVENTS.map(function(e,i){
     var when = e["when_"+lang]||e.when_en, where = e["where_"+lang]||e.where_en;
@@ -3081,7 +3128,7 @@ function renderEvents(){
         '<span class="ev-rule" aria-hidden="true"></span><p class="ev-desc">'+esc(e["desc_"+lang]||e.desc_en)+'</p>'+
         '<a class="ev-map" href="'+map+'" target="_blank" rel="noopener" aria-label="'+esc(t("ev_map")+": "+where)+'"><svg aria-hidden="true"><use href="#i-pin"/></svg><span>'+esc(t("ev_map"))+'</span></a>'+
       '</div></div>'+
-      '<div class="ev-pic"><img src="assets/events/'+e.id+'.webp" alt="'+esc(t("ev_alt",{e:e[lang]}))+'" loading="lazy" decoding="async"></div>'+
+      '<div class="ev-pic">'+evIll(e)+'</div>'+
       '<div class="ev-cl l" aria-hidden="true"><img src="assets/events/cloud-'+(i%3+1)+'.webp" alt=""></div>'+
       '<div class="ev-cl r" aria-hidden="true"><img src="assets/events/cloud-'+((i+1)%3+1)+'.webp" alt=""></div></article>';
   }).join("");
@@ -3618,12 +3665,35 @@ $("#wPhoto").addEventListener("change", function(){
   im.src = url;
 });
 /* ---------- Wishes: relation chips (tap one; tap it again to clear) ---------- */
-var REL_KEYS = ["family", "friend", "colleague", "neighbour", "other"], relKey = "";
+var REL_KEYS = ["bride_family", "groom_family", "relative", "friend", "colleague", "neighbour", "other"], relKey = "", relAct = -1;
 function relRender(){
-  var box = $("#wRelChips"); if(!box) return;
-  box.innerHTML = REL_KEYS.map(function(k){ return '<button type="button" class="wb-chip" data-k="' + k + '" aria-pressed="' + (k === relKey) + '">' + esc(t("rel_" + k)) + '</button>'; }).join("");
+  var btn = $("#wRel"), list = $("#wRelList"); if(!btn) return;
+  $("#wRelVal").textContent = relKey ? t("rel_" + relKey) : t("f_rel");
+  btn.classList.toggle("empty", !relKey);
+  list.innerHTML = REL_KEYS.map(function(k, i){ return '<li role="option" id="wRelO' + i + '" data-k="' + k + '" aria-selected="' + (k === relKey) + '">' + esc(t("rel_" + k)) + '</li>'; }).join("");
 }
-$("#wRelChips").addEventListener("click", function(e){ var b = e.target.closest(".wb-chip"); if(!b) return; var k = b.getAttribute("data-k"); relKey = relKey === k ? "" : k; relRender(); var nb = $('.wb-chip[data-k="' + k + '"]', this); if(nb) nb.focus(); });
+function relMark(){
+  var list = $("#wRelList"); $$("li", list).forEach(function(li, i){ li.classList.toggle("act", i === relAct); });
+  if(relAct > -1){ $("#wRel").setAttribute("aria-activedescendant", "wRelO" + relAct); var a = list.children[relAct]; if(a) a.scrollIntoView({block:"nearest"}); }
+}
+function relOpen(open){
+  var btn = $("#wRel"), list = $("#wRelList");
+  btn.setAttribute("aria-expanded", open ? "true" : "false"); list.hidden = !open; $("#wRelBox").classList.toggle("open", open);
+  if(open){ relAct = Math.max(0, REL_KEYS.indexOf(relKey)); relMark(); } else { relAct = -1; btn.removeAttribute("aria-activedescendant"); }
+}
+function relPick(k){ relKey = k; relRender(); relOpen(false); $("#wRel").focus(); }
+$("#wRel").addEventListener("click", function(){ relOpen(this.getAttribute("aria-expanded") !== "true"); });
+$("#wRel").addEventListener("keydown", function(e){
+  var open = this.getAttribute("aria-expanded") === "true", n = REL_KEYS.length;
+  if(e.key === "ArrowDown" || e.key === "ArrowUp"){ e.preventDefault(); if(!open){ relOpen(true); return; } relAct = (relAct + (e.key === "ArrowDown" ? 1 : n - 1)) % n; relMark(); }
+  else if(e.key === "Home" && open){ e.preventDefault(); relAct = 0; relMark(); }
+  else if(e.key === "End" && open){ e.preventDefault(); relAct = n - 1; relMark(); }
+  else if((e.key === "Enter" || e.key === " ") && open){ e.preventDefault(); if(relAct > -1) relPick(REL_KEYS[relAct]); }
+  else if(e.key === "Escape" && open){ e.preventDefault(); relOpen(false); }
+  else if(e.key === "Tab" && open){ relOpen(false); }
+});
+$("#wRelList").addEventListener("click", function(e){ var li = e.target.closest("li[data-k]"); if(li) relPick(li.getAttribute("data-k")); });
+document.addEventListener("pointerdown", function(e){ if(!$("#wRelList").hidden && !e.target.closest("#wRelBox")) relOpen(false); });
 relRender();
 $("#wMsg").addEventListener("input", function(){$("#wCount").textContent=this.value.length;});
 $("#wishForm").addEventListener("submit", function(e){
